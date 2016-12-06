@@ -6,7 +6,7 @@ const routers = [
         name: 'home',
         meta: {
             title: '首页',
-            toggle:true
+            toggle:true 
         }
     },  {
         path: '/roomlist',

@@ -5,6 +5,13 @@ import VueResource from 'vue-resource';
 
 import App from './App.vue'
 
+import ElementUI from 'element-ui'
+
+
+Vue.use(ElementUI)
+
+
+
 Vue.use(VueResource);
 
 // Example(Only applies to the current global mode). 用配置项的话仅支持全局模式来配置，否则不会生效
@@ -30,13 +37,10 @@ router.beforeEach((to, from, next) => {
 
 const app = new Vue({
 	el: '#studio',
-	template: '<App/>',
-	components: {
-		App
-	},
+	render: h => h(App),
 	router
 })
-
+// router.replace('/login')
 // router.beforeEach(function (transition) {
 //   console.log(transition);
 //   document.title = transition.meta.title;

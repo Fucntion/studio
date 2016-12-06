@@ -8,6 +8,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "element-ui": "^1.0.5",
     "json-loader": "^0.5.4",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
@@ -15,7 +16,6 @@
     "vue-awesome-swiper": "^2.2.3",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.0.3",
-    "vue-strap": "^1.1.33",
     "vue-video-player": "^2.3.4",
     "vuex": "^2.0.0"
   },

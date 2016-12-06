@@ -1,6 +1,48 @@
 <template>
-	<div>
-		<top></top>
+
+
+    <el-col :span="24" class="panel-center">
+
+            <aside style="width:210px;">
+                     
+
+                <el-menu default-active="/home"  @open="handleopen" @close="handleclose" @select="handleselect" unique-opened router>
+                    <template v-for="(item,index) in $router.options.routes" v-if="!item.meta.hidden">
+                        <!-- 一级菜单 -->
+                        <el-submenu :index="index+''" v-if="item.children"  >
+                            <template slot="title"><i :class="22"></i>{{item.meta.title}}</template>
+                            <el-menu-item   v-for="child in item.children" :index="child.path">{{child.meta.title}}</el-menu-item>
+                        </el-submenu>
+                        <!-- 二级菜单 -->
+                        <el-menu-item v-else  :index="item.path">
+                            <i :class="item.iconCls"></i>
+                            {{item.meta.title}}
+                        </el-menu-item>
+                    </template>
+
+
+                </el-menu>
+            </aside>
+            <section class="panel-c-c">
+                <div class="grid-content bg-purple-light">
+                    <el-col :span="24" style="margin-bottom:15px;">
+                        <strong style="width:200px;float:left;color: #475669;">{{currentPathName}}</strong>
+                        <el-breadcrumb separator="/" style="float:right;">
+                            <el-breadcrumb-item :to="{ path: '/table' }">首页</el-breadcrumb-item>
+                            <el-breadcrumb-item v-if="currentPathNameParent!=''">{{currentPathNameParent}}</el-breadcrumb-item>
+                            <el-breadcrumb-item v-if="currentPathName!=''">{{currentPathName}}</el-breadcrumb-item>
+                        </el-breadcrumb>
+                    </el-col>
+                    <el-col :span="24" style="background-color:#fff;box-sizing: border-box;">
+                        <transition name="fade">
+                            <router-view></router-view>
+                        </transition>
+                    </el-col>
+                </div>
+            </section>
+            <!--</el-col>-->
+        </el-col>
+<!-- 		<top></top>
 		<left v-on:changeCrumb="changeCrumb"></left>
 		<div id="main">
 			<div class="crumb-box">
@@ -8,11 +50,10 @@
 				<div class="hr"></div>
 			</div>
 
-			<router-view></router-view>
-			<!-- -->
-		</div>
+			<router-view></router-view> -->
 
-	</div>
+
+
 	<!--    
     <div>
         <top></top>
@@ -80,7 +121,30 @@
 			}
 		},
 		methods: {
+             onSubmit() {
+        console.log('submit!');
+      },
+            handleopen(){
+                //console.log('handleopen');
+            },
+            handleclose(){
+                //console.log('handleclose');
+            },
+            handleselect:function(a,b){
+            },
+            //退出登录
+            logout:function(){
+                var _this=this;
+                this.$confirm('确认退出吗?', '提示', {
+                    //type: 'warning'
+                }).then(() => {
+                    _this.$router.replace('/login');
+                }).catch(() => {
+                            
+                });
 
+                
+            }
 		},
 		components: {
 			Top,
