@@ -147,9 +147,11 @@ h6 {
 
 .left {
     max-width: 200px;
-    border:1px solid white;
+    border-right:1px solid white;
+    // 
 
     .kefu {
+
         width: 200px;
         height: 200px;
         background: @bg-content;
@@ -163,18 +165,25 @@ h6 {
 // right
 
 .right {
+    padding: 0 15px;
     background: #f1f2f7;
+     .crumb-box {
+        padding: 10px 0;
+        span{
+            font-size:18px;
+        }
+    }
 
 }
 
 
-
+// 首页
 .main{
 
     .new {
         margin: 20px 0;
         .list {
-            
+
             background: @bg-content;
             padding: 15px;
             a {
@@ -190,9 +199,6 @@ h6 {
                 }
             }
         }
-        // .list_r {
-        //     margin-left: 20px;
-        // }
     }
 
     .descript {
@@ -246,19 +252,16 @@ h6 {
 }
 
 
-
+// 直播列表
 .room_box {
     overflow: hidden;
     .roomAdd,
     .roomItem {
         cursor: pointer;
-        width: 300px;
-        margin-left: 20px;
-        float: left;
         border-radius: 5px;
         border: 1px solid #888888;
         padding: 20px 0 0;
-        margin-bottom: 20px;
+        margin:10px 0;
     }
     .roomAdd {
         height: 166px;
@@ -291,21 +294,15 @@ h6 {
             width: 100%;
             margin-top: 25px;
             overflow: hidden;
-            a {
-                width: 100px;
-                line-height: 2;
-                display: block;
-                float: left;
-                box-sizing: border-box;
-                text-align: center;
-                text-decoration: none;
-                color: @font-color;
-                border-right: 1px solid gray;
-                border-top: 1px solid gray;
+            .btn_item{
+                padding: 5px 0;
+                border-right:1px solid #222222;
+                
             }
-            a:last-child {
-                border-right: none;
-            }
+            :last-child{
+                    border:none;
+                }
+
         }
     }
     .v-link-active {

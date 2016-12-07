@@ -1,14 +1,14 @@
 <template>
     <div>
-        <el-menu default-active="/home"   @open="handleopen" @close="handleclose" @select="handleselect" class="el-menu-vertical-demo" unique-opened router>
+        <el-menu :default-active="defaultActive"   @open="handleopen" @close="handleclose" @select="handleselect" class="el-menu-vertical-demo" unique-opened router>
         <template v-for="(item,index) in $router.options.routes"  v-if="!item.hidden">
-            <el-submenu :index="index+''" v-if="item.children && item.title!='直播间列表'&& item.title!='首页'"  >
-                <template slot="title"><i :class="item.iconCls"></i>{{item.title}}</template>
-                <el-menu-item   v-for="child in item.children" :index="child.path">{{child.title}}</el-menu-item>
+            <el-submenu :index="index+''" v-if="item.children && item.name!='直播管理'&& item.name!='首页'"  >
+                <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
+                <el-menu-item   v-for="child in item.children" :index="child.path">{{child.name}}</el-menu-item>
             </el-submenu>
             <el-menu-item v-else  :index="item.path">
                 <i :class="item.iconCls"></i>
-                {{item.title}}
+                {{item.name}}
             </el-menu-item>
 
         </template>
@@ -31,7 +31,7 @@
 
 
 			return {
-
+                defaultActive:'/home'
 			}
 
 		},
@@ -49,6 +49,12 @@
         },
         components: {
 
+        },
+       watch: {
+            '$route' (to, from) {//监听路由改变
+                    
+                this.defaultActive=to.path;
+            }
         }
     }
 </script>

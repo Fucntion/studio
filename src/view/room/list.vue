@@ -1,26 +1,31 @@
 <template>
-	<div class="container">
+	<div class="roomList">
 
-		<!-- {{roomList}} -->
-		<div class="room_box">
+
+		<el-row class="room_box" >
 			<!--传入add然后让业务逻辑知道是创建新的直播间-->
-			<div @click="addRoom()" class="roomAdd">创建房间</div>
-			<div class="roomItem" :id="room.id" v-for="(room,index) in roomList">
-
+			
+			<el-col :span="7" @click="addRoom()" class="roomAdd">创建房间</el-col>
+			<template v-for="(room,index) in roomList">
+				<el-col :span="1" >&nbsp;</el-col>
+				<el-col :span="7" class="roomItem" :id="room.id" >
 				<img :src="room.cover_img_url" class="thumb" alt="room.title" />
 				<div class="info">
 					<h3>{{room.title}}</h3>
 					<span>观看人数323</span>
 				</div>
 				<div class="clear"></div>
-				<div class="btn">
-					<a @click="goto(room.id)">编辑房间</a>
-					<a @click="show(room.id)">预览房间</a>
-					<a>数据分析</a>
-				</div>
+				<el-row class="btn">
+					<el-col class="btn_item" :span="8" @click="goto(room.id)">编辑房间</el-col>
+					<el-col class="btn_item" :span="8" @click="show(room.id)">预览房间</el-col>
+					<el-col class="btn_item" :span="8">数据分析</el-col>
+				</el-row>
 
-			</div>
-		</div>
+			</el-col>
+
+			</template>
+			<!-- <el-col :span="1" >&nbsp;</el-col> -->
+		</el-row>
 
 	</div>
 </template>
