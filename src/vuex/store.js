@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const state = {
     crumb: '面包屑',
     studio:{},
-    menuData:[1,2,3]
+    // menuData:[1,2,3]
 };
 
 const getters = {
@@ -36,21 +36,21 @@ const mutations = {
         }
         state.studio = obj;
     },
-    clearMenuData:function(state,obj){
+    // clearMenuData:function(state,obj){
         
-            //对路由里面的数据进行整理，然后作为导航栏的数据
-            var tempArr =[];
-            for(var k in obj){
-                //目前只做到一级菜单来区分是否显示
-                if(!obj[k].meta.hasOwnProperty("hidden")){
-                    tempArr.push(obj[k]);
-                }
-            } 
-            console.log(tempArr);
-            state.menuData = tempArr;
-            return state.menuData;
+    //         //对路由里面的数据进行整理，然后作为导航栏的数据
+    //         var tempArr =[];
+    //         for(var k in obj){
+    //             //目前只做到一级菜单来区分是否显示
+    //             if(!obj[k].meta.hasOwnProperty("hidden")){
+    //                 tempArr.push(obj[k]);
+    //             }
+    //         } 
+    //         console.log(tempArr);
+    //         state.menuData = tempArr;
+    //         return state.menuData;
 
-    }
+    // }
 }
 
 

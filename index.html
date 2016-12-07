@@ -6,7 +6,12 @@
 	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
   </head>
   <body>
-    <div id="studio"></div>
+    <div id="studio">
+    	<transition name="bounce">
+		   <router-view></router-view>  
+		</transition>
+    </div>
+
     <script src="/dist/build.js"></script>
   </body>
 </html>

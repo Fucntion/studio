@@ -1,9 +1,7 @@
 <template>
-    <div id="studio">
-        <transition name="bounce">
-           <router-view></router-view>  
-       </transition>
-   </div>
+
+
+
 </template>
 
 <script>

@@ -48,12 +48,6 @@ module.exports = {
       'components': path.join(__dirname,'./src/components')
     }
   },
-  // plugins: [
-  //     new webpack.ProvidePlugin({
-  //         $: "jquery",
-  //         jQuery: "jquery"
-  //     })
-  //  ],
   devServer: {
     historyApiFallback: true,
     noInfo: true
