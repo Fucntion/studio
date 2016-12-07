@@ -6,6 +6,7 @@ import VueResource from 'vue-resource';
 import App from './App.vue'
 
 import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-default/index.css'
 
 
 Vue.use(ElementUI)
@@ -24,21 +25,14 @@ const routes = [{
     title: '用户注册',
     hidden: true
 
-}, {
-    path: '/home',
-    component: require('./view/home.vue'),
-    name: 'home',
-    title: '首页',
-    leaf: true, //只有一个节点
-
-}, {
+},{
     path: '/error',
     component: require('./components/error.vue'),
     name: 'error',
     title: '出错了',
     hidden: true
 
-}, {
+},{
     path: '/studio/:id',
     component: require('./view/room/studio.vue'),
     name: 'studio',
@@ -46,20 +40,33 @@ const routes = [{
     hidden: true
 
 },
-     {
+    {
+    path: '/home',
+    component: require('./view/home.vue'),
+    iconCls: 'el-icon-message', //图标样式class
+    title: '首页',
+    redirect: '/main',
+    leaf: true, //只有一个节点
+    children: [{
+        path: '/main',
+        component: require('./view/main.vue'),
+        name: 'main',
+        title: '首页面',
+    }]
+}
+,
+    {
     path: '/room',
     component: require('./view/home.vue'),
     iconCls: 'el-icon-message', //图标样式class
     title: '直播间列表',
     redirect: '/roomlist',
-    toggle: false,
     leaf: true, //只有一个节点
     children: [{
         path: '/roomlist',
         component: require('./view/room/list.vue'),
         name: 'room',
         title: '直播间列表',
-
     }]
 }
 , {
@@ -145,13 +152,15 @@ const routes = [{
         name: 'vip',
         title: '高级功能',
     }]
-}, {
+}, 
+{
     path: '*',
-    redirect: '/home',
+    redirect: '/main',
     title: '其他情况也hack一下，不然路由的长度总是不对',
     hidden: true
 
-}, ]
+},
+]
 
 
 Vue.use(VueResource);
@@ -178,7 +187,8 @@ router.beforeEach((to, from, next) => {
 })
 
 const app = new Vue({
-    router
+    router,
+    render: h => h(App),
 }).$mount('#studio')
 
 // router.replace('/login')
