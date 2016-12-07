@@ -1,6 +1,5 @@
 <template>
     <transition name="bounce">
-    
      <router-view></router-view>
  </transition>
 

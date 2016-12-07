@@ -8,6 +8,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "echarts": "^3.3.2",
     "element-ui": "^1.0.5",
     "font-awesome": "^4.7.0",
     "json-loader": "^0.5.4",

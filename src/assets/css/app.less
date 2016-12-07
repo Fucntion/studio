@@ -167,12 +167,13 @@ h6 {
 .right {
     padding: 0 15px;
     background: #f1f2f7;
-     .crumb-box {
+    .crumb-box {
         padding: 10px 0;
         span{
             font-size:18px;
         }
     }
+
 
 }
 
@@ -253,62 +254,78 @@ h6 {
 
 
 // 直播列表
-.room_box {
-    overflow: hidden;
-    .roomAdd,
-    .roomItem {
-        cursor: pointer;
-        border-radius: 5px;
-        border: 1px solid #888888;
-        padding: 20px 0 0;
-        margin:10px 0;
-    }
-    .roomAdd {
-        height: 166px;
-        text-align: center;
-        line-height: 166px;
-        font-size: 18px;
-    }
-    .roomItem {
-        img.thumb {
-            width: 100px;
-            height: 100px;
-            margin: 0 10px;
-            display: block;
-            float: left;
-        }
-        .info {
-            width: 100%;
-            padding: 0 10px 0 120px;
+.roomList{
+
+
+
+    .room_box {
+        overflow: hidden;
+        .roomAdd,
+        .roomItem {
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #888888;
+           
+            height: 200px;
             box-sizing: border-box;
-            h3 {
-                font-size: 18px;
-                height: 66px;
-            }
-            span {
-                display: block;
-                margin: 15px 0 5px;
-            }
+            margin:10px 0;
+            background: white;
         }
-        .btn {
-            width: 100%;
-            margin-top: 25px;
-            overflow: hidden;
-            .btn_item{
-                padding: 5px 0;
-                border-right:1px solid #222222;
-                
+        .roomAdd {
+
+            text-align: center;
+            line-height: 200px;
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+        .roomItem {
+            position: relative;
+             padding: 20px 0 0;
+            img.thumb {
+
+                width: 100px;
+                height: 100px;
+                margin: 0 10px;
+                display: block;
+                float: left;
             }
-            :last-child{
-                    border:none;
+            .info {
+                width: 100%;
+                padding: 0 10px 0 120px;
+                box-sizing: border-box;
+                h3 {
+                    font-size: 18px;
+                    height: 66px;
+                }
+                span {
+                    display: block;
+                    margin: 15px 0 5px;
+                }
+            }
+            .btn {
+                width: 100%;
+                position: absolute;
+                bottom: 0;
+                overflow: hidden;
+                .btn_item{
+                    padding: 5px 0;
+                    border-right:1px solid #222222;
+                    border-top:1px solid #222222;
+                    text-align: center;
+                    
+                }
+                :last-child{
+                    border-right:none;
                 }
 
+            }
+        }
+        .v-link-active {
+            color: red;
         }
     }
-    .v-link-active {
-        color: red;
-    }
-}
 
+
+}
 
 

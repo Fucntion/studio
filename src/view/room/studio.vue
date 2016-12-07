@@ -1,18 +1,16 @@
 <template>
 	<div>
-		<h2>直播间</h2>
-		<div class="tab-title">
+	<el-row>
+		<el-col :span="24">
+			<el-tabs class="studio_tab"  type="border-card" :active-name="activeName">
 
-			<button @click="goto('config')">参数设置</button>
-			<button @click="goto('analysis')">数据分析</button>
-			<button @click="goto('audience')">用户管理</button>
-		</div> {{studio}}
-
-		<div class="tabs">
-
-			<!-- <config></config> -->
-			<div :is='currentView'></div>
-		</div>
+			    <el-tab-pane label="直播设置" name="config"><config></config></el-tab-pane>
+			    <el-tab-pane label="用户管理" name="analysis"><audience></audience></el-tab-pane>
+			    <el-tab-pane label="数据分析" name="audience"><analysis></analysis></el-tab-pane>
+		  </el-tabs>
+		</el-col>
+	</el-row>
+		
 
 	</div>
 </template>
@@ -30,7 +28,7 @@
 
 			return {
 				studio: {},
-				currentView: 'config'
+				activeName: 'config'
 			}
 		},
 		store,
@@ -53,6 +51,31 @@
 		}
 	}
 </script>
-<style>
+<style lang="less">
+.studio_tab{
+	// width: 100%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	background: #f2f2f2;
+	.el-tabs__header{
+		// width: 270px;
+		text-align: center;
 
+		.el-tabs__item{
+			display: inline-block;
+			float: none;
+			width: 120px;
+		}
+	}
+}
+/*.el-tabs__header{
+	width: 270px;
+	margin: 0 auto !important;
+}
+.el-tabs__item{
+
+}*/
 </style>

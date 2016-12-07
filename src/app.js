@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // import routes from './routers'
-import VueResource from 'vue-resource';
+import VueResource from 'vue-resource'
+
 
 import App from './App.vue'
 
@@ -12,7 +13,6 @@ import ElementUI from 'element-ui'
 Vue.use(ElementUI)
 
 const routes = [{
-
     path: '/login',
     component: require('./components/usr/login.vue'),
     name: '用户登录',

@@ -5,7 +5,7 @@
 		<el-row class="room_box" >
 			<!--传入add然后让业务逻辑知道是创建新的直播间-->
 			
-			<el-col :span="7" @click="addRoom()" class="roomAdd">创建房间</el-col>
+			<el-col :span="7"  class="roomAdd"><div @click="addRoom()" >创建房间</div></el-col>
 			<template v-for="(room,index) in roomList">
 				<el-col :span="1" >&nbsp;</el-col>
 				<el-col :span="7" class="roomItem" :id="room.id" >
@@ -16,8 +16,8 @@
 				</div>
 				<div class="clear"></div>
 				<el-row class="btn">
-					<el-col class="btn_item" :span="8" @click="goto(room.id)">编辑房间</el-col>
-					<el-col class="btn_item" :span="8" @click="show(room.id)">预览房间</el-col>
+					<el-col class="btn_item" :span="8" ><div @click="goto(room.id)">编辑房间</div></el-col>
+					<el-col class="btn_item" :span="8" ><div @click="show(room.id)">预览房间</div></el-col>
 					<el-col class="btn_item" :span="8">数据分析</el-col>
 				</el-row>
 
@@ -43,11 +43,11 @@
 		methods: {
 			goto: function(id) {
 				console.log('studio/' + id);
-				// return;
 				this.$router.push('studio/' + id);
 			},
 			addRoom: function() {
 				//创建好直播间
+				console.log('add room');
 				var data = {
 						cover_img_url: "https://imgcache.qq.com/open_proj/proj_qcloud_v2/gateway/portal/css/img/home/qcloud-logo-dark.png",
 						title: "你323",
@@ -80,7 +80,8 @@
 			this.$http.get(url).then((response) => {
 				// success callback
 				this.roomList = response.body;
-				// console.log(response.body);
+
+				console.log(response.body);
 			}, (response) => {
 				// error callback
 				// console.log(response);
