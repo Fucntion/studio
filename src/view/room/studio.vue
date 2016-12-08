@@ -16,7 +16,7 @@
 	import StudioConfig from './config.vue'
 	import StudioAudience from './audience.vue'
 	import StudioAnalysis from './analysis.vue'
-	import AwesomeSwiper from 'vue-awesome-swiper'
+
 
 	import store from '../../vuex/store'
 
@@ -44,31 +44,13 @@
 		mounted() {
 
 			this.studio = store.getters.getStudio;
-			console.log(this.studio);
+
 
 		}
 	}
 </script>
 <style lang="less">
-.studio_tab{
-	// width: 100%;
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	background: #f2f2f2;
-	.el-tabs__header{
-		// width: 270px;
-		text-align: center;
 
-		.el-tabs__item{
-			display: inline-block;
-			float: none;
-			width: 120px;
-		}
-	}
-}
 /*.el-tabs__header{
 	width: 270px;
 	margin: 0 auto !important;

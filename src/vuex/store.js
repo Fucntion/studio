@@ -6,6 +6,11 @@ Vue.use(Vuex);
 const state = {
     crumb: '面包屑',
     studio:{},
+    dialog:{
+        visible:false,
+        title:'dialog',
+        current:'pictureBox'
+    } 
     // menuData:[1,2,3]
 };
 
@@ -15,13 +20,23 @@ const getters = {
     },
     getStudio: function (state) {
         return state.studio
-    },getMenuData:function(state){
+    },
+    getMenuData:function(state){
         return state.MenuData;
+    },
+    getDialog:function(state){
+        return state.dialog;
     }
     
 }
 
 const mutations = {
+    openDialog:function(state,obj){
+        if(!obj.components && !obj.title) {console.log('参数有误无法弹出dialog');return}
+        state.dialog.visible = !state.dialog.visible;
+        state.dialog.title =obj.title;
+        state.dialog.current = obj.components;
+    },
     changeCrumb:function(state, crumbText) {
         // 变更状态
         state.crumb = crumbText;
@@ -37,7 +52,7 @@ const mutations = {
         state.studio = obj;
     },
     // clearMenuData:function(state,obj){
-        
+
     //         //对路由里面的数据进行整理，然后作为导航栏的数据
     //         var tempArr =[];
     //         for(var k in obj){

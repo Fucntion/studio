@@ -1,5 +1,5 @@
 <style>
-	@import './swiper.css';
+@import './swiper.css';
 	.swiper-container {
 		width: 100%;
 		height: 100px

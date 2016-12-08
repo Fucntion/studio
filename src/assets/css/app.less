@@ -266,10 +266,10 @@ h6 {
         overflow: hidden;
         .roomAdd,
         .roomItem {
-            
+
             border-radius: 5px;
             border: 1px solid #888888;
-           
+
             height: 200px;
             box-sizing: border-box;
             margin:10px 0;
@@ -284,7 +284,7 @@ h6 {
         }
         .roomItem {
             position: relative;
-             padding: 20px 0 0;
+            padding: 20px 0 0;
             img.thumb {
 
                 width: 100px;
@@ -334,68 +334,165 @@ h6 {
 
 }
 
+.studio_tab{
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: #f2f2f2;
+    >.el-tabs__header{
+        text-align: center;
+
+        .el-tabs__item{
+            display: inline-block;
+            float: none;
+            width: 120px;
+        }
+    }
+}
+
 
 .config{
+    width:1200px;
+    margin:0 auto;
 
-    .plugin_box,.mobileBox,.commonBox{
-        min-height:800px;
+    .plugin_box,.mobile_box,.common_box{
+        margin-left:10px;
+        float:left;
     }
 
-    .plugin_box{
-        width:300px;
-        background-color: rgb(255, 255, 255);
-        box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
-        .title{
-            // width:
-            font-size:18px;
-            background:#20a0ff;
-            height:60px;
-            line-height:60px;
-            text-align:center;
-            color:white;
-        }
-        .box{
+    
+    .mobile_box{
 
-            padding: 10px 5px;
-            fieldset{
-                margin-bottom:10px;
-                padding:10px;
-                border:1px solid #c0c0c0;
-
-                legend{
-                    // color:red;
-                    padding:5px;
-                    color:#20a0ff;
-                }
-                .plugin_item{
-                    i{
-                        width:50px;
-                        height:50px;
-                        font-size:50px;
-                    }
-                    :before{
-
-                        // width:50px;
-                        // height:50px;
-                        // display:block;
-                    }
-                    .item_name{
-                        color:#555555;
-                    }
-                    width:100px;
-                    height:80px;
-                    float:left;
-                    padding:0 10px;
-                    box-sizing:border-box;
-                }
-            }
-        }
-    }
-    .mobileBox{
 
     }
-    .commonBox{
+    .common_box{
 
     }
 }
 
+.plugin{
+    min-height:736px;
+    width:320px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+    .title{
+        // width:
+        font-size:18px;
+        background:#20a0ff;
+        height:60px;
+        line-height:60px;
+        text-align:center;
+        color:white;
+    }
+    .box{
+
+        padding:6px;
+        .active {
+            border: 1px solid #20A0FF;
+            border-radius:3px;
+        }
+        fieldset{
+            margin-bottom:10px;
+            border:1px solid #c0c0c0;
+            padding:5px 0px 10px;
+            legend{
+                padding:5px;
+                color:#20a0ff;
+            }
+            .plugin_item{
+                text-align:center;
+                width:90px;
+                height:90px;
+                float:left;
+                padding:10px 0px;
+                margin:5px 0 5px 5px;
+                box-sizing:border-box;
+                .icon{
+                    width:50px;
+                    height: 50px;
+                    display:inline-block;
+                    background-repeat: no-repeat;
+                    background-size:50px ;
+                    background-position: center center;
+                }
+                .name{
+                    color:#555555;
+                    margin:5px 0;
+                    height:15px;
+                    line-height:15px;
+                    font-size:14px;
+                }
+            }
+        }
+    }
+
+}
+
+.mobile{
+    width:414px;
+    height:736px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+    overflow:hidden;
+    // background: url('~assets/img/mobile.png') no-repeat top center;
+    background-size: cover;
+    //手机模型的内容显示区
+    .header{
+        height:64px;
+        line-height:64px;
+        text-align:center;
+    }
+    .wrap{
+
+         height:672px;
+
+         .mobile_menu{
+            width:100%;
+            height: 44px;
+            background:#F9FAFC;
+            .menu_item {
+                // padding-left: 10px;
+                height:44px;
+                line-height:44px;
+                text-align:center;
+                box-sizing:border-box;
+                float:left;
+            }
+            :hover {
+                cursor: pointer;
+                background:#D3DCE6;
+            }
+
+        }
+    }
+}
+
+.common{
+    width:390px;
+    height:736px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+    >.el-tabs__header{
+        display:flex;
+        .el-tabs__item{
+            flex:1;
+            text-align:center;
+        }
+    }
+    // >.el-tabs__header{
+    //     .el-tabs__item{
+    //         width:120px;
+    //         .el-tabs__active-bar{
+    //             width:120px;
+    //         }
+    //     } 
+    // }
+       
+
+    .origin{
+     
+    }
+}
