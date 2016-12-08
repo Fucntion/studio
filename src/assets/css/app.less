@@ -13,11 +13,10 @@
 html,body {
     width: 100%;
     height: 100%;
-    // overflow: hidden;
 }
 
 body {
-    font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     background: #f2f2f2;
     color: @font-color;
 }
@@ -95,6 +94,13 @@ h6 {
 
 
 
+#studio{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+}
 // Header
 
 .panel-top {
@@ -256,13 +262,11 @@ h6 {
 // 直播列表
 .roomList{
 
-
-
     .room_box {
         overflow: hidden;
         .roomAdd,
         .roomItem {
-            cursor: pointer;
+            
             border-radius: 5px;
             border: 1px solid #888888;
            
@@ -290,19 +294,21 @@ h6 {
                 float: left;
             }
             .info {
-                width: 100%;
-                padding: 0 10px 0 120px;
+                // float:right;
+                // padding: 0 10px 0 120px;
                 box-sizing: border-box;
+                text-align:left;
                 h3 {
                     font-size: 18px;
-                    height: 66px;
+                    height: 44px;
                 }
                 span {
                     display: block;
-                    margin: 15px 0 5px;
+                    margin: 10px 0 5px;
                 }
             }
             .btn {
+                cursor: pointer;
                 width: 100%;
                 position: absolute;
                 bottom: 0;
@@ -328,4 +334,68 @@ h6 {
 
 }
 
+
+.config{
+
+    .plugin_box,.mobileBox,.commonBox{
+        min-height:800px;
+    }
+
+    .plugin_box{
+        width:300px;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+        .title{
+            // width:
+            font-size:18px;
+            background:#20a0ff;
+            height:60px;
+            line-height:60px;
+            text-align:center;
+            color:white;
+        }
+        .box{
+
+            padding: 10px 5px;
+            fieldset{
+                margin-bottom:10px;
+                padding:10px;
+                border:1px solid #c0c0c0;
+
+                legend{
+                    // color:red;
+                    padding:5px;
+                    color:#20a0ff;
+                }
+                .plugin_item{
+                    i{
+                        width:50px;
+                        height:50px;
+                        font-size:50px;
+                    }
+                    :before{
+
+                        // width:50px;
+                        // height:50px;
+                        // display:block;
+                    }
+                    .item_name{
+                        color:#555555;
+                    }
+                    width:100px;
+                    height:80px;
+                    float:left;
+                    padding:0 10px;
+                    box-sizing:border-box;
+                }
+            }
+        }
+    }
+    .mobileBox{
+
+    }
+    .commonBox{
+
+    }
+}
 

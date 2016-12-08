@@ -8,7 +8,9 @@
 			<el-col :span="7"  class="roomAdd"><div @click="addRoom()" >创建房间</div></el-col>
 			<template v-for="(room,index) in roomList">
 				<el-col :span="1" >&nbsp;</el-col>
-				<el-col :span="7" class="roomItem" :id="room.id" >
+
+				<el-col  :span="7" class="roomItem" :id="room.id" >
+
 				<img :src="room.cover_img_url" class="thumb" alt="room.title" />
 				<div class="info">
 					<h3>{{room.title}}</h3>
@@ -16,11 +18,11 @@
 				</div>
 				<div class="clear"></div>
 				<el-row class="btn">
-					<el-col class="btn_item" :span="8" ><div @click="goto(room.id)">编辑房间</div></el-col>
+					<el-col class="btn_item" :span="8" ><div  @click="intoRoom(room.id)">编辑房间</div></el-col>
 					<el-col class="btn_item" :span="8" ><div @click="show(room.id)">预览房间</div></el-col>
 					<el-col class="btn_item" :span="8">数据分析</el-col>
 				</el-row>
-
+				
 			</el-col>
 
 			</template>
@@ -51,10 +53,30 @@
 				var data = {
 						cover_img_url: "https://imgcache.qq.com/open_proj/proj_qcloud_v2/gateway/portal/css/img/home/qcloud-logo-dark.png",
 						title: "你323",
-						is_record_play: 333
+						"is_record_play":1
 					},
 					url = "http://saas.icloudinn.com/api/v1/rooms?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye";
 				this.$http.post(url, data, {
+					emulateJSON: true
+				}).then((response) => {
+
+					store.commit('changeStudio', response.body);
+					this.$router.push('studio/' + response.body.id);
+
+				}, (response) => {
+					// error callback
+					// console.log(response);
+				});
+
+				//回调中拿到直播间基础信息
+				//跳转到对应的页面。
+
+			},
+			intoRoom: function(id) {
+				//创建好直播间
+				console.log('into room');
+				var url = "http://saas.icloudinn.com/api/v1/rooms/"+id+"?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye";
+				this.$http.get(url,{
 					emulateJSON: true
 				}).then((response) => {
 
@@ -81,7 +103,7 @@
 				// success callback
 				this.roomList = response.body;
 
-				console.log(response.body);
+				// console.log(response.body);
 			}, (response) => {
 				// error callback
 				// console.log(response);

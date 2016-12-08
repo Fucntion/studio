@@ -1,29 +1,43 @@
 <template>
-	<div>
+	<div class="plugin_box">
+		<el-row>
+			<div class="title" >功能列表</div>
+			<div class="box">
+				<!--灰色的是必选-->
 
-		<div class="base">
-			<h2>基础</h2>
-			<hr>
-			<!--灰色的是必选-->
-			<button class="menu-item" v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" v-for="(item,index) in base">{{item.name}}</button>
-		</div>
-		<div class="interaction">
+				<fieldset class="base">
+					<legend> 基础 </legend>
+					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in base">
+						<div class="icon" ></div>
+						<div class="name">{{item.name}}</div>
+					</div>
+				</fieldset>
 
-			<h2>基础</h2>
-			<hr>
-			<button class="menu-item" v-bind:disabled="item.require" @click="functionAdd(item.name)" v-for="(item,index) in interaction">{{item.name}}</button>
-		</div>
-		<div class="plus">
+				<fieldset class="interaction">
+					<legend> 基础 </legend>
+					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in interaction">
+						<div class="icon" ></div>
+						<div class="name">{{item.name}}</div>
+					</div>
+					
+				</fieldset>
+				<fieldset class="plus">
+					<legend> 基础 </legend>
+					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in plus">
+						<div class="icon" ></div>
+						<div class="name">{{item.name}}</div>
+					</div>
+					
+				</fieldset>
 
-			<h2>基础</h2>
-			<hr>
-			<button class="menu-item" v-bind:disabled="item.require" @click="functionAdd(item.name)" v-for="(item,index) in plus">{{item.name}}</button>
-		</div>
+			</div>
+		</el-row>
 	</div>
 
 </template>
 
 <script>
+
 	export default {
 		data: function() {
 			//定义测试数据
@@ -31,6 +45,7 @@
 					name: '直播播放器', //名字
 					plugin: 'player', //对应的mobile显示组件,用来组件增删的时候同步预览组建的显示/隐藏
 					type: 'base', //类型 "基础"
+					iconCls: 'el-icon-message', //图标样式class
 					item: 1, //在对应列别里排序 习惯都是从1开始，如果后端要从0开始也不耽误事，反正我是排序的。
 					require: true, //是否必选
 					checked: true //是否选中  打算在组件中利用checked状态来判断是否显示对应组件。会不会存在require是true但是状态被改变的情况？在改变状态的函数里需要做过滤。if(!this.require)
@@ -38,59 +53,66 @@
 					name: '自定义菜单', //名字
 					plugin: 'nav',
 					type: 'base', //类型 "基础"
+					iconCls: 'el-icon-message', //图标样式class
 					item: 2, //在对应列别里排序
-					require: false, //是否必选
-					checked: false //是否选中  
+					require: true, //是否必选
+					checked: true //是否选中  
 				}, {
 					name: '广告栏', //名字
 					plugin: 'advert',
 					type: 'plus', //类型 "基础"
+					iconCls: 'el-icon-message', //图标样式class
 					item: 3, //在对应列别里排序
 					require: false, //是否必选
 					checked: false //是否选中  
 				},
-				// {
-				//   name:'红包雨',//名字
-				//   plugin:null,
-				//   type:'interaction',//类型 "互动"这单词真难拼。。。
-				//   item:1, //在对应列别里排序
-				//   require:false, //是否必选
-				//   checked:false//是否选中  
-				// },
-				// {
-				//   name:'大转盘',//名字
-				//   plugin:null,
-				//   type:'interaction',//类型 "互动"
-				//   item:3, //在对应列别里排序
-				//   require:false, //是否必选
-				//   checked:false//是否选中  
-				// },
-				// {
-				//   name:'抽奖',//名字
-				//   plugin:null,
-				//   type:'interaction',//类型 "互动"
-				//   item:2, //在对应列别里排序
-				//   require:false, //是否必选
-				//   checked:false//是否选中  
-				// },
-				// {
-				//   name:'调查问卷',//名字
+				{
+				  name:'红包雨',//名字
+				  plugin:null,
+				  type:'interaction',//类型 "互动"这单词真难拼。。。
+				  iconCls: 'el-icon-message', //图标样式class
+				  item:1, //在对应列别里排序
+				  require:false, //是否必选
+				  checked:false//是否选中  
+				},
+				{
+				  name:'大转盘',//名字
+				  plugin:null,
+				  type:'interaction',//类型 "互动"
+				  iconCls: 'el-icon-message', //图标样式class
+				  item:3, //在对应列别里排序
+				  require:false, //是否必选
+				  checked:false//是否选中  
+				},
+				{
+				  name:'抽奖',//名字
+				  plugin:null,
+				  type:'interaction',//类型 "互动"
+				  iconCls: 'el-icon-message', //图标样式class
+				  item:2, //在对应列别里排序
+				  require:false, //是否必选
+				  checked:false//是否选中  
+				},
+				{
+				  name:'调查问卷',//名字
 
-				//   plugin:'question',
-				//   type:'plus',//类型 "基础"
-				//   item:1, //在对应列别里排序
-				//   require:false, //是否必选
-				//   checked:false//是否选中  
-				// },
+				  plugin:'question',
+				  type:'plus',//类型 "基础"
+				  iconCls: 'el-icon-message', //图标样式class
+				  item:1, //在对应列别里排序
+				  require:false, //是否必选
+				  checked:false//是否选中  
+				},
 				{
 					name: '商品列表', //名字
 					plugin: null,
 					type: 'plus', //类型 "基础"
+					iconCls: 'el-icon-message', //图标样式class
 					item: 2, //在对应列别里排序
 					require: false, //是否必选
 					checked: false //是否选中  
 				}
-			];
+				];
 			//专门针对function的数据分类，然后排序的函数,真是想不到这也需要写一个函数
 			/*
 			 *
@@ -98,14 +120,14 @@
 			 *pargam @obj object 需要整理的数据，可以是mock也可以是服务器给的
 			 *
 			 */
-			function clear(type, obj) {
-				var functionList = obj,
-					result = [];
-				for(var i = 0; i < functionList.length; i++) {
-					if(functionList[i].type == type) {
-						result.push(functionList[i]);
-					}
-				}
+			 function clear(type, obj) {
+			 	var functionList = obj,
+			 	result = [];
+			 	for(var i = 0; i < functionList.length; i++) {
+			 		if(functionList[i].type == type) {
+			 			result.push(functionList[i]);
+			 		}
+			 	}
 				// console.log(result);
 				return result;
 			}
@@ -114,7 +136,8 @@
 				base: clear('base', functionMOCK),
 				interaction: clear('interaction', functionMOCK),
 				plus: clear('plus', functionMOCK),
-				functionList: functionMOCK
+				functionList: functionMOCK,
+
 
 			}
 		},
@@ -133,7 +156,7 @@
 
 				// console.log(this.functionList);
 				var name = functionName,
-					obj = this.functionList;
+				obj = this.functionList;
 
 				for(var i = 0; i < obj.length; i++) {
 
@@ -173,9 +196,9 @@
 						for(var key in showStatus) {
 
 							if(key == obj[i].plugin) {
-
+								console.log(app,app.$parent.showStatus, key);
 								app.$parent.showStatus[key] = obj[i].checked;
-								console.log(app.$parent.showStatus, key);
+								
 								break;
 
 							}
