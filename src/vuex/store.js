@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 const state = {
     crumb: '面包屑',
-    studio:{},
+    studio:null,
     dialog:{
         visible:false,
         title:'dialog',

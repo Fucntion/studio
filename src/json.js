@@ -1,5 +1,5 @@
 function
-
+ 
 base
 	id
 	title
@@ -19,6 +19,7 @@ plugin
 			article(int)	//type=='article'  67
 			goods(array)	//type=='goods'  [32,24,65,14,65,84] 
 		data2
+		data3
 		data3
 	advert
 		slider1

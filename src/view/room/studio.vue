@@ -2,7 +2,6 @@
 	<div id="studio">
 
 			<el-tabs class="studio_tab"  type="border-card" :active-name="activeName">
-
 			    <el-tab-pane label="直播设置" name="config"><config></config></el-tab-pane>
 			    <el-tab-pane label="用户管理" name="analysis"><audience></audience></el-tab-pane>
 			    <el-tab-pane label="数据分析" name="audience"><analysis></analysis></el-tab-pane>

@@ -4,10 +4,12 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 
 
+
 import App from './App.vue'
 
+
 import ElementUI from 'element-ui'
-// import 'element-ui/lib/theme-default/index.css'
+
 
 
 Vue.use(ElementUI)
@@ -160,12 +162,31 @@ const routes = [{
 
 
 Vue.use(VueResource);
+Vue.http.options.emulateJSON = true;
+Vue.http.options.emulateHTTP = true;
+Vue.http.interceptors.push((request, next)  =>{
+
+    // request.headers.AuthKey = 'ssh';
+    var url = 'http://saas.icloudinn.com/api/v1',
+        token='?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye';
+    request.url = url+request.url+token;
+
+    
+    
+    next((response) => {
+        return response
+    });
+   
+});
+
+
 
 // Example(Only applies to the current global mode). 用配置项的话仅支持全局模式来配置，否则不会生效
 import VideoPlayer from 'vue-video-player'
 
 Vue.use(VideoPlayer)
 VideoPlayer.config({
+
     youtube: false, // default false
     switcher: false, // default true
     hls: true // default true
@@ -185,7 +206,7 @@ router.beforeEach((to, from, next) => {
 
 const app = new Vue({
     router,
-    render: h => h(App),
+    render: h => h(App)
 }).$mount('#studio')
 
 // router.replace('/main')

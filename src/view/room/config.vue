@@ -1,6 +1,7 @@
 <template>
 <el-row class="config" >
 
+
 	<div class="plugin_box">
 		<div class="plugin">
 		<el-row>
@@ -52,13 +53,12 @@
 
 	<!-- 公共设置 -->
 	<div class="common_box">
-		<div >
+
 		<el-tabs class="common" :active-name="activeName">
-	    <el-tab-pane label="直播源" name="first"><origin></origin></el-tab-pane>
-	    <el-tab-pane label="风格设置" name="second"><feature></feature></el-tab-pane>
-	    <el-tab-pane label="授权观看" name="third"><allow></allow></el-tab-pane>
+	    <el-tab-pane label="直播源" name="first"><origin :studio="studio"></origin></el-tab-pane>
+	    <el-tab-pane label="风格设置" name="second"><feature :studio="studio"></feature></el-tab-pane>
+	    <el-tab-pane label="授权观看" name="third"><allow :studio="studio"></allow></el-tab-pane>
 	  </el-tabs>
-		</div>
 	</el-col>
 
 	<!-- 弹出框 -->
@@ -84,7 +84,8 @@
 	export default {
 		data: function() {
 			//定义测试数据
-			var functionMOCK = [{
+			var functionMOCK = [
+			{
 					name: '播放器', //名字
 					plugin: 'player', //对应的mobile显示组件,用来组件增删的时候同步预览组建的显示/隐藏
 					type: 'base', //类型 "基础"
@@ -174,6 +175,7 @@
 				return result;
 			}
 			return {
+				studio:{},			
 				base: clear('base', functionMOCK),
 				interaction: clear('interaction', functionMOCK),
 				plus: clear('plus', functionMOCK),
@@ -207,6 +209,7 @@
 			allow
 		},
 		methods: {
+			
 			playerStateChanged(playerCurrentState) {
 			// console.log(playerCurrentState);
 			// console.log(this.$data);
@@ -217,12 +220,7 @@
 			goto: function(text) {
 				this.currentView = text;
 			},
-			checkDialog:function(components,title){
-				var obj ={};
-				obj.components= components;
-				obj.title = title;
-				store.commit("openDialog",obj);
-			},
+			
 			//this.$parent
 			//添加功能到配置里，然后刷新视图,虽然想写一个重新读取配置并刷新模拟器页面的方法，但是觉得这样页面渲染成本太高。
 			//可怜天下打工仔的电脑都不好，就只刷新对应模块的吧。可是万一模块之间有依赖的话。。。我就日了狗了
@@ -285,7 +283,27 @@
 		},
 		mounted() {
 
+			var result = store.getters.getStudio;
 
+			// result默认是null,防止用户无脑刷新后store数据丢失
+			if (!result && typeof result != "undefined" && result != 0){
+				
+				var id = this.$router.currentRoute.params.id;
+				var url = "/rooms/"+id;
+				this.$http.get(url,{
+					emulateJSON: true
+				}).then((response) => {
+
+					this.studio=response.body;
+
+
+				}, (response) => {
+					// error callback
+					// console.log(response);
+				});
+			}else{
+				this.studio = result;
+			}
 		}
 	}
 </script>

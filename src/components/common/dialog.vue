@@ -1,6 +1,6 @@
 <template>
 
-<el-dialog size="large" :title="dialog.title" v-model="dialog.visible">
+<el-dialog  :title="dialog.title" v-model="dialog.visible">
   <div :is="dialog.current"></div>
 </el-dialog>
 

@@ -50,15 +50,17 @@
 			addRoom: function() {
 				//创建好直播间
 				console.log('add room');
-				var data = {
+				var d=new Date(),data = {
 						cover_img_url: "https://imgcache.qq.com/open_proj/proj_qcloud_v2/gateway/portal/css/img/home/qcloud-logo-dark.png",
 						title: "你323",
-						"is_record_play":1
+						is_record_play:1,
+						plugin:'1',
+						style:'1',
+						created_at:d.getTime()
+
 					},
-					url = "http://saas.icloudinn.com/api/v1/rooms?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye";
-				this.$http.post(url, data, {
-					emulateJSON: true
-				}).then((response) => {
+					url = "/rooms";
+				this.$http.post(url,data).then((response) => {
 
 					store.commit('changeStudio', response.body);
 					this.$router.push('studio/' + response.body.id);
@@ -75,10 +77,8 @@
 			intoRoom: function(id) {
 				//创建好直播间
 				console.log('into room');
-				var url = "http://saas.icloudinn.com/api/v1/rooms/"+id+"?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye";
-				this.$http.get(url,{
-					emulateJSON: true
-				}).then((response) => {
+				var url = "/rooms/"+id;
+				this.$http.get(url).then((response) => {
 
 					store.commit('changeStudio', response.body);
 					this.$router.push('studio/' + response.body.id);
@@ -98,7 +98,7 @@
 		},
 		mounted() {
 
-			var url = "http://saas.icloudinn.com/api/v1/rooms?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye";
+			var url = "/rooms";
 			this.$http.get(url).then((response) => {
 				// success callback
 				this.roomList = response.body;
