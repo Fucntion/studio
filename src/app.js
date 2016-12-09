@@ -210,7 +210,7 @@ const app = new Vue({
 }).$mount('#studio')
 
 // router.replace('/main')
-// router.replace('/login')
+router.replace('/login')
 // router.beforeEach(function (transition) {
 //   console.log(transition);
 //   document.title = transition.meta.title;
