@@ -85,8 +85,7 @@
 		store,
 		data: function() {
 			
-			var studioInfo={};
-			console.log(studioInfo);
+
 			return {
 				studio:{},
 				pluginList:{},			

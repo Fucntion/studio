@@ -9,29 +9,30 @@
 	</div>
 	<div class="container"  v-if="showStatus.countDown">
 		<!-- <h5>倒计时功能可以帮您有效留住用户</h5> -->
-		<el-form ref="form"  label-width="70px">
+		<el-form   label-width="70px">
 			<el-form-item label="开播时间">
 				<el-date-picker
-				v-model="value1"
+				v-model="studio.play_time"
 				type="datetime"
+				format="yyyy-MM-dd HH:mm"
 				placeholder="选择日期时间">
 			</el-date-picker>
 		</el-form-item>
 		<el-form-item>
-			<el-button type="primary" @click="onSubmit">保存配置</el-button>
+			<el-button type="primary" @click="onSubmit_origin">保存配置</el-button>
 		</el-form-item>
 	</el-form>
 	
 </div>
 <div v-if="showStatus.origin" class="container origin_container">
 
-	<el-form ref="form" class="origin_form" :model="form" label-width="70px">
+	<el-form  class="origin_form" label-width="70px">
 		<el-form-item label="房间名称">
-			<el-input placeholder="直播间名称" v-model="form.name"></el-input>
+			<el-input placeholder="直播间名称" v-model="studio.title"></el-input>
 		</el-form-item>
 
 		<el-form-item>
-			<el-button type="primary" @click="onSubmit">保存配置</el-button>
+			<el-button type="primary" @click="onSubmit_origin">保存配置</el-button>
 		</el-form-item>
 	</el-form>
 	<div class="origin_show">
@@ -70,7 +71,6 @@
 		data: function() {
 
 			return {
-
 				showStatus:{origin:true,total:false,countDown:false},
 				form: {
 					name: '',
@@ -102,9 +102,24 @@
 			onSubmit() {
 				console.log('submit!');
 
+			},
+			onSubmit_origin(obj) {
+				// console.log(this.studio);return;
+				var time = this.studio.play_time;
+				this.studio.play_time=time.getTime();//修改时间为datetime格式
+				var data ={
+					id:this.$router.currentRoute.params.id,
+					studio:this.studio
+				}
+				// "1481536895285"
+				// 2147483647	
+				// console.log(this.studio);
+				// return;
+				store.commit('changeStudio',data);
+
 			},gocli:function(){
 				window.open('http://cli.im/');
-			}
+			} 
 		},
 		components: {
 			Qrcode

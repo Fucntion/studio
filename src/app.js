@@ -170,16 +170,17 @@ Vue.http.interceptors.push((request, next)  =>{
 
     // console.log(request,next);
 
-
-    var url = 'http://saas.icloudinn.com/api/v1',
-        // token='?access-token='+sessionStorage.getItem('accessToken');
-        token='?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye';
         if(!sessionStorage.getItem('accessToken')){
-            // location.hash ='login';
+            location.hash ='login';
         }
+        var url = 'http://saas.icloudinn.com/api/v1';
+        var token='?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye';
+        
         if(request.url =='/users' ||request.url =='/users/register'){
              request.url = url+request.url;
         }else{
+            //万洲的token有毒
+            // var token='?access-token='+sessionStorage.getItem('accessToken');
              request.url = url+request.url+token; 
         }
 
@@ -215,6 +216,18 @@ const app = new Vue({
     router,
     render: h => h(App)
 }).$mount('#studio')
+
+//向jq致敬,判断一个对象是否为空对象
+// Vue.filter('isEmptyObject', function(e) {
+//     var t;  
+//     for (t in e)  
+//        return !1;  
+//     return !0  
+// });
+
+
+
+
 
 
 // router.replace('/login');

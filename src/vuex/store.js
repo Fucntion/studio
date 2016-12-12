@@ -1,7 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import VueResource from 'vue-resource'
 
 Vue.use(Vuex);
+
+
+Vue.use(VueResource);
+
+
 
 const state = {
     crumb: '面包屑',
@@ -9,7 +15,7 @@ const state = {
     dialog:{
         visible:false,
         title:'dialog',
-        current:'pictureBox'
+        current:'pictureBox' 
     },
     //定义测试数据
     pluginList:{
@@ -136,14 +142,36 @@ const mutations = {
         state.crumb = crumbText;
         //   console.log(state);
     },
-    changeStudio:function(state, obj) {
+    changeStudio:function(state, data) {
 
+
+        //       var data ={
+        //   id:this.$router.currentRoute.params.id,
+        //   studio:this.studio
+        // }
+      var  obj = data.studio,
+        id = data.id;
         // 用新的对象来替换原有的studio信息对象,如果不是对象就炸
         if(Object.prototype.toString.call(obj) != '[object Object]'){
             console.log('要替换的值不是对象');
             return;
         }
+        //先改变本地的值再向服务器同步
         state.studio = obj;
+
+        var url ='/rooms/'+id;
+
+        Vue.http.put(url,obj).then((response) => {
+
+         // state.studio =response.body;
+         console.log(response.body,'更新配置成功');
+
+        }, (response) => {
+          // error callback
+          // console.log(response);
+        });
+
+
     },
     // clearMenuData:function(state,obj){
 

@@ -3,14 +3,14 @@
   <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm card-box loginform">
     <h3 class="title">系统登录</h3>
     <el-form-item prop="account">
-      <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
+      <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="登录邮箱"></el-input>
     </el-form-item>
-    <el-form-item prop="checkPass">
-      <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
+    <el-form-item prop="Pass">
+      <el-input type="password" v-model="ruleForm2.Pass" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
     <el-checkbox v-model="checked" checked style="margin:0px 0px 35px 0px;">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
-      <el-button type="primary" class="loginBtn" style="width:100%;" @click.native.prevent="handleSubmit2">登录</el-button>
+      <el-button type="primary" class="loginBtn"  style="width:100%;" @click.native.prevent="handleSubmit2">登录</el-button>
       <router-link to="register"><el-button  style="width:100%;" >注册</el-button></router-link>
       <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
     </el-form-item>
@@ -20,19 +20,41 @@
 
 <script>
   export default {
+    
     data() {
+
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          // console.log(this);
+
+          callback();
+        }
+      };
+      var validateAccount = (rule, value, callback) => {
+        var reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (value === '') {
+              callback(new Error('请输入邮箱'));
+            } else if (!reg.test(value)) {
+              callback(new Error('请输入正确格式的邮箱'));
+            } else {
+              callback();
+            }
+      };
+
       return {
         ruleForm2: {
           account: '',
-          checkPass: ''
+          Pass: ''
         },
         rules2: {
           account: [
-            { required: true, message: '请输入账号', trigger: 'blur' },
+            { validator: validateAccount,required: true,trigger: 'blur' },
             //{ validator: validaePass }
           ],
-          checkPass: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
+          Pass: [
+            { validator: validatePass,required: true,trigger: 'blur' },
             //{ validator: validaePass2 }
           ]
         },
@@ -52,12 +74,12 @@
               var url="/users",
               data ={
                 account:this.ruleForm2.account,
-                pwd:this.ruleForm2.checkPass
+                pwd:this.ruleForm2.Pass
               };
               // console.log(data);return;
               this.$http.post(url,data).then((response) => {
-                // console.log(response.body.code);
-                var result = JSON.parse(response.body);
+                // console.log(response.body);
+                var result = response.body;
                 if(result.code==100){
 
             sessionStorage.setItem('accessToken', result.data.access_token)
@@ -68,8 +90,20 @@
                       message: '登陆成功',
                       type: 'success'
                     });
-
-                    this.$router.push('home')
+                   //向jq致敬,监测一个对象是否为空对象
+                    function isEmptyObject(e) {  
+                      var t;  
+                      for (t in e)  
+                          return !1;  
+                      return !0  
+                    }  
+                    var redirectUrl='main';
+                    // console.log(this.$route.query.redirect);
+                    // // return;
+                    // if(!isEmptyObject(this.$route.query)){
+                    //   redirectUrl=this.$route.query.redirect;
+                    // }
+                    this.$router.push(redirectUrl);
                 }else{
                     this.$notify({
                     title: '登陆失败',

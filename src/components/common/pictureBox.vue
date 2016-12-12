@@ -2,17 +2,18 @@
 <div class="pictureBox">
 <div class="upload"><span>logo尺寸建议150*150,封面尺寸建议750*1334像素 </span>
 <el-upload
-  action="//jsonplaceholder.typicode.com/posts/"
+  action="http://saaslive.oss-cn-shanghai.aliyuncs.com"
   :on-preview="handlePreview"
   :on-remove="handleRemove"
-  :multiple="true">
+  :data="new_multipart_params"
+  :multiple="false">
   <el-button type="primary" size="small">上传图片</el-button>
 </el-upload>
 <div class="hr"></div>
 </div>
 
 <div class="img_box">
-	<div class="img_item" v-for="(item,index) in imgList">
+	<div class="img_item" v-for="(item,index) in imgList" @click="select(item)"  :class="{active: item.isActive}" >
 	<div class="img" :style="{backgroundImage:'url(' + item.url + ')'}"></div>
 	<div class="img_title">{{item.title}}</div>
 </div>
@@ -42,21 +43,15 @@ export default {
     data: function() {
   
          return {
+           new_multipart_params:{},
          	imgList:[
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'},
-         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称'}
+         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称',isActive:false},
+         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称',isActive:false},
+         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称',isActive:false},
+         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称',isActive:false},
+         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称',isActive:false},
+         	{url:'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=556936476,2584041442&fm=58',title:'图片名称',isActive:false}
+         	
          	]
        }
     },
@@ -73,10 +68,44 @@ export default {
       },
       handlePreview(file) {
         console.log(file);
+      },select:function(item){
+
+        
+        var obj =this.imgList;
+        for(var key in obj){
+          if(obj[key] ==item){
+            item.isActive = true;
+            continue;
+          }else{
+            obj[key].isActive =null;
+          }
+        }
+        console.log(item);
       }
     },
     components:{
 
+
+    },
+    mounted(){
+      var url = "/aliyuns/oss";
+      this.$http.get(url).then((response) => {
+
+        var tempObj ={
+            success_action_status : '200', //让服务端返回200,不然，默认会返回204
+          };
+
+        var obj =response.body.data;
+
+        tempObj.policy = obj.policy;
+        tempObj.ossaccesskeyid = obj.accessid;
+        tempObj.signature = obj.signature;
+        this.new_multipart_params = tempObj;
+
+      }, (response) => {
+        // error callback
+        // console.log(response);
+      });
 
     }
 }
@@ -121,7 +150,10 @@ export default {
 .img_box{
 	
 	overflow:hidden;
+
+
 	.img_item{
+      box-sizing: border-box;
 		float:left;
 		.img{
 			width:100px;
@@ -134,5 +166,10 @@ export default {
 			width:100px;
 		}
 	}
+    .active{  
+    border:1px solid red;
+  }
+  
+
 }
 </style>
