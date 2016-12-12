@@ -14,4 +14,12 @@
 2.入口文件main.js,路由配置文件router-config.js
 3.公共组件放在components,静态资源放在assets,
 
+## diy element组件
+packages 下添加目录
+
+components.json添加
+
+packages/theme-default/src/index.csss引入css
+
+先build file生成src.index自动把packages下所有的组件动态引入，然后dist
 

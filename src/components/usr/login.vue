@@ -60,6 +60,9 @@
                 var result = JSON.parse(response.body);
                 if(result.code==100){
 
+            sessionStorage.setItem('accessToken', result.data.access_token)
+            sessionStorage.setItem('userName', result.data.username)
+
                       this.$notify({
                       title: '成功',
                       message: '登陆成功',

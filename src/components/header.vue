@@ -10,7 +10,7 @@
             </div>
         </el-col>
         <el-col :span="2">
-            <el-tooltip class="item tip-logout" effect="dark" content="退出" placement="bottom" style="padding:0px;">
+            <el-tooltip class="item tip-logout" @click="logout" effect="dark" content="退出" placement="bottom" style="padding:0px;">
 
                 <i class="fa fa-sign-out" aria-hidden="true" v-on:click="logout"></i>
             </el-tooltip>
@@ -38,6 +38,8 @@
                 this.$confirm('确认退出吗?', '提示', {
 
                 }).then(() => {
+                    sessionStorage.removeItem('userName');
+                    sessionStorage.removeItem('accessToken');
                     _this.$router.replace('/login');
                 }).catch(() => {
 
@@ -50,5 +52,7 @@
 </script>
 <style lang="less">
 
-
+.tip-logout{
+    cursor: pointer;
+}
 </style>

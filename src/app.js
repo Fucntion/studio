@@ -7,8 +7,10 @@ import VueResource from 'vue-resource'
 
 import App from './App.vue'
 
+import Login from './components/usr/login.vue'
 
-import ElementUI from 'element-ui'
+
+import ElementUI from './lib/index.js'
 
 
 
@@ -166,13 +168,23 @@ Vue.http.options.emulateJSON = true;
 Vue.http.options.emulateHTTP = true;
 Vue.http.interceptors.push((request, next)  =>{
 
-    // request.headers.AuthKey = 'ssh';
+    // console.log(request,next);
+
+
     var url = 'http://saas.icloudinn.com/api/v1',
+        // token='?access-token='+sessionStorage.getItem('accessToken');
         token='?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye';
-    request.url = url+request.url+token;
+        if(!sessionStorage.getItem('accessToken')){
+            // location.hash ='login';
+        }
+        if(request.url =='/users' ||request.url =='/users/register'){
+             request.url = url+request.url;
+        }else{
+             request.url = url+request.url+token; 
+        }
 
     
-    
+ 
     next((response) => {
         return response
     });
@@ -197,36 +209,38 @@ const router = new VueRouter({
     routes
 });
 
-router.beforeEach((to, from, next) => {
-    // ...
-    // console.log(to);
-    document.title = to.name;
-    next();
-})
+
 
 const app = new Vue({
     router,
     render: h => h(App)
 }).$mount('#studio')
 
-// router.replace('/main')
-router.replace('/login')
-// router.beforeEach(function (transition) {
-//   console.log(transition);
-//   document.title = transition.meta.title;
-//   transition.next();
-//   // if (to.matched.some(record => record.meta.requiresAuth)) {
-//   //   // this route requires auth, check if logged in
-//   //   // if not, redirect to login page.
-//   //   if (!auth.loggedIn()) {
-//   //     next({
-//   //       path: '/login',
-//   //       query: { redirect: to.fullPath }
-//   //     })
-//   //   } else {
-//   //     next()
-//   //   }
-//   // } else {
-//   //   next() // 确保一定要调用 next()
-//   // }
-// })
+
+// router.replace('/login');
+router.beforeEach((to, from, next) => {
+
+// console.log(to.path,from.path);
+// console.log(!sessionStorage.getItem('accessToken'));
+    if(to.path =="/login" || to.path =="/register"){
+        next();      
+    }else{
+        
+        if (!sessionStorage.getItem('accessToken')) {
+          next({
+            path: '/login',
+            query: { redirect: to.fullPath }
+          })
+        }else{
+            next();
+        }
+
+    }
+    
+
+
+  // ...
+})
+// http://saas.icloudinn.com/api/v1/rooms?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye
+// http://saas.icloudinn.com/api/v1/rooms?access-token=6m3vB_FtMzXHeVDN0-fkSPk6GdwoIkMQdvhHG02q
+

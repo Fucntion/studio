@@ -1,6 +1,15 @@
 <template>
 <div class="pictureBox">
-<div class="upload"><span>图片尺寸是多少 </span> <el-button type="primary">上传图片</el-button><div class="hr"></div></div>
+<div class="upload"><span>logo尺寸建议150*150,封面尺寸建议750*1334像素 </span>
+<el-upload
+  action="//jsonplaceholder.typicode.com/posts/"
+  :on-preview="handlePreview"
+  :on-remove="handleRemove"
+  :multiple="true">
+  <el-button type="primary" size="small">上传图片</el-button>
+</el-upload>
+<div class="hr"></div>
+</div>
 
 <div class="img_box">
 	<div class="img_item" v-for="(item,index) in imgList">
@@ -21,7 +30,7 @@
     </el-pagination>
   	<!-- <el-button class="export">邮件发送</el-button> -->
   	<el-button disabled class="export"  type="primary">确定</el-button>
-  	<el-button class="export" >取消</el-button>
+
   </div>
 
 </div>
@@ -58,6 +67,12 @@ export default {
       handleCurrentChange(val) {
         this.currentPage = val;
         console.log(`当前页: ${val}`);
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
       }
     },
     components:{
@@ -71,10 +86,17 @@ export default {
 <style lang="less">
 .pictureBox{
 
-	font-size:16px;
+	// font-size:16px;
 
 	.upload{
 		text-align:right;
+    .el-upload{
+      display: inline-block;
+      width: auto;
+      .el-upload__files{
+        display: none;
+      }
+    }
 		button{
 			margin-left:10px;
 		}

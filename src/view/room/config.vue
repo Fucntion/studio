@@ -10,7 +10,7 @@
 				<!--灰色的是必选-->
 				<fieldset class="base">
 					<legend> 基础 </legend>
-					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in base">
+					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.base">
 						<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon" ></div>
 						<div class="name">{{item.name}}</div>
 					</div>
@@ -18,7 +18,7 @@
 
 				<fieldset class="interaction">
 					<legend> 互动 </legend>
-					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in interaction">
+					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.interaction">
 						<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon" ></div>
 						<div class="name">{{item.name}}</div>
 					</div>
@@ -26,7 +26,7 @@
 				</fieldset>
 				<fieldset class="plus">
 					<legend> 高级 </legend>
-					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in plus">
+					<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.plus">
 						<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon" ></div>
 						<div class="name">{{item.name}}</div>
 					</div>
@@ -82,104 +82,15 @@
 	import store from '../../vuex/store'
 
 	export default {
+		store,
 		data: function() {
-			//定义测试数据
-			var functionMOCK = [
-			{
-					name: '播放器', //名字
-					plugin: 'player', //对应的mobile显示组件,用来组件增删的时候同步预览组建的显示/隐藏
-					type: 'base', //类型 "基础"
-					src: require('assets/img/player.png'), //图标样式class
-					item: 1, //在对应列别里排序 习惯都是从1开始，如果后端要从0开始也不耽误事，反正我是排序的。
-					require: true, //是否必选
-					checked: true //是否选中  打算在组件中利用checked状态来判断是否显示对应组件。会不会存在require是true但是状态被改变的情况？在改变状态的函数里需要做过滤。if(!this.require)
-				}, {
-					name: '定制菜单', //名字
-					plugin: 'nav',
-					type: 'base', //类型 "基础"
-					src: require('assets/img/menu.png'), //图标样式class
-					item: 2, //在对应列别里排序
-					require: true, //是否必选
-					checked: true //是否选中  
-				}, {
-					name: '广告栏', //名字
-					plugin: 'advert',
-					type: 'plus', //类型 "基础"
-					src: require('assets/img/advert.png'), //图标样式class
-					item: 3, //在对应列别里排序
-					require: false, //是否必选
-					checked: false //是否选中  
-				},
-				{
-				  name:'红包雨',//名字
-				  plugin:null,
-				  type:'interaction',//类型 "互动"这单词真难拼。。。
-				  src: require('assets/img/hongbao.png'), //图标样式class
-				  item:1, //在对应列别里排序
-				  require:false, //是否必选
-				  checked:false//是否选中  
-				},
-				{
-				  name:'大转盘',//名字
-				  plugin:null,
-				  type:'interaction',//类型 "互动"
-				  src: require('assets/img/zhuanpan.png'), //图标样式class
-				  item:3, //在对应列别里排序
-				  require:false, //是否必选
-				  checked:false//是否选中  
-				},
-				{
-				  name:'抽奖',//名字
-				  plugin:null,
-				  type:'interaction',//类型 "互动"
-				  src: require('assets/img/luckly.png'), //图标样式class
-				  item:2, //在对应列别里排序
-				  require:false, //是否必选
-				  checked:false//是否选中  
-				},
-				{
-				  name:'调查问卷',//名字
-				  plugin:'question',
-				  type:'plus',//类型 "基础"
-				  src: require('assets/img/question.png'), //图标样式class
-				  item:1, //在对应列别里排序
-				  require:false, //是否必选
-				  checked:false//是否选中  
-				},
-				{
-					name: '商品列表', //名字
-					plugin: null,
-					type: 'plus', //类型 "基础"
-					src: require('assets/img/goods.png'), //图标样式class
-					item: 2, //在对应列别里排序
-					require: false, //是否必选
-					checked: false //是否选中  
-				}
-				];
-			//专门针对function的数据分类，然后排序的函数,真是想不到这也需要写一个函数
-			/*
-			 *
-			 *pargam @type string
-			 *pargam @obj object 需要整理的数据，可以是mock也可以是服务器给的
-			 *
-			 */
-			 function clear(type, obj) {
-			 	var functionList = obj,
-			 	result = [];
-			 	for(var i = 0; i < functionList.length; i++) {
-			 		if(functionList[i].type == type) {
-			 			result.push(functionList[i]);
-			 		}
-			 	}
-				// console.log(result);
-				return result;
-			}
+			
+			var studioInfo={};
+			console.log(studioInfo);
 			return {
-				studio:{},			
-				base: clear('base', functionMOCK),
-				interaction: clear('interaction', functionMOCK),
-				plus: clear('plus', functionMOCK),
-				functionList: functionMOCK,
+				studio:{},
+				pluginList:{},			
+				// functionList: functionMOCK,
 				showStatus: {
 					'player': true,
 					'advert': true,
@@ -188,7 +99,7 @@
 				videoOptions: {
 					"source": {
 						"type": "application/x-mpegURL",
-						"src": "http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
+						"src": studio.hls_downstream_address,
 						"withCredentials": false
 					},
 					"poster": "http://live.icloudinn.com/img3/logo.png",
@@ -200,7 +111,7 @@
 
 
 			}
-		},store,
+		},
 		components: {
 			dialogBox,
 			mobileAdvert,mobileMenu,
@@ -284,15 +195,14 @@
 		mounted() {
 
 			var result = store.getters.getStudio;
+			this.pluginList = store.getters.getPluginList;
 
 			// result默认是null,防止用户无脑刷新后store数据丢失
 			if (!result && typeof result != "undefined" && result != 0){
 				
 				var id = this.$router.currentRoute.params.id;
 				var url = "/rooms/"+id;
-				this.$http.get(url,{
-					emulateJSON: true
-				}).then((response) => {
+				this.$http.get(url).then((response) => {
 
 					this.studio=response.body;
 
@@ -304,6 +214,11 @@
 			}else{
 				this.studio = result;
 			}
+
+							
+			// base: clear('base'),
+				// interaction: clear('interaction'),
+				// plus: clear('plus'),;
 		}
 	}
 </script>
