@@ -79,11 +79,18 @@
               // console.log(data);return;
               this.$http.post(url,data).then((response) => {
                 // console.log(response.body);
-                var result = response.body;
+
+                var result = {};
+                if(Object.prototype.toString.call(response.body) === "[object String]"){
+                  result = JSON.parse(response.body);
+                }else{
+                  result =response.body;
+                }
+                // console.log(result);return;
                 if(result.code==100){
 
-            sessionStorage.setItem('accessToken', result.data.access_token)
-            sessionStorage.setItem('userName', result.data.username)
+                      sessionStorage.setItem('accessToken', result.data.access_token)
+                      sessionStorage.setItem('userName', result.data.username)
 
                       this.$notify({
                       title: '成功',
