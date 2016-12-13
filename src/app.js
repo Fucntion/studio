@@ -16,7 +16,8 @@ import ElementUI from './lib/index.js'
 
 Vue.use(ElementUI)
 
-const routes = [{
+const routes = [
+{
     path: '/login',
     component: require('./components/usr/login.vue'),
     name: '用户登录',
@@ -194,10 +195,12 @@ Vue.http.interceptors.push((request, next)  =>{
 
 
 
+
 // Example(Only applies to the current global mode). 用配置项的话仅支持全局模式来配置，否则不会生效
 import VideoPlayer from 'vue-video-player'
 
 Vue.use(VideoPlayer)
+
 VideoPlayer.config({
 
     youtube: false, // default false

@@ -1,7 +1,7 @@
 <template>
 
 <el-modal  :title="dialog.title" v-model="dialog.visible">
-  <div :is="dialog.current"></div>
+  <div :type="dialog.type" :studio="studio"   :is="dialog.current"></div>
 </el-modal>
 
 
@@ -24,6 +24,7 @@ export default {
        }
     },
     store,
+    props: ['studio'],
     methods: {
 
     },

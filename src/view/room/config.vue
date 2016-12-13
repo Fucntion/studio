@@ -44,6 +44,7 @@
 			直播间名称
 		</div>
 		<div class="wrap">
+		<div id="id_test_video"></div>
 			<video-player v-if="showStatus.player" id="player" :options="videoOptions" @playerStateChanged="playerStateChanged"></video-player>
 			<mobile-advert v-if="showStatus.advert"></mobile-advert>
 			<mobile-menu v-if="showStatus.menu"></mobile-menu>
@@ -62,11 +63,19 @@
 	</el-col>
 
 	<!-- 弹出框 -->
-	<dialog-box></dialog-box>
+	<dialog-box :studio="studio"></dialog-box>
 
 </template>
 
 <script>
+
+		      // var player = new TcPlayer('id_test_video', {
+		      //   "m3u8": "http://2157.liveplay.myqcloud.com/2157_358535a.m3u8",
+		      //   "autoplay" : true,      //iOS下safari浏览器是不开放这个能力的
+		      //   "coverpic" : "http://www.test.com/myimage.jpg",
+		      //   "width" :  '480',//视频的显示宽度，请尽量使用视频分辨率宽度
+		      //   "height" : '320'//视频的显示高度，请尽量使用视频分辨率高度
+		      // });
 
 	import dialogBox from "../../components/common/dialog.vue"
 
@@ -83,6 +92,7 @@
 
 	export default {
 		store,
+
 		data: function() {
 			
 
@@ -98,7 +108,9 @@
 				videoOptions: {
 					"source": {
 						"type": "application/x-mpegURL",
-						"src": studio.hls_downstream_address,
+						// http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8
+						"src": "http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
+						// "src": studio.hls_downstream_address,
 						"withCredentials": false
 					},
 					"poster": "http://live.icloudinn.com/img3/logo.png",
@@ -192,6 +204,9 @@
 			}
 		},
 		mounted() {
+
+			
+
 
 			var result = store.getters.getStudio;
 			this.pluginList = store.getters.getPluginList;

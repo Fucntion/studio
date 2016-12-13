@@ -36,7 +36,7 @@ import store from '../../../../vuex/store'
 				var obj ={};
 				obj.components= components;
 				obj.title = title;
-				store.commit("openDialog",obj);
+				store.commit("openModal",obj);
 			}
 		}
 	}

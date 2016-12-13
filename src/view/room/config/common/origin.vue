@@ -104,17 +104,14 @@
 
 			},
 			onSubmit_origin(obj) {
-				// console.log(this.studio);return;
+
 				var time = this.studio.play_time;
 				this.studio.play_time=time.getTime();//修改时间为datetime格式
 				var data ={
 					id:this.$router.currentRoute.params.id,
 					studio:this.studio
 				}
-				// "1481536895285"
-				// 2147483647	
-				// console.log(this.studio);
-				// return;
+
 				store.commit('changeStudio',data);
 
 			},gocli:function(){

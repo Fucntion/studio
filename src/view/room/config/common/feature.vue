@@ -10,11 +10,11 @@
 			<h5>设置封面，会让你的直播更有范哦</h5>
 			<div class="cover">
 				<template v-if="studio.cover_img_url">
-				<img  :src="studio.cover_img_url" />
-				<el-button type="primary" @click="checkDialog('pictureBox','设置封面')" >更改封面</el-button>
+				<img width="350px"  :src="studio.cover_img_url" />
+				<el-button type="primary" @click="checkDialog('pictureBox','设置封面','cover')" >更改封面</el-button>
 			</template>
 			<template v-else>
-				<el-button  type="primary" @click="checkDialog('pictureBox','设置封面')" >设置封面</el-button>
+				<el-button  type="primary" @click="checkDialog('pictureBox','设置封面','cover')" >设置封面</el-button>
 			</template>
 			</div>
 		</div>
@@ -23,11 +23,11 @@
 			<h5>有创意的logo会使直播间显得高大上</h5>
 			<div class="logo">
 			<template v-if="studio.logo_url">
-				<img  class="logo_img" :src="studio.logo_url" />
-				<el-button type="primary" @click="checkDialog('pictureBox','设置logo')" >更改Logo</el-button>
+				<img width="100px"  class="logo_img" :src="studio.logo_url" />
+				<el-button type="primary" @click="checkDialog('pictureBox','设置logo','logo')" >更改Logo</el-button>
 			</template>
 			<template v-else>
-				<el-button type="primary" @click="checkDialog('pictureBox','设置logo')" >设置Logo</el-button>
+				<el-button type="primary" @click="checkDialog('pictureBox','设置logo','logo')" >设置Logo</el-button>
 			</template>
 
 			
@@ -63,27 +63,40 @@
 					this.showStatus[k] =false;
 				}
 			},
-			logo:function(){
-				var data = {
-						logo_url: "http://ww1.sinaimg.cn/thumb180/61e7f4aajw1fajnxpl30fj20dw03wmxj.jpg"
-					},
-				id = this.$router.currentRoute.params.id;
-				var url = "/rooms/"+id;
-				this.$http.put(url,data).then((response) => {
-					console.log(response.body);
-					store.commit("changeStudio",response.body);
+			onSubmit_feature(obj) {
 
 
-				}, (response) => {
-					// error callback
-					// console.log(response);
-				});
+				var data ={
+					id:this.$router.currentRoute.params.id,
+					studio:this.studio,
+				}
+
+				store.commit('changeStudio',data);
+
 			},
-			checkDialog:function(components,title){
+			// logo:function(){
+			// 	var data = {
+			// 			logo_url: "http://ww1.sinaimg.cn/thumb180/61e7f4aajw1fajnxpl30fj20dw03wmxj.jpg"
+			// 		},
+			// 	id = this.$router.currentRoute.params.id;
+			// 	var url = "/rooms/"+id;
+			// 	this.$http.put(url,data).then((response) => {
+			// 		console.log(response.body);
+			// 		store.commit("changeStudio",response.body);
+
+
+			// 	}, (response) => {
+			// 		// error callback
+			// 		// console.log(response);
+			// 	});
+			// },
+			// type用来区分不同的用途，用来设置不同的回调
+			checkDialog:function(components,title,type){
 				var obj ={};
 				obj.components= components;
 				obj.title = title;
-				store.commit("openDialog",obj);
+				obj.type =type; 
+				store.commit("openModal",obj);
 			},
 		},
 		components: {

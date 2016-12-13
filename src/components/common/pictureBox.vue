@@ -5,13 +5,14 @@
   action="http://saaslive.oss-cn-shanghai.aliyuncs.com"
   :on-preview="handlePreview"
   :on-remove="handleRemove"
+  :on-success="call"
   :data="new_multipart_params"
+  :before-upload="set_key"
   :multiple="false">
   <el-button type="primary" size="small">上传图片</el-button>
 </el-upload>
 <div class="hr"></div>
 </div>
-
 <div class="img_box">
 	<div class="img_item" v-for="(item,index) in imgList" @click="select(item)"  :class="{active: item.isActive}" >
 	<div class="img" :style="{backgroundImage:'url(' + item.url + ')'}"></div>
@@ -38,8 +39,9 @@
 </template>
 
 <script>
-
+  import store from '../../vuex/store';
 export default {
+    store,
     data: function() {
   
          return {
@@ -55,7 +57,38 @@ export default {
          	]
        }
     },
-    methods: {
+    props:['studio','type']
+    ,methods: {
+      call:function(response, file, fileList){
+        // http://saaslive.oss-cn-shanghai.aliyuncs.com/user-dir/KyotoBamboo_ROW8597566657_1920x1200.jpg
+        var type =this.type,fileUlr ="http://saaslive.oss-cn-shanghai.aliyuncs.com"+'/user-dir/'+file.name;
+
+
+        switch(type){
+          case 'cover':
+            this.studio.cover_img_url =fileUlr;
+            break;
+          case 'logo':
+            this.studio.logo_url =fileUlr;
+            break;
+        }
+
+        var data ={
+          id:this.$router.currentRoute.params.id,
+          studio:this.studio,
+        }
+
+        // console.log(data);return;
+
+        store.commit('changeStudio',data);
+
+        var obj ={};
+        // 假装调用一下，然后就修改了modal的显示状态了
+
+        store.commit("closeModal");
+
+
+      },
     	handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
@@ -65,6 +98,11 @@ export default {
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
+      },
+      set_key(file){
+        this.new_multipart_params.name = file.name;
+        this.new_multipart_params.key = 'user-dir/'+file.name;
+        // console.log(this.new_multipart_params);return;
       },
       handlePreview(file) {
         console.log(file);
@@ -88,20 +126,30 @@ export default {
 
     },
     mounted(){
+
+
+      // this.type = store.getters.getDialog.type;
+
+
       var url = "/aliyuns/oss";
       this.$http.get(url).then((response) => {
 
         var tempObj ={
             success_action_status : '200', //让服务端返回200,不然，默认会返回204
-          };
-
-        var obj =response.body.data;
-
+          },obj={};
+          if(Object.prototype.toString.call(response.body) === "[object String]"){
+            obj = JSON.parse(response.body).data;
+          }else{
+            obj =response.body.data;
+          }
+       
+        // console.log(obj);return;
         tempObj.policy = obj.policy;
-        tempObj.ossaccesskeyid = obj.accessid;
+        tempObj.OSSAccessKeyId = obj.accessid;
         tempObj.signature = obj.signature;
+        // tempObj.key =;
         this.new_multipart_params = tempObj;
-
+        // console.log(this.new_multipart_params);
       }, (response) => {
         // error callback
         // console.log(response);

@@ -15,7 +15,8 @@ const state = {
     dialog:{
         visible:false,
         title:'dialog',
-        current:'pictureBox' 
+        current:'pictureBox',
+        type:null//logo、cover、goods定义回调事件
     },
     //定义测试数据
     pluginList:{
@@ -129,13 +130,16 @@ const mutations = {
      *pargam @type string
      *pargam @obj object 需要整理的数据，可以是mock也可以是服务器给的
      *
-     */
-     
-    openDialog:function(state,obj){
+     */ 
+    openModal:function(state,obj){
         if(!obj.components && !obj.title) {console.log('参数有误无法弹出dialog');return}
         state.dialog.visible = !state.dialog.visible;
         state.dialog.title =obj.title;
         state.dialog.current = obj.components;
+        state.dialog.type = obj.type;
+    },
+    closeModal:function(state,obj){
+      state.dialog.visible = false;
     },
     changeCrumb:function(state, crumbText) {
         // 变更状态
