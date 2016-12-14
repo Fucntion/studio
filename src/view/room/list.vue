@@ -57,7 +57,7 @@
 				console.log('add room');
 				var d = new Date(),
 					data = {
-						cover_img_url: "https://imgcache.qq.com/open_proj/proj_qcloud_v2/gateway/portal/css/img/home/qcloud-logo-dark.png",
+						cover_img_url: "http://www.icloudinn.com/statics/images/logo.png",
 						title: "你323",
 						is_record_play: 1,
 						plugin: '1',

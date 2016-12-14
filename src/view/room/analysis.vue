@@ -27,7 +27,7 @@
 				console.log(key, keyPath);
 			}
 		},
-		mounted() {
+		create() {
 			// 基于准备好的dom，初始化echarts实例
 			var myChart = Echarts.init(document.getElementById('main'));
 			// 绘制图表
