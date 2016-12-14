@@ -16,39 +16,47 @@
 </template>
 
 <script>
+	import Echarts from 'echarts'
 
-import Echarts from 'echarts'
-
-export default {
-	methods: {
-		handleOpen(key, keyPath) {
-			console.log(key, keyPath);
+	export default {
+		methods: {
+			handleOpen(key, keyPath) {
+				console.log(key, keyPath);
+			},
+			handleClose(key, keyPath) {
+				console.log(key, keyPath);
+			}
 		},
-		handleClose(key, keyPath) {
-			console.log(key, keyPath);
+		mounted() {
+			// 基于准备好的dom，初始化echarts实例
+			var myChart = Echarts.init(document.getElementById('main'));
+			// 绘制图表
+			myChart.setOption({
+				title: {
+					text: '商品销售'
+				},
+				series: [{
+					name: '访问来源',
+					type: 'pie',
+					radius: '55%',
+					data: [{
+						value: 400,
+						name: '搜索引擎'
+					}, {
+						value: 335,
+						name: '直接访问'
+					}, {
+						value: 310,
+						name: '邮件营销'
+					}, {
+						value: 274,
+						name: '联盟广告'
+					}, {
+						value: 235,
+						name: '视频广告'
+					}]
+				}]
+			});
 		}
-	},
-	mounted(){
-    	// 基于准备好的dom，初始化echarts实例
-    	var myChart = Echarts.init(document.getElementById('main'));
-		// 绘制图表
-		myChart.setOption({
-			title: { text: '商品销售' },
-			series : [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            data:[
-                {value:400, name:'搜索引擎'},
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:274, name:'联盟广告'},
-                {value:235, name:'视频广告'}
-            ]
-        }
-    ]
-		});
 	}
-}
 </script>

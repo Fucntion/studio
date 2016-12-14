@@ -1,6 +1,7 @@
 <template>
 	<div class="main">
-		<div class="hot"><i class="horn"></i><a href="#">新功能上线啦~</a><i class="close"><i></div>
+		<div class="hot"><i class="horn"></i>
+			<a href="#">新功能上线啦~</a><i class="close"><i></div>
 
 		<div class="descript">
 			<div class="crumb-box"><h3 class="crumb">信息概览</h3><div class="hr"></div>
