@@ -217,7 +217,9 @@ const router = new VueRouter({
     routes
 });
 
-
+//var AwesomeSwiper = require('vue-awesome-swiper')
+//// global use
+//Vue.use(AwesomeSwiper)
 
 const app = new Vue({
     router,

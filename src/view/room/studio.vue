@@ -4,9 +4,11 @@
 		<el-tabs class="studio_tab" type="border-card" :active-name="activeName">
 			<el-tab-pane label="直播设置" name="config">
 				<config :studio="studio"></config>
+
 			</el-tab-pane>
 			<el-tab-pane label="用户管理" name="analysis">
 				<audience :studio="studio"></audience>
+				
 			</el-tab-pane>
 			<el-tab-pane label="数据分析" name="audience">
 				<analysis :studio="studio"></analysis>
@@ -28,6 +30,7 @@
 
 			return {
 				studio: {},
+				
 				activeName: 'config'
 			}
 		},
@@ -45,8 +48,8 @@
 
 		},
 		beforeCreate() {
-
-			this.studio = store.getters.getStudio;
+			var self = this;
+			self.studio = store.getters.getStudio;
 
 			function isEmptyObject(e) {
 				var t;
@@ -54,16 +57,17 @@
 					return !1;
 				return !0
 			}
-			if(isEmptyObject(this.studio)) {
-				var id = this.$router.currentRoute.params.id;
+			if(isEmptyObject(self.studio)) {
+				var id = self.$router.currentRoute.params.id;
 
 				var url = "/rooms/" + id;
-				this.$http.get(url).then((response) => {
+				self.$http.get(url).then((response) => {
 
 					var tempObj = response.body;
 					tempObj.play_time_show = tempObj.play_time ? tempObj.play_time * 1000 : null;
 					store.commit('setStudio', tempObj);
-					this.studio = store.getters.getStudio; //统一使用这个来调用
+					self.studio = store.getters.getStudio; //统一使用这个来调用
+
 
 				}, (response) => {
 					console.log(response);

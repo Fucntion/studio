@@ -9,7 +9,7 @@
 				<div class="box">
 					<!--灰色的是必选-->
 
-					<!--<fieldset class="base">
+					<fieldset class="base">
 						<legend> 基础 </legend>
 						<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.base">
 							<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
@@ -17,7 +17,7 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="interaction">
+					<!--<fieldset class="interaction">
 						<legend> 互动 </legend>
 						<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.interaction">
 							<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
@@ -47,7 +47,8 @@
 			<div class="wrap">
 				<div id="id_test_video"></div>
 				<!--播放器-->
-				<video-player v-if="showStatus_mobile.player" id="player" :options="videoOptions" @playerStateChanged="playerStateChanged"></video-player>
+				<video-player  v-if="showStatus_mobile.player" :options="videoOptions" ref="videoPlayer"></video-player>
+				<!--<video-player v-if="showStatus_mobile.player" id="player"  :options="videoOptions" @playerStateChanged="playerStateChanged"></video-player>-->
 				<!--幻灯片-->
 				<template v-if="showStatus_mobile.advert">
 					<div id="advert">
@@ -214,29 +215,12 @@
 
 	import Qrcode from '../../components/common/Qrcode.vue'
 	import store from '../../vuex/store'
-//	import { swiper,swiperSlide,swiperPlugins} from 'vue-awesome-swiper'
+	import { swiper,swiperSlide,swiperPlugins} from 'vue-awesome-swiper'
 
 	export default {
 		store,
-		computed:{
-			videoOptions:function(){
-				 var obj = {
-					"source": {
-						"type": "application/x-mpegURL",
-						"src": "http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
-//						"src": studio.hls_downstream_address,
-						"withCredentials": false
-					},
-					"poster": "http://live.icloudinn.com/img3/logo.png",
-					"live": true,
-					"autoplay": false,
-					"height": 414 * 2 / 3,
-					"language": 'zh-cn'
-				};
-				return obj;
-			}
-		},
 		data: function() {
+
 			return {
 				//menu Data
 				pluginList: {},
@@ -255,6 +239,22 @@
 					index: 3
 				}],
 				liWidth: 414 / 4 + 'px',
+				videoOptions:{
+
+					source: {
+						"type": "application/x-mpegURL",
+						"src": '',
+//						"src": studio.hls_downstream_address,
+						"withCredentials": false
+					},
+					"poster": "http://live.icloudinn.com/img3/logo.png",
+					"live": true,
+					"autoplay": false,
+					"height": 414 * 2 / 3,
+					"language": 'zh-cn'
+
+
+				},
 
 				swiperOption: {
 					// 如果你后续需要找到当前实例化后的swiper对象以对其进行一些操作的话，可以自定义配置一个名字
@@ -284,8 +284,8 @@
 		},
 		props: ['studio'],
 		components: {
-//			swiper,
-//			swiperSlide,
+			swiper,
+			swiperSlide,
 			dialogBox,
 			Qrcode,
 			
@@ -420,10 +420,21 @@
 				this.$emit('playerAction', action)
 			},
 		},
-		mounted() {
+		created() {
 			//从vuex中读取组件的默认信息
-			this.pluginList = store.getters.getPluginList;
+			var self = this;
+			self.pluginList = store.getters.getPluginList;
 
+			
+//			self.videoOptions.source.src = this.studio.hls_downstream_address;
+			
+		},
+		mounted(){
+			
+
+
+
+//			this.videoOptions.source.src = this.studio.hls_downstream_address;
 		}
 	}
 </script>
@@ -431,7 +442,7 @@
 <style src="video.js/dist/video-js.css"></style>
 
 <style lang="less">
-	@import "./swiper.css"
+	@import "./swiper.css";
 	/*style Mobile*/
 	
 	.swiper-container {
