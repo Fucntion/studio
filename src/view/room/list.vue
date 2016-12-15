@@ -48,10 +48,6 @@
 			}
 		},
 		methods: {
-			goto: function(id) {
-				console.log('studio/' + id);
-				this.$router.push('studio/' + id);
-			},
 			addRoom: function() {
 				//创建好直播间
 				console.log('add room');
@@ -83,16 +79,17 @@
 			intoRoom: function(id) {
 				//创建好直播间
 				console.log('into room');
-				var url = "/rooms/" + id;
-				this.$http.get(url).then((response) => {
-					// 直接把初始化内容放在studio.vue或许更合适
-					// store.commit('setStudio', response.body);
-					this.$router.push('studio/' + response.body.id);
-
-				}, (response) => {
-					// error callback
-					// console.log(response);
-				});
+//				var url = "/rooms/" + id;
+				this.$router.push('studio/' + id);
+//				this.$http.get(url).then((response) => {
+//					// 直接把初始化内容放在studio.vue或许更合适
+//					// store.commit('setStudio', response.body);
+//					
+//
+//				}, (response) => {
+//					// error callback
+//					// console.log(response);
+//				});
 
 				//回调中拿到直播间基础信息
 				//跳转到对应的页面。

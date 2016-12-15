@@ -9,7 +9,7 @@ Vue.use(VueResource);
 
 const state = {
 	crumb: '面包屑',
-	studio: null,
+	studio: {},
 	dialog: {
 		visible: false,
 		title: 'dialog',
