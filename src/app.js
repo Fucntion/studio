@@ -200,17 +200,7 @@ Vue.http.interceptors.push((request, next)  =>{
 
 
 
-// Example(Only applies to the current global mode). 用配置项的话仅支持全局模式来配置，否则不会生效
-import VideoPlayer from 'vue-video-player'
 
-Vue.use(VideoPlayer)
-
-VideoPlayer.config({
-
-    youtube: false, // default false
-    switcher: false, // default true
-    hls: true // default true
-})
 
 Vue.use(VueRouter)
 const router = new VueRouter({

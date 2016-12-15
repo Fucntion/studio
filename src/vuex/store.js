@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueResource from 'vue-resource'
 
+
 Vue.use(Vuex);
 
 Vue.use(VueResource);
@@ -141,6 +142,7 @@ const mutations = {
 	//用于创建直播间的时候给studio赋值。
 	setStudio: function(state, obj) {
 		state.studio = obj;
+//		console.log(state.studio);
 	},
 	changeStudio: function(state, data) {
 
@@ -155,11 +157,12 @@ const mutations = {
 		state.studio = obj;
 
 		var url = '/rooms/' + id;
-
+	console.log(obj);
 		Vue.http.put(url, obj).then((response) => {
 
 			// state.studio =response.body;
 			console.log(response.body, '更新配置成功');
+
 
 		}, (response) => {
 			// error callback

@@ -85,8 +85,8 @@
 				console.log('into room');
 				var url = "/rooms/" + id;
 				this.$http.get(url).then((response) => {
-
-					store.commit('setStudio', response.body);
+					// 直接把初始化内容放在studio.vue或许更合适
+					// store.commit('setStudio', response.body);
 					this.$router.push('studio/' + response.body.id);
 
 				}, (response) => {

@@ -17,7 +17,7 @@
 						</div>
 					</fieldset>
 
-					<!--<fieldset class="interaction">
+					<fieldset class="interaction">
 						<legend> 互动 </legend>
 						<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.interaction">
 							<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
@@ -32,7 +32,7 @@
 							<div class="name">{{item.name}}</div>
 						</div>
 
-					</fieldset>-->
+					</fieldset>
 
 				</div>
 			</el-row>
@@ -47,11 +47,11 @@
 			<div class="wrap">
 				<div id="id_test_video"></div>
 				<!--播放器-->
-				<video-player  v-if="showStatus_mobile.player" :options="videoOptions" ref="videoPlayer"></video-player>
+				<video-Player  v-if="showStatus_mobile.player" :options="videoOptions" ref="videoPlayer"></video-Player>
 				<!--<video-player v-if="showStatus_mobile.player" id="player"  :options="videoOptions" @playerStateChanged="playerStateChanged"></video-player>-->
 				<!--幻灯片-->
 				<template v-if="showStatus_mobile.advert">
-					<div id="advert">
+					<div class="mobile_advert mobile_box"  >
 
 						<swiper :options="swiperOption">
 									
@@ -63,7 +63,7 @@
 				</template>
 				<!--自定义菜单-->
 				<template v-if="showStatus_mobile.menu">
-					<div class="mobile_menu" @click="checkDialog('menuEdit','自定义菜单')">
+					<div class="mobile_menu mobile_box" @click="checkDialog('menuEdit','自定义菜单')">
 						<div v-for="(item,index) in listData" class="menu_item" :style="{width:liWidth}" :data-id="item.index">{{item.name}}</div>
 					</div>
 				</template>
@@ -216,7 +216,8 @@
 	import Qrcode from '../../components/common/Qrcode.vue'
 	import store from '../../vuex/store'
 	import { swiper,swiperSlide,swiperPlugins} from 'vue-awesome-swiper'
-
+	import { videoPlayer } from 'vue-video-player'
+	
 	export default {
 		store,
 		data: function() {
@@ -243,14 +244,13 @@
 
 					source: {
 						"type": "application/x-mpegURL",
-						"src": '',
-//						"src": studio.hls_downstream_address,
+						"src":null,
 						"withCredentials": false
 					},
 					"poster": "http://live.icloudinn.com/img3/logo.png",
 					"live": true,
 					"autoplay": false,
-					"height": 414 * 2 / 3,
+//					"height": 414 * 2 / 3,
 					"language": 'zh-cn'
 
 
@@ -288,7 +288,7 @@
 			swiperSlide,
 			dialogBox,
 			Qrcode,
-			
+			videoPlayer
 		},
 		methods: {
 
@@ -326,26 +326,34 @@
 			},
 			onSubmit_origin(obj) {
 
-				var time = this.studio.play_time_show,
-					temp = null;
-
+				var time = this.studio.play_time_show;
+				
 				if(Object.prototype.toString.call(time) == '[object Date]') {
 					console.log('时间是对象，需要转换成时间戳');
-					temp = time.getTime();
+					time = time.getTime();
 				}
+				
 				// console.log(temp);
 				// php和js的时间戳位数不一样，妈个鸡
-				if((temp + '').length == 13) {
+				if((time + '').length == 13) {
 					console.log('长度是13位，要转换成php时间戳');
-					temp = parseInt(temp / 1000);
+					time = parseInt(time / 1000);
 				}
-				this.studio.play_time = temp;
-				// return;
+//				console.log(time);return;
+//				if(!temp){
+//					
+//				}else{
+//					this.studio.play_time = time;
+//				}
+				this.studio.play_time = time;
+				
+				 
 				var data = {
 					id: this.$router.currentRoute.params.id,
 					studio: this.studio
 				}
-
+//				console.log(this.studio,data);
+//				return;
 				store.commit('changeStudio', data);
 
 			},
@@ -419,22 +427,27 @@
 			playerAction(action) {
 				this.$emit('playerAction', action)
 			},
+			init:function(){
+				var self = this;
+//				console.log(self.studio);
+				//从vuex中读取组件的默认信息
+				self.pluginList = store.getters.getPluginList;
+//				flv_downstream_address hls_downstream_address
+				self.videoOptions.source.src =self.studio.hls_downstream_address;
+			}
 		},
 		created() {
-			//从vuex中读取组件的默认信息
-			var self = this;
-			self.pluginList = store.getters.getPluginList;
-
 			
-//			self.videoOptions.source.src = this.studio.hls_downstream_address;
+
+
+			this.init();
+
+
 			
 		},
 		mounted(){
-			
 
 
-
-//			this.videoOptions.source.src = this.studio.hls_downstream_address;
 		}
 	}
 </script>
