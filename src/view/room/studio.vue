@@ -82,7 +82,7 @@
 					var d=new Date();
 					//如果服务器有时间就取服务器，没有的话时间选择器就默认显示当前时间。
 					tempObj.play_time_show = tempObj.play_time ? tempObj.play_time * 1000 : null;
-					tempObj.pluginObj =JSON.parse(tempObj.plugin)?JSON.parse(tempObj.plugin):[];//空数组
+					tempObj.pluginObj =JSON.parse(tempObj.plugin)?JSON.parse(tempObj.plugin):{menu:[],advert:[]};//空数组
 					store.commit('setStudio', tempObj);
 					self.studio = store.getters.getStudio; //统一使用这个来调用
 					self.show =true;
