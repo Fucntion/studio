@@ -1,13 +1,44 @@
 <template>
-	<el-tabs v-if="studio" type="card" @tab-click="handleClick" @tab-remove="handleRemove">
-		<template v-if="studio.pluginObj.length>0">
-			<el-tab-pane v-for="(item, key, index)  in studio.pluginObj" label="item.title">
+	<el-tabs v-if="studio" type="card"  @tab-remove="handleRemove" @tab-click="initMenuTab()">
+		<template v-if="studio.pluginObj.menu.length>0">
+			<!--不同的name表示两种类别的tab.item和add-->
+			<el-tab-pane v-for="(item, key, index)  in studio.pluginObj.menu" name="item"   :label="item.title">
 
+			<el-form ref="formedit" :rules="rules"  :model="item" label-width="80px">
+				<el-form-item label="菜单名称" prop="title">
+					<el-input v-model="item.title" placeholder="菜单名称不超过四个中文字"></el-input>
+				</el-form-item>
+				<el-form-item label="菜单类型"  prop="type">
+					<el-select v-model="item.type" placeholder="请选择菜单的类型">
+						<el-option label="图文内容" select value="article"></el-option>
+						<el-option label="商品列表" value="goods"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="菜单内容" v-if="item.type&&item.type=='article'">
+					<el-input type="textarea"  prop="article" v-model="item.article">图文内容</el-input>
+				</el-form-item>
+				<el-form-item label="菜单内容" v-if="item.type&&item.type=='goods'">	
+					<div>
+						<el-table @selection-change="handleSelectionChange_edit" v-if="goodsData" :data="goodsData" stripe>
+							<el-table-column select type="selection" width="55"></el-table-column>
+							<el-table-column prop="goodsName" label="商品"></el-table-column>
+							<el-table-column prop="shopPrice" label="价格"></el-table-column>
+							<el-table-column prop="goodsStock" label="库存"></el-table-column>
+							<el-table-column prop="saleCount" label="销量"></el-table-column>
+						</el-table>
+					</div>
+				</el-form-item>
+				<el-form-item>
+					<el-button @click="onSubmit" type="primary">立即创建</el-button>
+					<el-button @click="dialog.visible=false">取消</el-button>
+				</el-form-item>
+			</el-form>
+			
 			</el-tab-pane>
 
 		</template>
 		<!--如果菜单长度小于4，就显示添加菜单的选项卡-->
-		<el-tab-pane v-if="studio.pluginObj.length<5" label="创建菜单+">
+		<el-tab-pane v-if="studio.pluginObj.menu.length<4" name="add" label="创建菜单+">
 			<!--<p>目前还没有自定义菜单</p><br />-->
 			<el-form ref="formadd" :rules="rules"  :model="formadd" label-width="80px">
 				<el-form-item label="菜单名称" prop="title">
@@ -15,7 +46,7 @@
 				</el-form-item>
 				<el-form-item label="菜单类型"  prop="type">
 					<el-select v-model="formadd.type" placeholder="请选择菜单的类型">
-						<el-option label="图文内容" select value="article"></el-option>
+						<el-option label="图文内容"  value="article"></el-option>
 						<el-option label="商品列表" value="goods"></el-option>
 					</el-select>
 				</el-form-item>
@@ -60,31 +91,10 @@
 		        if (value === '') {
 		          callback(new Error('请选择菜单类型'));
 		        } else {
-//		        	if(value=='goods'){
-//		        		this.$refs.formadd.validateField('Goods');
-//		        	}
-//		        	if(value=='article'){
-//		        		this.$refs.formadd.validateField('Article');
-//		        	}
 		          callback();
 		        }
 		      };
-			var validateGoods = (rule, value, callback) => {
-		        if (value === '') {
-		          callback(new Error('请至少选择一个商品'));
-		        } else {
-		          callback();
-		        }
-		      };
-			var validateArticle = (rule, value, callback) => {
-		        if (value === '') {
-		          callback(new Error('输入内容不能为空'));
-		        } else {
-		          // console.log(this);
-		
-		          callback();
-		        }
-		      };
+			
 			return {
 				studio: null,
 				goodsData: null,
@@ -97,11 +107,9 @@
 				rules: {
 					title: [
 					{ validator: validateTitle,required: true,trigger: 'blur' },
-		           
 		            ],
 		            type: [
-		            { validator: validateType,required: true},
-		           
+		            { validator: validateType,required: true },
 		            ]
         		},
 
@@ -110,14 +118,17 @@
 		store,
 		props:['dialog'],
 		methods: {
-
+			
+			initMenuTab:function(tab,txt){
+				console.log(tab);
+			},
 			onSubmit:function(ev){
 				
 				var self =this;
 
 				self.$refs.formadd.validate((valid) => {
 		          if (valid) {
-//		            console.log(self.formadd.goods=='',self.formadd.type=='goods');
+
 		            if(self.formadd.goods==''&&self.formadd.type=='goods'){
 		            	this.$notify({
 	                      title: '提示',
@@ -125,7 +136,7 @@
 	                      type: 'warning'
 	                    });
 		            }
-		            console.log(self.formadd.article=='',self.formadd.type=='article');
+
 		            if(self.formadd.article==''&&self.formadd.type=='article'){
 		            	this.$notify({
 	                      title: '提示',
@@ -133,6 +144,16 @@
 	                      type: 'warning'
 	                    });
 		            }
+		            self.studio.pluginObj.menu.push(self.formadd);
+		            //清零formadd，完成一次提交
+		            self.formadd = {
+					title: '',
+					type: '',
+					article: '',
+					goods: ''
+				};
+		            
+		            
 		            
 
 		            

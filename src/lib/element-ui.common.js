@@ -1585,7 +1585,7 @@ module.exports =
 	        _vm.handleWrapperClick($event)
 	      }
 	    }
-	  }, ["\n  modal\n    ", _h('div', {
+	  }, [_h('div', {
 	    ref: "modal",
 	    staticClass: "el-modal",
 	    class: [_vm.sizeClass, _vm.customClass],
