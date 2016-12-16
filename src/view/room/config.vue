@@ -7,10 +7,10 @@
 					<div class="title">功能列表</div>
 					<div class="box">
 						<!--灰色的是必选-->
-
+						
 						<fieldset class="base">
 							<legend> 基础 </legend>
-							<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.base">
+							<div  v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'base')" class="plugin_item" v-for="(item,index) in pluginList.base">
 								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
 								<div class="name">{{item.name}}</div>
 							</div>
@@ -18,7 +18,7 @@
 
 						<fieldset class="interaction">
 							<legend> 互动 </legend>
-							<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.interaction">
+							<div  v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'interaction')" class="plugin_item" v-for="(item,index) in pluginList.interaction">
 								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
 								<div class="name">{{item.name}}</div>
 							</div>
@@ -26,7 +26,7 @@
 						</fieldset>
 						<fieldset class="plus">
 							<legend> 高级 </legend>
-							<div v-bind:disabled="item.require" v-bind:class="item.checked?'active':''" @click="functionAdd(item.name)" class="plugin_item" v-for="(item,index) in pluginList.plus">
+							<div v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'plus')" class="plugin_item" v-for="(item,index) in pluginList.plus">
 								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
 								<div class="name">{{item.name}}</div>
 							</div>
@@ -48,7 +48,7 @@
 					<!--幻灯片-->
 					<template v-if="showStatus_mobile.advert">
 						<!--<el-tooltip class="tooltip" effect="dark" content="Top Center 提示文字" placement="top">-->
-						<div class="mobile_advert mobile_content">
+						<div class="mobile_advert mobile_content" @click="checkDialog('menuEdit','设置广告栏','advertModal')">
 							<swiper :options="swiperOption">
 								<swiper-slide :style="{backgroundImage: 'url(' + testUrl + ')'}"></swiper-slide>
 								<swiper-slide :style="{backgroundImage: 'url(' + testUrl + ')'}"></swiper-slide>
@@ -59,7 +59,7 @@
 					</template>
 					<!--自定义菜单-->
 					<template v-if="showStatus_mobile.menu">
-						<div class="mobile_menu mobile_content" @click="checkDialog('menuEdit','自定义菜单')">
+						<div class="mobile_menu mobile_content" @click="checkDialog('menuEdit','自定义菜单','menuModal')">
 							<div v-for="(item,index) in listData" class="menu_item" :style="{width:liWidth}" :data-id="item.index">{{item.name}}</div>
 						</div>
 					</template>
@@ -278,7 +278,7 @@
 				},
 				showStatus_mobile: {
 					'player': false,
-					'advert': true,
+					'advert': false,
 					'menu': false
 				},
 
@@ -293,7 +293,96 @@
 			videoPlayer
 		},
 		methods: {
+			functionAdd: function(functionName,type) {
 
+				//this.$parent
+				//输入哪个模块的参数就在模拟器中渲染刷新对应的模块，如果传的是all那就全部刷新。
+				var self =this,
+					name = functionName,
+					obj = self.pluginList[type];//获取对应的类别数组
+					console.log(obj);
+					
+
+				for(var i = 0; i < obj.length; i++) {
+
+					if(name == obj[i].name) {
+
+						if(obj[i].require == true) {
+							this.$message({
+					            type: 'info',
+					            message: name+'是必选功能哦'
+					       });
+							return
+						}
+						if(obj[i].usable ==false){
+							this.$message({
+					            type: 'info',
+					            message: name+'功能即将上线'
+					        });
+							return;
+						}
+						if(obj[i].checked == true) {
+						
+							this.$confirm(name+'功能已经存在，是否删除?', '提示', {
+					          confirmButtonText: '确定',
+					          cancelButtonText: '取消',
+					          type: 'warning'
+					        }).then(() => {
+				        	obj[i].checked = false;
+							self.$options.methods.refresh(self.pluginList,self.showStatus_mobile);
+
+					          this.$notify.info({
+			                      title: '提示信息',
+			                      message:'删除成功'
+			                   }); 
+					        }).catch(() => {
+					        	this.$notify.info({
+			                      title: '提示信息',
+			                      message:'已取消删除'
+			                   });       
+					        });
+
+							return;
+
+						}
+						obj[i].checked = true;
+						this.$notify({
+	                      title: '提示信息',
+	                      message:name+'添加成功!',
+	                      type: 'success'
+	                    });
+						
+						self.$options.methods.refresh(self.pluginList,self.showStatus_mobile)
+						break;
+					}
+
+				}
+
+			},
+			refresh: function(pluginList,showStatus_mobile) {
+
+				for(var index in pluginList){
+					
+					var obj =pluginList[index];
+					for(var i = 0; i < obj.length; i++) {
+						if(obj[i].plugin && !obj[i].require) {
+	
+								for(var key in showStatus_mobile) {
+		
+									if(key == obj[i].plugin) {
+		//								console.log(app, app.$parent.showStatus, key);
+										//通过pluginList中的plugin字段，来判断属性会影响哪个mobile模拟器中的显示
+										showStatus_mobile[key] = obj[i].checked;
+		
+										break;
+		
+									}
+								}
+						}
+					}
+				}
+				
+			},
 			changeShow_origin: function(name) {
 
 				for(var k in this.showStatus_origin) {
@@ -359,60 +448,7 @@
 				obj.type = type;
 				store.commit("openModal", obj);
 			},
-			functionAdd: function(functionName) {
-
-				//this.$parent
-				//输入哪个模块的参数就在模拟器中渲染刷新对应的模块，如果传的是all那就全部刷新。
-				var name = functionName,
-					obj = this.functionList;
-
-				for(var i = 0; i < obj.length; i++) {
-
-					if(name == obj[i].name) {
-
-						if(obj[i].require == true) {
-							console.log('你点的是必选的功能');
-							return
-						}
-						if(obj[i].checked == true) {
-							console.log('功能已经存在');
-							var r = confirm("是否删除该功能?")
-							if(r == true) {
-								obj[i].checked = false;
-								this.$options.methods.refresh(obj, this)
-								console.log('功能已删除');
-							}
-
-							return;
-
-						}
-						obj[i].checked = true;
-						this.$options.methods.refresh(obj, this)
-						break;
-					}
-
-				}
-
-			},
-			refresh: function(functionList, app) {
-				var obj = functionList;
-				var showStatus = app.showStatus_mobile;
-				for(var i = 0; i < obj.length; i++) {
-					if(obj[i].plugin && !obj[i].require) {
-
-						for(var key in showStatus) {
-
-							if(key == obj[i].plugin) {
-								console.log(app, app.$parent.showStatus, key);
-								app.$parent.showStatus[key] = obj[i].checked;
-
-								break;
-
-							}
-						}
-					}
-				}
-			},
+			
 			init: function() {
 				var self = this;
 
@@ -421,7 +457,7 @@
 				//flv_downstream_address hls_downstream_address
 				self.videoOptions.source.src = 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8';
 				self.showStatus_mobile.player = true;
-				this.showStatus_mobile.advert = true;
+//				this.showStatus_mobile.advert = true;
 				self.showStatus_mobile.menu = true;
 
 			}

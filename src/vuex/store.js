@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueResource from 'vue-resource'
 
-
+ 
 Vue.use(Vuex);
 
 Vue.use(VueResource);
@@ -21,70 +21,62 @@ const state = {
 		base: [{
 			name: '播放器', //名字
 			plugin: 'player', //对应的mobile显示组件,用来组件增删的时候同步预览组建的显示/隐藏
-			type: 'base', //类型 "基础"
 			src: require('assets/img/player.png'), //图标样式class
-			item: 1, //在对应列别里排序 习惯都是从1开始，如果后端要从0开始也不耽误事，反正我是排序的。
 			require: true, //是否必选
+			usable:true,
 			checked: true //是否选中  打算在组件中利用checked状态来判断是否显示对应组件。会不会存在require是true但是状态被改变的情况？在改变状态的函数里需要做过滤。if(!this.require)
 		}],
 		interaction: [{
 			name: '红包雨', //名字
 			plugin: null,
-			type: 'interaction', //类型 "互动"这单词真难拼。。。
 			src: require('assets/img/hongbao.png'), //图标样式class
-			item: 1, //在对应列别里排序
 			require: false, //是否必选
+			usable:false,
 			checked: false //是否选中  
 		}, {
 			name: '定制菜单', //名字
 			plugin: 'nav',
-			type: 'base', //类型 "基础"
 			src: require('assets/img/menu.png'), //图标样式class
-			item: 2, //在对应列别里排序
 			require: true, //是否必选
+			usable:true,
 			checked: true //是否选中  
 		}, {
 			name: '大转盘', //名字
 			plugin: null,
-			type: 'interaction', //类型 "互动"
 			src: require('assets/img/zhuanpan.png'), //图标样式class
-			item: 3, //在对应列别里排序
 			require: false, //是否必选
+			usable:false,
 			checked: false //是否选中  
 		}, {
 			name: '抽奖', //名字
 			plugin: null,
-			type: 'interaction', //类型 "互动"
 			src: require('assets/img/luckly.png'), //图标样式class
-			item: 2, //在对应列别里排序
 			require: false, //是否必选
+			usable:false,
 			checked: false //是否选中  
 		}],
 		plus: [{
 				name: '广告栏', //名字
 				plugin: 'advert',
-				type: 'plus', //类型 "基础"
 				src: require('assets/img/advert.png'), //图标样式class
-				item: 3, //在对应列别里排序
 				require: false, //是否必选
+				usable:true,
 				checked: false //是否选中  
 			},
 
 			{
 				name: '调查问卷', //名字
 				plugin: 'question',
-				type: 'plus', //类型 "基础"
 				src: require('assets/img/question.png'), //图标样式class
-				item: 1, //在对应列别里排序
 				require: false, //是否必选
+				usable:false,
 				checked: false //是否选中  
 			}, {
 				name: '商品列表', //名字
 				plugin: null,
-				type: 'plus', //类型 "基础"
 				src: require('assets/img/goods.png'), //图标样式class
-				item: 2, //在对应列别里排序
 				require: false, //是否必选
+				usable:false,
 				checked: false //是否选中  
 			}
 		]

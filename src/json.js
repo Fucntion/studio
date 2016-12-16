@@ -7,6 +7,35 @@ base
 	hls_address
 	rtmp_address
 
+pluginObj:{
+	menu:[
+	{
+		index:1,//排序
+		title:'菜单一',//名称
+		type:link,//类型
+		link:'http://baidu.com',//url
+		article:"wo<img src='https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/76f8637c6a0d464dad049b0acc9420ca_121_121.jpg' />de",//文章详情
+		goods:[21.25.65.14]//
+	},
+	{
+		index:2,//排序
+		title:'菜单一',//名称
+		type:link,//类型
+		link:'http://baidu.com',//url
+		article:"wo<img src='https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/76f8637c6a0d464dad049b0acc9420ca_121_121.jpg' />de",//文章详情
+		goods:[21.25.65.14]//
+	},
+	{
+		index:3,//排序
+		title:'菜单一',//名称
+		type:link,//类型
+		link:'http://baidu.com',//url
+		article:"wo<img src='https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/76f8637c6a0d464dad049b0acc9420ca_121_121.jpg' />de",//文章详情
+		goods:[21.25.65.14]//
+	}
+	]
+	advert:
+}
 plugin
 	player
 	menu
