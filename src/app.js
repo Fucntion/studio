@@ -170,23 +170,25 @@ Vue.http.options.emulateHTTP = true;
 
 Vue.http.interceptors.push((request, next)  =>{
 
-    // console.log(request,next);
-        // request.headers.="";
-        // request.headers.Content-Type="application/json";
-        // request.headers.set('Accept', 'application/json');
-        // request.headers.set('Content-Type', 'application/json');
+ 
         if(!sessionStorage.getItem('accessToken')){
             location.hash ='login';
         }
         var url = 'http://saas.icloudinn.com/api/v1';
-        // var token='?access-token=oVhZgg4Skvks9dsCA3iKVbivqsONiUCVrxN6q4Ye';
-        
+
+          
         if(request.url =='/users' ||request.url =='/users/register'){
              request.url = url+request.url;
         }else{
-            //万洲的token有毒
+        	 //万洲的token有毒
             var token='?access-token='+sessionStorage.getItem('accessToken');
-             request.url = url+request.url+token; 
+			//万洲的url也有毒
+        	if(request.url.indexOf('shop=')==0){      		
+        		request.url = request.url.substr(5)+token+'&system_id=10';
+        	}else{
+        		request.url = url+request.url+token;
+        	}
+                     
         }
 
     

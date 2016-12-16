@@ -1,7 +1,7 @@
 <template>
 
 <el-modal  :title="dialog.title"   v-model="dialog.visible">
-  <div   :class="dialog.type"   :is="dialog.current"></div>
+  <div   :class="dialog.type" :dialog="dialog"   :is="dialog.current"></div>
 </el-modal>
 
 
