@@ -283,6 +283,7 @@ module.exports =
 	        []
 	      );
 	    },
+
 	    renderCell: function renderCell(h, _ref) {
 	      var row = _ref.row,
 	          column = _ref.column,

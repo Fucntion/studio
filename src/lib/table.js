@@ -660,7 +660,7 @@ module.exports =
 	                selection[rowInfo.index] = row;
 	              }
 	            });
-
+	            console.info(states);
 	            _this.updateAllSelected();
 	          })();
 	        } else {

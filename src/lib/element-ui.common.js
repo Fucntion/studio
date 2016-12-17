@@ -6984,7 +6984,7 @@ module.exports =
 	                selection[rowInfo.index] = row;
 	              }
 	            });
-
+	            console.info(states);
 	            _this.updateAllSelected();
 	          })();
 	        } else {
@@ -8973,6 +8973,7 @@ module.exports =
 	        []
 	      );
 	    },
+
 	    renderCell: function renderCell(h, _ref) {
 	      var row = _ref.row,
 	          column = _ref.column,
