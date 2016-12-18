@@ -246,7 +246,7 @@
 
 					source: {
 						"type": "application/x-mpegURL",
-						"src": null,
+						"src":'',
 						"withCredentials": false
 					},
 					"poster": "http://live.icloudinn.com/img3/logo.png",

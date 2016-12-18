@@ -44,5 +44,13 @@ export default {
 </script>
 
 <style lang="less">
-
+.menuModal{
+	.el-tabs__header{
+		.el-tabs__item:first-child{
+			.el-icon-close{
+				display: none;
+			}
+		}
+	}
+}
 </style>

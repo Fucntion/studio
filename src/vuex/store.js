@@ -170,23 +170,14 @@ const mutations = {
 			return;
 		}
 		//先改变本地的值再向服务器同步
-		
 		state.studio = obj;
 		
-//		console.log(obj);return;
-		//因为会
-		var ajaxObj = deepCopy(obj);
-		for(var key in ajaxObj.pluginObj.menu){
-			ajaxObj.pluginObj.menu[key].goods = ajaxObj.pluginObj.menu[key].goodsList
-		}
-		ajaxObj.plugin =JSON.stringify(ajaxObj.pluginObj);
-
-		ajaxObj.pluginObj={};//这里把对象清空了因为不必要传到服务器上，在初始化的时候记得加上pluginObj的初始化
 		
-//		return;
-
+		var ajaxObj = deepCopy(obj);
+		ajaxObj.plugin =JSON.stringify(ajaxObj.pluginObj);
+		delete ajaxObj.pluginObj;//这里把对象清空了因为不必要传到服务器上，在初始化的时候记得加上pluginObj的初始化
 		var url = '/rooms/' + id;
-
+		console.log(ajaxObj);return;
 		Vue.http.put(url,ajaxObj).then((response) => {
 
 			// state.studio =response.body;
