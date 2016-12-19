@@ -1,8 +1,7 @@
 <template>
-	<el-tabs v-if="studio" ref="Menutab" :closable="true" type="border-card"  @tab-click="initMenuTab" @tab-remove="removeMenuTab"  >
+	<el-tabs v-if="studio" ref="Menutab" active-name="1"  type="border-card"  @tab-click="initMenuTab" @tab-remove="removeMenuTab"  >
 		<!--如果菜单长度小于4，就显示添加菜单的选项卡-->
 			<el-tab-pane :name="add" class="addMenuTab" label="创建菜单">
-				<!--<br />-->
 				<div class="menuEditTip" v-if="studio.pluginObj.menu.length>3">为了更好的用户体验，最多允许设置四个自定义菜单</div>
 				<el-form ref="formadd" :rules="rules" :model="formadd" label-width="80px">
 					<el-form-item label="菜单名称" prop="title">
@@ -164,18 +163,24 @@
 		          cancelButtonText: '取消',
 		          type: 'warning'
 		       }).then(() => {
-	
+					
+
 		        	if(self.studio.pluginObj.menu.length ==1){
 		        		self.studio.pluginObj.menu = [];
+		        		self.$refs.Menutab.currentName='1';//切换到"创建菜单tab-pane"
+						this.$notify({
+							title: '提示',
+							message: '自定义菜单为空',
+							type: 'warning'
+						});
+
+
 		        	}else{
-		        		self.studio.pluginObj.menu = self.studio.pluginObj.menu.splice(key,1);
+		        		self.studio.pluginObj.menu.splice(key,1);
 		        	}
 		        	
-		        	self.$ref.menuTab.currentName="1";
-					self.$message({
-					  type: 'success',
-					  message: '删除成功!'
-					});
+
+					
 		        }).catch(() => {
 		            self.$message({
 					  type: 'warning',
@@ -184,20 +189,29 @@
 		        });
 				
 			},
+			checkDialog: function(components, title, type) {
+				// type用来区分不同的用途，用来设置不同的回调
+				var obj = {};
+				obj.components = components;
+				obj.title = title;
+				obj.type = type;
+				store.commit("openModal", obj);
+			},
 			formEditData:function(goods,goodsData){
-				
-				for(var keyA in goodsData){
+				var self =this;
+				var tempDataArr = self.deepCopy(goodsData);
+				for(var keyA in tempDataArr){
 					for(var keyB in goods){
-						if(goods[keyB] ==goodsData[keyA].goodsId){
-							goodsData[keyA].isSelect = true;
+						if(goods[keyB] ==tempDataArr[keyA].goodsId){
+							tempDataArr[keyA].isSelect = true;
 						}
 					}
 				}
-				return self.deepCopy(goodsData);
+				return self.deepCopy(tempDataArr);
 			},
 			initMenuTab: function(tab) {
 				var self = this;
-				console.log(tab.label);
+
 				if(tab.label=='创建菜单' &&self.studio.pluginObj.menu.length>3){
 					this.$notify({
 						title: '提示',
@@ -207,10 +221,25 @@
 				}
 			},
 			removeMenuTab: function(tab) {
-				console.log(tab);
-//				if(tab.label =='创建菜单'){
-//					tab.
-//				}
+				
+//				var self=this,index = parseInt(tab.index.replace('edit','')),
+//				tempArr =self.deepCopy(self.studio.pluginObj.menu);
+//				if(tempArr.length ==1){
+//					this.$notify({
+//						title: '提示',
+//						message: '自定义菜单为空',
+//						type: 'warning'
+//					});
+//	        		tempArr.menu = [];
+//	        		self.dialog={};
+//					self.checkDialog('menuEdit','自定义菜单','menuModal');	
+//	        	}else{
+//	        		tempArr.splice(index,1);
+//	        	}
+//	        	 self.studio.pluginObj.menu=self.deepCopy(tempArr);
+//	        	 console.log(tempArr);
+	        	
+
 			},
 			deepCopy: function(o) {
 				var self = this;
@@ -233,7 +262,7 @@
 			},
 			//只要修改对应的item数据即可，至于格式化之类的操作全部写在store里面
 			onSubmitEdit: function(item) {
-var self =this;
+				var self =this;
 				if(item.article == '' && item.type == 'article') {
 							this.$notify({
 								title: '提示',
@@ -243,21 +272,8 @@ var self =this;
 							return;
 						}
 					
-						//恢复goodsData状态并更新goods
-						var total = 0,tempArrGoods = [];
-						for(var i = 0; i < self.goodsData.length; i++) {
-							if(self.goodsData[i].isSelect) {
-								total++;
-								tempArrGoods.push(self.goodsData[i].goodsId);
-							}
-							self.goodsData[i].isSelect = false; //把商品列表的信息回复初始化
 
-						}
-						item.goods = self.deepCopy(tempArrGoods);
-						tempArrGoods = [];//方便下次用
-						
-
-						if(total < 1 && item.type == 'goods') {
+						if(item.type == 'goods' &&item.goods.length < 1) {
 							this.$notify({
 								title: '提示',
 								message: '商品信息不能为空',
@@ -306,6 +322,7 @@ var self =this;
 						
 						self.formadd.goods = self.deepCopy(tempArrGoods);
 						tempArrGoods = [];//方便下次用
+						
 
 						if(total < 1 && self.formadd.type == 'goods') {
 							this.$notify({
@@ -317,8 +334,8 @@ var self =this;
 						}
 						
 						//将新建的实例添加到pluginObj中
-					
-						self.studio.pluginObj.menu.push(self.deepCopy(self.formadd));
+					var Arr1 = self.deepCopy(self.formadd);
+						self.studio.pluginObj.menu.push(Arr1);
 						
 						
 						//更新sutdio和服务器配置
@@ -327,7 +344,7 @@ var self =this;
 							studio: this.studio,
 						}
 						store.commit('changeStudio', data);
-						console.log(self.goodsData);return;
+
 						//打扫战场，清理痕迹
 						self.$refs.formadd.resetFields();
 						self.formadd={
