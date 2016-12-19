@@ -4,7 +4,7 @@
 		<el-row class="room_box">
 			<!--传入add然后让业务逻辑知道是创建新的直播间-->
 
-			<el-col :span="7" class="roomAdd">
+			<el-col :sm=" {span: 6}" :md="{span:4}" :lg="{span:1}" xs:span="10" class="roomAdd">
 				<div @click="addRoom()">创建房间</div>
 			</el-col>
 			<template v-for="(room,index) in roomList">

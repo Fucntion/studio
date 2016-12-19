@@ -10,7 +10,7 @@
     </el-form-item>
     <el-checkbox v-model="checked" checked style="margin:0px 0px 35px 0px;">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
-      <el-button type="primary" class="loginBtn"  style="width:100%;" @click.native.prevent="handleSubmit2">登录</el-button>
+      <el-button type="primary" class="loginBtn"  style="width:100%;" v-on:keyup.enter="handleSubmit2" @click.native.prevent="handleSubmit2">登录</el-button>
       <router-link to="register"><el-button  style="width:100%;" >注册</el-button></router-link>
       <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
     </el-form-item>

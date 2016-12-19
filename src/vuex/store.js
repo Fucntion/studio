@@ -140,10 +140,6 @@ const mutations = {
 
 		var obj = data.studio,
 			id = data.id;
-//		if(data.type &&data.type=='plugin'){
-//			//针对组件修改做的修改
-//		}
-
 
 		function deepCopy(o) {
 				var self =this;
@@ -177,7 +173,7 @@ const mutations = {
 		ajaxObj.plugin =JSON.stringify(ajaxObj.pluginObj);
 		delete ajaxObj.pluginObj;//这里把对象清空了因为不必要传到服务器上，在初始化的时候记得加上pluginObj的初始化
 		var url = '/rooms/' + id;
-		console.log(ajaxObj);return;
+//		console.log(ajaxObj);return;
 		Vue.http.put(url,ajaxObj).then((response) => {
 
 			// state.studio =response.body;
