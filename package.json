@@ -14,12 +14,13 @@
     "json-loader": "^0.5.4",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "lodash": "^4.17.2",
+    "qr.js": "0.0.0",
     "vue": "^2.0.1",
     "vue-awesome-swiper": "^2.2.3",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.0.3",
     "vue-video-player": "^2.3.4",
-    "qr.js": "0.0.0",
     "vuex": "^2.0.0"
   },
   "devDependencies": {

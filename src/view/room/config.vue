@@ -310,7 +310,7 @@
 				var self =this,
 					name = functionName,
 					obj = self.pluginList[type];//获取对应的类别数组
-					console.log(obj);
+//					console.log(obj);
 					
 
 				for(var i = 0; i < obj.length; i++) {
@@ -464,7 +464,7 @@
 
 				//从vuex中读取组件的默认信息
 				self.pluginList = store.getters.getPluginList;
-				console.log(JSON.parse(self.studio.plugin).menu);
+
 				self.studio.pluginObj = JSON.parse(self.studio.plugin);
 				self.menuListData = self.studio.pluginObj.menu;
 				//flv_downstream_address hls_downstream_address

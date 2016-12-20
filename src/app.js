@@ -1,5 +1,5 @@
 import Vue from 'vue'
-
+var _ = require('lodash')
 
 import VueRouter from 'vue-router'
 import routes from './routes' 

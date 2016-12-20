@@ -57,11 +57,12 @@ export default {
          	]
        }
     },
-    props:['studio','type']
+    props:['studio','dialog']
     ,methods: {
-      call:function(response, file, fileList){
-        // http://saaslive.oss-cn-shanghai.aliyuncs.com/user-dir/KyotoBamboo_ROW8597566657_1920x1200.jpg
-        var type =this.type,fileUlr ="http://saaslive.oss-cn-shanghai.aliyuncs.com"+'/user-dir/'+file.name;
+      call:function(response,file, fileList){
+      	
+
+        var type =this.dialog.type,fileUlr =file.url;
 
 
         switch(type){
@@ -78,7 +79,7 @@ export default {
           studio:this.studio,
         }
 
-        // console.log(data);return;
+//         console.log(data);return;
 
         store.commit('changeStudio',data);
 
@@ -101,7 +102,7 @@ export default {
       },
       set_key(file){
         this.new_multipart_params.name = file.name;
-        this.new_multipart_params.key = 'user-dir/'+file.name;
+        this.new_multipart_params.key = this.new_multipart_params.dir+file.name;
         // console.log(this.new_multipart_params);return;
       },
       handlePreview(file) {
@@ -148,7 +149,8 @@ export default {
         tempObj.policy = obj.policy;
         tempObj.OSSAccessKeyId = obj.accessid;
         tempObj.signature = obj.signature;
-        // tempObj.key =;
+        tempObj.dir =obj.dir;
+				tempObj.callbackbody = obj.callback;
         this.new_multipart_params = tempObj;
         // console.log(this.new_multipart_params);
       }, (response) => {
