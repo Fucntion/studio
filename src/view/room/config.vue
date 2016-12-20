@@ -48,11 +48,15 @@
 					<!--幻灯片-->
 					<template v-if="showStatus_mobile.advert">
 						<!--<el-tooltip class="tooltip" effect="dark" content="Top Center 提示文字" placement="top">-->
-						<div class="mobile_advert mobile_content" @click="checkDialog('menuEdit','设置广告栏','advertModal')">
+						<div class="mobile_advert mobile_content" @click="checkDialog('advertEdit','设置广告栏','advertModal')">
 							<swiper :options="swiperOption">
-								<swiper-slide :style="{backgroundImage: 'url(' + testUrl + ')'}"></swiper-slide>
-								<swiper-slide :style="{backgroundImage: 'url(' + testUrl + ')'}"></swiper-slide>
-								<swiper-slide :style="{backgroundImage: 'url(' + testUrl + ')'}"></swiper-slide>
+								
+								<template v-if="advertListData.length>0">
+									<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
+								</template>
+								<template v-else>
+									<swiper-slide  style="background:url('./src/assets/img/nopic.jpg')"></swiper-slide>
+								</template>
 							</swiper>
 						</div>
 						<!--</el-tooltip>-->
@@ -60,7 +64,8 @@
 					<!--自定义菜单-->
 					<template v-if="showStatus_mobile.menu">
 						<div class="mobile_menu mobile_content" @click="checkDialog('menuEdit','自定义菜单','menuModal')">
-							<div v-for="(item,index) in listData" class="menu_item" :style="{width:liWidth}" :data-id="item.index">{{item.name}}</div>
+							<div  class="menu_item"  :data-id="1">观众点评</div>
+							<div v-for="(item,index) in menuListData" class="menu_item"  :data-id="item.title">{{item.title}}</div>
 						</div>
 					</template>
 
@@ -200,8 +205,8 @@
 			</el-tabs>
 		</div>
 
-			<!-- 弹出框 -->
-			<dialog-box :studio="studio"></dialog-box>
+		<!-- 弹出框 -->
+		<dialog-box :studio="studio"></dialog-box>
 
 	</el-row>
 </template>
@@ -228,20 +233,25 @@
 				//menu Data
 				pluginList: {},
 				//mobile Data
-				listData: [{
-					name: '观众评论',
-					index: 1
-				}, {
-					name: '商品列表',
-					index: 4
-				}, {
-					name: '公司简介',
-					index: 2
-				}, {
-					name: '活动报名',
-					index: 3
-				}],
-				liWidth: 414 / 4 + 'px',
+				menuListData:[],
+				advertListData:[
+//					{
+//						pic:'http://pic93.nipic.com/file/20160330/22800842_095503208960_2.jpg',
+//						href:'http://baidu.com',
+//						index:1
+//					},
+//					{
+//						pic:'http://pic93.nipic.com/file/20160330/22800842_095503208960_2.jpg',
+//						href:'http://baidu.com',
+//						index:1
+//					},
+//					{
+//						pic:'http://pic93.nipic.com/file/20160330/22800842_095503208960_2.jpg',
+//						href:'http://baidu.com',
+//						index:1
+//					}
+				],
+
 				videoOptions: {
 
 					source: {
@@ -264,7 +274,7 @@
 					notNextTick: true,
 					autoplay: 3000
 				},
-				testUrl: "http://pic93.nipic.com/file/20160330/22800842_095503208960_2.jpg",
+
 				//common Data
 				radio: '1',
 				showStatus_origin: {
@@ -454,6 +464,9 @@
 
 				//从vuex中读取组件的默认信息
 				self.pluginList = store.getters.getPluginList;
+				console.log(JSON.parse(self.studio.plugin).menu);
+				self.studio.pluginObj = JSON.parse(self.studio.plugin);
+				self.menuListData = self.studio.pluginObj.menu;
 				//flv_downstream_address hls_downstream_address
 				self.videoOptions.source.src = 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8';
 				self.showStatus_mobile.player = true;

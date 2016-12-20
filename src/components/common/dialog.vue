@@ -1,7 +1,7 @@
 <template>
 
 <el-modal  :title="dialog.title"   v-model="dialog.visible">
-  <div   :class="dialog.type" :dialog="dialog"   :is="dialog.current"></div>
+  <div   :class="dialog.type"  :dialog="dialog"   :is="dialog.current"></div>
 </el-modal>
 
 
@@ -15,6 +15,7 @@ import videoBox from "./videoBox.vue"
 import goodsBox from "./goodsBox.vue"
 
 import menuEdit from "../dialog/menuEdit.vue"
+import advertEdit from "../dialog/advertEdit.vue"
 
 export default {
     data: function() {
@@ -29,9 +30,10 @@ export default {
     },
     components:{
     	pictureBox,
-		goodsBox,
-		videoBox,
-        menuEdit
+			goodsBox,
+			videoBox,
+        menuEdit,
+        advertEdit
 
     },mounted() {
 

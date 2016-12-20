@@ -2,13 +2,13 @@
 	<el-tabs v-if="studio" ref="Menutab" active-name="1"  type="border-card"  @tab-click="initMenuTab" @tab-remove="removeMenuTab"  >
 		<!--如果菜单长度小于4，就显示添加菜单的选项卡-->
 		<el-tab-pane :name="add" class="addMenuTab" label="创建菜单">
-			<div class="menuEditTip" v-if="studio.pluginObj.menu.length>3">为了更好的用户体验，最多允许设置四个自定义菜单</div>
+			<div class="menuEditTip" v-if="studio.pluginObj.menu.length>2">为了更好的用户体验，最多允许设置三个自定义菜单</div>
 			<el-form ref="formadd" :rules="rules" :model="formadd" label-width="80px">
 				<el-form-item label="菜单名称" prop="title">
-						<el-input v-model="formadd.title" :disabled="studio.pluginObj.menu.length>3" placeholder="菜单名称不超过四个中文字"></el-input>
+						<el-input v-model="formadd.title"  :disabled="studio.pluginObj.menu.length>2" placeholder="菜单名称不超过三个中文字"></el-input>
 				</el-form-item>
 				<el-form-item label="菜单类型" prop="type">
-					<el-select v-model="formadd.type"  :disabled="studio.pluginObj.menu.length>3" placeholder="请选择菜单的类型">
+					<el-select v-model="formadd.type"  :disabled="studio.pluginObj.menu.length>2" placeholder="请选择菜单的类型">
 						<el-option label="图文内容" value="article"></el-option>
 						<el-option label="商品列表" value="goods"></el-option>
 					</el-select>
@@ -44,8 +44,8 @@
 
 				</el-form-item>
 				<el-form-item>
-					<template v-if="studio.pluginObj.menu.length>3">
-						<el-button type="primary" :disabled="true">最多只能拥有四个菜单</el-button>
+					<template v-if="studio.pluginObj.menu.length>2">
+						<el-button type="primary" :disabled="true">最多只能拥有三个菜单</el-button>
 					</template>
 					<template v-else>
 						<el-button @click="onSubmit" type="primary">立即创建</el-button>
@@ -61,7 +61,7 @@
 
 			<el-form ref="formedit" :rules="rules" :model="item" label-width="80px">
 				<el-form-item label="菜单名称" prop="title">
-					<el-input v-model="item.title" placeholder="菜单名称不超过四个中文字"></el-input>
+					<el-input v-model="item.title" placeholder="菜单名称不超过三个中文字"></el-input>
 				</el-form-item>
 				<el-form-item label="菜单类型" prop="type">
 					<el-select v-model="item.type" placeholder="请选择菜单的类型">
@@ -107,12 +107,13 @@
 <script>
 	import store from '../../vuex/store';
 	export default {
+		name:'menuEdit',
 		data: function() {
 			var validateTitle = (rule, value, callback) => {
 				if(value === '') {
 					callback(new Error('请输入菜单名称'));
 				} else if(value.length > 4) {
-					callback(new Error('菜单长度不能超过四个字符'));
+					callback(new Error('菜单长度不能超过三个字符'));
 				} else {
 					callback();
 				}
@@ -168,11 +169,19 @@
 							message: '自定义菜单为空',
 							type: 'warning'
 						});
-
-
 		        	}else{
 		        		self.studio.pluginObj.menu.splice(key,1);
 		        	}
+		        	
+		        	
+		        	//更新sutdio和服务器配置
+					var data = {
+						id: self.$router.currentRoute.params.id,
+						studio: self.studio,
+					}
+					store.commit('changeStudio', data);
+		        	
+		        	
 		        }).catch(() => {
 		            self.$message({
 					  type: 'warning',
@@ -204,10 +213,10 @@
 			initMenuTab: function(tab) {
 				var self = this;
 
-				if(tab.label=='创建菜单' &&self.studio.pluginObj.menu.length>3){
+				if(tab.label=='创建菜单' &&self.studio.pluginObj.menu.length>2){
 					this.$notify({
 						title: '提示',
-						message: '最多可设置四个自定义菜单',
+						message: '最多可设置三个自定义菜单',
 						type: 'warning'
 					});
 				}
@@ -264,7 +273,6 @@
 							return;
 						}
 					
-
 						if(item.type == 'goods' &&item.goods.length < 1) {
 							this.$notify({
 								title: '提示',

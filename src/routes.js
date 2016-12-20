@@ -146,6 +146,4 @@ const routes = [
 ]
 
 
-
-
-export default routers;
+export default routes;

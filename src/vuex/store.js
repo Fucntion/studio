@@ -118,10 +118,12 @@ const mutations = {
 			console.log('参数有误无法弹出dialog');
 			return
 		}
-		state.dialog.visible = !state.dialog.visible;
+		
+		
 		state.dialog.title = obj.title;
 		state.dialog.current = obj.components;
 		state.dialog.type = obj.type;
+		state.dialog.visible = true;
 	},
 	closeModal: function(state, obj) {
 		state.dialog.visible = false;

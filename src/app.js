@@ -1,12 +1,14 @@
 import Vue from 'vue'
 
-import VueRouter from 'vue-router'
-import routes from './routers' 
-Vue.use(VueRouter)
 
+import VueRouter from 'vue-router'
+import routes from './routes' 
+Vue.use(VueRouter)
 const router = new VueRouter({
     routes
 });
+
+
 router.beforeEach((to, from, next) => {
 
     if(to.path =="/login" || to.path =="/register"){
@@ -21,12 +23,7 @@ router.beforeEach((to, from, next) => {
         }else{
             next();
         }
-
     }
-    
-
-
-  // ...
 })
 
 
@@ -57,7 +54,7 @@ Vue.http.interceptors.push((request, next)  =>{
     	}
                  
     }
-       
+    
     next((response) => {
         return response
     });
@@ -70,11 +67,12 @@ Vue.use(ElementUI)
 
 
 import App from './App.vue'
-import Login from './components/usr/login.vue'
 
-
+import './filter.js'
+import './directive.js'
 const app = new Vue({
     router,
+    el:'#studio',
     render: h => h(App)
-}).$mount('#studio')
+})
 

@@ -1,36 +1,36 @@
 <template>
-    <transition name="bounce">
-     <router-view></router-view>
- </transition>
+	
+	<transition name="bounce">
+		<router-view></router-view>
+	</transition>
 
 </template>
 
 <script>
+	export default {
+		name:'app',
+		data: function() {
 
-    export default {
-        data: function() {
+			return {
 
-            return {
+			}
+		},
+		methods: {
 
-            }
-        },
-        methods: {
+		},
+		components: {
 
-        },
-        components: {
+		},
+		watch: {
 
+		},
+		mounted() {
 
-        },
-        watch: {
-
-        },
-        mounted() {
-
-        }
-    }
+		}
+	}
 </script>
 <style lang="less">
-@import "../node_modules/font-awesome/css/font-awesome.min.css";
-@import './assets/css/app.less';
-@import './lib/theme-default/index.css';
+	@import "../node_modules/font-awesome/css/font-awesome.min.css";
+	@import './assets/css/app.less';
+	@import './lib/theme-default/index.css';
 </style>

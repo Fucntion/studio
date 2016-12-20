@@ -32,6 +32,7 @@
 	
 
 	export default {
+		name:'studio',
 		data: function() {
 
 			return {
