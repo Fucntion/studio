@@ -35,7 +35,7 @@
 <script>
 	export default {
 
-
+		name:'registrer',
 		data() {
 			var validatePass = (rule, value, callback) => {
 				if (value === '') {

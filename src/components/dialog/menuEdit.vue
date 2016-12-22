@@ -1,5 +1,5 @@
 <template>
-	<el-tabs v-if="studio" ref="Menutab" active-name="1"  type="border-card"  @tab-click="initMenuTab" @tab-remove="removeMenuTab"  >
+	<el-tabs  v-if="show" ref="Menutab" active-name="1"  type="border-card"  @tab-click="initMenuTab" @tab-remove="removeMenuTab"  >
 		<!--如果菜单长度小于4，就显示添加菜单的选项卡-->
 		<el-tab-pane :name="add" class="addMenuTab" label="创建菜单">
 			<div class="menuEditTip" v-if="studio.pluginObj.menu.length>2">为了更好的用户体验，最多允许设置三个自定义菜单</div>
@@ -127,6 +127,7 @@
 			};
 
 			return {
+				show:false,
 				studio: null,
 				goodsData: null,
 				formadd: {
@@ -220,27 +221,6 @@
 						type: 'warning'
 					});
 				}
-			},
-			removeMenuTab: function(tab) {
-				
-//				var self=this,index = parseInt(tab.index.replace('edit','')),
-//				tempArr =self.deepCopy(self.studio.pluginObj.menu);
-//				if(tempArr.length ==1){
-//					this.$notify({
-//						title: '提示',
-//						message: '自定义菜单为空',
-//						type: 'warning'
-//					});
-//	        		tempArr.menu = [];
-//	        		self.dialog={};
-//					self.checkDialog('menuEdit','自定义菜单','menuModal');	
-//	        	}else{
-//	        		tempArr.splice(index,1);
-//	        	}
-//	        	 self.studio.pluginObj.menu=self.deepCopy(tempArr);
-//	        	 console.log(tempArr);
-	        	
-
 			},
 			deepCopy: function(o) {
 				var self = this;
@@ -387,6 +367,7 @@
 						tempObj[key].isSelect = false;
 					}
 					self.goodsData = tempObj;
+					self.show =true;
 
 				}, (response) => {
 

@@ -70,6 +70,7 @@ import App from './App.vue'
 
 import './filter.js'
 import './directive.js'
+
 const app = new Vue({
     router,
     el:'#studio',

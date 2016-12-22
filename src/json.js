@@ -36,6 +36,7 @@ pluginObj:{
 	]
 	advert:
 }
+
 plugin
 	player
 	menu

@@ -1,5 +1,5 @@
 <template>
-	<el-row class="config">
+	<el-row class="config" v-if="show">
 
 		<div class="plugin_box">
 			<div class="plugin">
@@ -7,10 +7,9 @@
 					<div class="title">功能列表</div>
 					<div class="box">
 						<!--灰色的是必选-->
-						
 						<fieldset class="base">
 							<legend> 基础 </legend>
-							<div  v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'base')" class="plugin_item" v-for="(item,index) in pluginList.base">
+							<div v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'base')" class="plugin_item" v-for="(item,index) in pluginList.base">
 								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
 								<div class="name">{{item.name}}</div>
 							</div>
@@ -18,7 +17,7 @@
 
 						<fieldset class="interaction">
 							<legend> 互动 </legend>
-							<div  v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'interaction')" class="plugin_item" v-for="(item,index) in pluginList.interaction">
+							<div v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'interaction')" class="plugin_item" v-for="(item,index) in pluginList.interaction">
 								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
 								<div class="name">{{item.name}}</div>
 							</div>
@@ -44,30 +43,23 @@
 				<div class="wrap">
 
 					<!--播放器-->
-					<video-Player v-if="showStatus_mobile.player" :options="videoOptions" ref="videoPlayer"></video-Player>
+					<video-Player :options="videoOptions" ref="videoPlayer"></video-Player>
 					<!--幻灯片-->
-					<template v-if="showStatus_mobile.advert">
-						<!--<el-tooltip class="tooltip" effect="dark" content="Top Center 提示文字" placement="top">-->
+					
+					<template v-if="advertListData.length>0">
 						<div class="mobile_advert mobile_content" @click="checkDialog('advertEdit','设置广告栏','advertModal')">
 							<swiper :options="swiperOption">
-								
-								<template v-if="advertListData.length>0">
-									<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
-								</template>
-								<template v-else>
-									<swiper-slide  style="background:url('./src/assets/img/nopic.jpg')"></swiper-slide>
-								</template>
+								<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
 							</swiper>
 						</div>
-						<!--</el-tooltip>-->
 					</template>
 					<!--自定义菜单-->
-					<template v-if="showStatus_mobile.menu">
-						<div class="mobile_menu mobile_content" @click="checkDialog('menuEdit','自定义菜单','menuModal')">
-							<div  class="menu_item"  :data-id="1">观众点评</div>
-							<div v-for="(item,index) in menuListData" class="menu_item"  :data-id="item.title">{{item.title}}</div>
-						</div>
-					</template>
+					<div class="mobile_menu mobile_content" @click="checkDialog('menuEdit','自定义菜单','menuModal')">
+						<div class="menu_item" :data-id="1">观众点评</div>
+						<template v-if="menuListData.length>0">
+							<div v-for="(item,index) in menuListData" class="menu_item" :data-id="item.title">{{item.title}}</div>
+						</template>
+					</div>
 
 				</div>
 			</div>
@@ -76,7 +68,7 @@
 		<!-- 公共设置 -->
 		<div class="common_box">
 
-			<el-tabs class="common" :active-name="activeName">
+			<el-tabs class="common"  type="border-card" :active-name="activeName">
 				<el-tab-pane label="直播源" name="first">
 
 					<div class="origin">
@@ -203,10 +195,10 @@
 					</div>
 				</el-tab-pane>
 			</el-tabs>
-		</div>
+			</div>
 
-		<!-- 弹出框 -->
-		<dialog-box :studio="studio"></dialog-box>
+			<!-- 弹出框 -->
+			<dialog-box :studio="studio"></dialog-box>
 
 	</el-row>
 </template>
@@ -229,34 +221,18 @@
 		data: function() {
 
 			return {
-
+				show: false,
 				//menu Data
 				pluginList: {},
 				//mobile Data
-				menuListData:[],
-				advertListData:[
-//					{
-//						pic:'http://pic93.nipic.com/file/20160330/22800842_095503208960_2.jpg',
-//						href:'http://baidu.com',
-//						index:1
-//					},
-//					{
-//						pic:'http://pic93.nipic.com/file/20160330/22800842_095503208960_2.jpg',
-//						href:'http://baidu.com',
-//						index:1
-//					},
-//					{
-//						pic:'http://pic93.nipic.com/file/20160330/22800842_095503208960_2.jpg',
-//						href:'http://baidu.com',
-//						index:1
-//					}
-				],
+				menuListData: [],
+				advertListData: [],
 
 				videoOptions: {
 
 					source: {
 						"type": "application/x-mpegURL",
-						"src":'',
+						"src": '',
 						"withCredentials": false
 					},
 					"poster": "http://live.icloudinn.com/img3/logo.png",
@@ -285,12 +261,7 @@
 					origin: true,
 					total: false,
 					countDown: false
-				},
-				showStatus_mobile: {
-					'player': false,
-					'advert': false,
-					'menu': false
-				},
+				}
 
 			}
 		},
@@ -303,15 +274,13 @@
 			videoPlayer
 		},
 		methods: {
-			functionAdd: function(functionName,type) {
+			functionAdd: function(functionName, type) {
 
 				//this.$parent
 				//输入哪个模块的参数就在模拟器中渲染刷新对应的模块，如果传的是all那就全部刷新。
-				var self =this,
+				var self = this,
 					name = functionName,
-					obj = self.pluginList[type];//获取对应的类别数组
-//					console.log(obj);
-					
+					obj = self.pluginList[type]; //获取对应的类别数组
 
 				for(var i = 0; i < obj.length; i++) {
 
@@ -319,78 +288,63 @@
 
 						if(obj[i].require == true) {
 							this.$message({
-					            type: 'info',
-					            message: name+'是必选功能哦'
-					       });
+								type: 'info',
+								message: name + '是必选功能哦'
+							});
 							return
 						}
-						if(obj[i].usable ==false){
+						if(obj[i].usable == false) {
 							this.$message({
-					            type: 'info',
-					            message: name+'功能即将上线'
-					        });
+								type: 'info',
+								message: name + '功能即将上线'
+							});
 							return;
 						}
 						if(obj[i].checked == true) {
-						
-							this.$confirm(name+'功能已经存在，是否删除?', '提示', {
-					          confirmButtonText: '确定',
-					          cancelButtonText: '取消',
-					          type: 'warning'
-					        }).then(() => {
-				        	obj[i].checked = false;
-							self.$options.methods.refresh(self.pluginList,self.showStatus_mobile);
 
-					          this.$notify.info({
-			                      title: '提示信息',
-			                      message:'删除成功'
-			                   }); 
-					        }).catch(() => {
-					        	this.$notify.info({
-			                      title: '提示信息',
-			                      message:'已取消删除'
-			                   });       
-					        });
+							this.$confirm(name + '功能已经存在，是否删除?', '提示', {
+								confirmButtonText: '确定',
+								cancelButtonText: '取消',
+								type: 'warning'
+							}).then(() => {
+								obj[i].checked = false;
+								self.$options.methods.refresh(self.pluginList, self.showStatus_mobile);
+
+								this.$notify.info({
+									title: '提示信息',
+									message: '删除成功'
+								});
+							}).catch(() => {
+								this.$notify.info({
+									title: '提示信息',
+									message: '已取消删除'
+								});
+							});
 
 							return;
 
 						}
 						obj[i].checked = true;
 						this.$notify({
-	                      title: '提示信息',
-	                      message:name+'添加成功!',
-	                      type: 'success'
-	                    });
+							title: '提示信息',
+							message: name + '添加成功!',
+							type: 'success'
+						});
 						
-						self.$options.methods.refresh(self.pluginList,self.showStatus_mobile)
 						break;
 					}
 
+				}
+				if(name=='广告栏'){
+					self.checkDialog('advertEdit','设置广告栏','advertModal');
 				}
 
 			},
 			refresh: function(pluginList,showStatus_mobile) {
 
-				for(var index in pluginList){
-					
-					var obj =pluginList[index];
-					for(var i = 0; i < obj.length; i++) {
-						if(obj[i].plugin && !obj[i].require) {
-	
-								for(var key in showStatus_mobile) {
-		
-									if(key == obj[i].plugin) {
-		//								console.log(app, app.$parent.showStatus, key);
-										//通过pluginList中的plugin字段，来判断属性会影响哪个mobile模拟器中的显示
-										showStatus_mobile[key] = obj[i].checked;
-		
-										break;
-		
-									}
-								}
-						}
-					}
-				}
+				var self = this;
+				self.menuListData = self.studio.pluginObj.menu;
+				self.advertListData = self.studio.pluginObj.advert;
 				
 			},
 			changeShow_origin: function(name) {
@@ -458,20 +412,17 @@
 				obj.type = type;
 				store.commit("openModal", obj);
 			},
-			
+
 			init: function() {
 				var self = this;
 
 				//从vuex中读取组件的默认信息
 				self.pluginList = store.getters.getPluginList;
-
 				self.studio.pluginObj = JSON.parse(self.studio.plugin);
 				self.menuListData = self.studio.pluginObj.menu;
-				//flv_downstream_address hls_downstream_address
+				self.advertListData = self.studio.pluginObj.advert;
 				self.videoOptions.source.src = 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8';
-				self.showStatus_mobile.player = true;
-//				this.showStatus_mobile.advert = true;
-				self.showStatus_mobile.menu = true;
+				self.show = true;
 
 			}
 		},
@@ -484,7 +435,7 @@
 
 <style src="video.js/dist/video-js.css"></style>
 <style lang="less">
-	@import "./swiper.css";
+	@import "../../assets/css/swiper.css";
 	/*style Mobile*/
 	
 	.swiper-container {

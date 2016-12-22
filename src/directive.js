@@ -11,5 +11,3 @@ Vue.directive('focus', {
 })
 //<input v-focus>
 
-// getter，返回已注册的指令
-//var myDirective = Vue.directive('my-directive')

@@ -61,8 +61,7 @@ export default {
     ,methods: {
       call:function(response,file, fileList){
       	
-
-        var type =this.dialog.type,fileUlr =file.url;
+        var type =this.dialog.type,fileUlr ='http://saaslive.oss-cn-shanghai.aliyuncs.com/'+this.new_multipart_params.dir+file.name;
 
 
         switch(type){

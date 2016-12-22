@@ -167,6 +167,10 @@ const mutations = {
 			console.log('要替换的值不是对象');
 			return;
 		}
+		
+		obj.pluginObj.advert = _.sortBy(obj.pluginObj.advert, function(item) {
+			return -item.index;
+		});
 		//先改变本地的值再向服务器同步
 		state.studio = obj;
 		

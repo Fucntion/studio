@@ -1,23 +1,15 @@
 <template>
-	<div id="studio">
-		<template v-if="show">
-			<el-tabs class="studio_tab" type="border-card" :active-name="activeName">
-			<el-tab-pane label="直播设置" name="config">
-				<config :studio="studio"></config>
-			</el-tab-pane>
-			<el-tab-pane label="用户管理" name="analysis">
-				<audience :studio="studio"></audience>
-				
-			</el-tab-pane>
-			<el-tab-pane label="数据分析" name="audience">
-				<analysis :studio="studio"></analysis>
-			</el-tab-pane>
-		</el-tabs>
-			
-		</template>
-		
-		
-
+	<div id="studio" v-if="show">
+	<div class="top_bar">
+		<div class="item_box">
+			<div @click="setcurrentView('config')" v-bind:class="{isActive:currentView=='config'}" class="item">直播间设置</div>
+			<div @click="setcurrentView('audience')" v-bind:class="{isActive:currentView=='audience'}" class="item">用户管理</div>
+			<div @click="setcurrentView('analysis')"  v-bind:class="{isActive:currentView=='analysis'}" class="item">数据分析</div>
+		</div>
+	</div>
+	<config v-if="currentView=='config'" :studio="studio"></config>
+	<audience v-if="currentView=='audience'"  :studio="studio"></audience>
+	<analysis v-if="currentView=='analysis'"  :studio="studio"></analysis>
 	</div>
 </template>
 
@@ -27,33 +19,15 @@
 	import StudioAnalysis from './analysis.vue'
 
 	import store from '../../vuex/store'
-	// Example(Only applies to the current global mode). 用配置项的话仅支持全局模式来配置，否则不会生效
-
-	
 
 	export default {
 		name:'studio',
 		data: function() {
 
 			return {
-				
 				studio:null,
 				show:false,
-				videoOptions:{
-					source: {
-						"type": "application/x-mpegURL",
-//						 "src": 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8',
-						"src": null,
-						"withCredentials": false
-					},
-					"poster": "http://live.icloudinn.com/img3/logo.png",
-					"live": true,
-					"autoplay": false,
-					"height": 414 * 2 / 3,
-					"language": 'zh-cn'
-				},
-				
-				activeName: 'config'
+				currentView: 'config'
 			}
 		},
 		store,
@@ -61,20 +35,16 @@
 			'config': StudioConfig,
 			'analysis': StudioAnalysis,
 			'audience': StudioAudience,
-
-
 		},	
 		methods: {
+			setcurrentView:function(type){
+				
+				this.currentView = type;
+				console.log(type,this.currentView);
+			},
 			init:function(){
-				//只要打开页面,就是ajax,管他什么store
-				
-				
 
-			}
-
-		},
-		mounted() {
-			var self = this;		
+				var self = this;		
 				var id = self.$router.currentRoute.params.id;
 				var url = "/rooms/" + id;
 				self.$http.get(url).then((response) => {
@@ -88,21 +58,30 @@
 					self.studio = store.getters.getStudio; //统一使用这个来调用
 					self.show =true;
 
-					//self.videoOptions.source.src ='http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8';
 
 				}, (response) => {
 					console.log(response);
 				});
+				
+			}
+
+		},
+		mounted() {
+			this.init();	
 
 		}
 	}
 </script>
 <style lang="less">
-	/*.el-tabs__header{
-	width: 270px;
-	margin: 0 auto !important;
-}
-.el-tabs__item{
 
-}*/
+// .矩形_15 {
+//   background-color: rgb(32, 160, 255);
+//   position: absolute;
+//   left: 431px;
+//   top: 57px;
+//   width: 94px;
+//   height: 4px;
+//   z-index: 5;
+// }
+
 </style>

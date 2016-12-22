@@ -1,0 +1,231 @@
+.top_bar{
+    height: 60px;
+    line-height: 60px;
+    overflow: hidden;
+    background: white;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 2px #bbbbbb;
+    .item_box{
+        margin: 0 auto;
+        width:400px;
+        .item{
+            font-size:18px;
+            width:94px;
+            line-height:56px;
+            margin:0 5px;
+            text-align: center;
+            display:inline-block;
+            cursor:pointer;
+            
+        }
+        .isActive{
+            color:@el-blue;
+            border-bottom:solid 3px @el-blue;
+        }
+    }
+}
+
+
+.config{
+    width:1200px;
+    margin:30px auto;
+    // 300+60+414+60+360
+    .plugin_box,.mobile_box,.common_box{    
+        float:left;
+        height:736px;
+        background:white;
+        box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    .mobile_box{
+        margin-left:60px;
+
+    }
+    .common_box{
+        margin-left:60px;
+    }
+}
+
+.plugin{
+    width:300px;
+    .title{
+        // width:
+        font-size:18px;
+        background:#20a0ff;
+        height:60px;
+        line-height:60px;
+        text-align:center;
+        color:white;
+    }
+    .box{
+
+        padding:6px;
+        .active {
+            border: 1px solid #20A0FF;
+            border-radius:3px;
+        }
+        fieldset{
+            margin-bottom:10px;
+            border:1px solid #c0c0c0;
+            padding:5px 0px 10px;
+            legend{
+                padding:5px;
+                color:#20a0ff;
+            }
+            .plugin_item{
+                text-align:center;
+                width:90px;
+                height:90px;
+                float:left;
+                padding:10px 0px;
+                margin:5px 0 5px 5px;
+                box-sizing:border-box;
+                cursor: pointer;
+                .icon{
+                    width:50px;
+                    height: 50px;
+                    display:inline-block;
+                    background-repeat: no-repeat;
+                    background-size:50px ;
+                    background-position: center center;
+                }
+                .name{
+                    color:#555555;
+                    margin:5px 0;
+                    height:15px;
+                    line-height:15px;
+                    font-size:14px;
+                }
+            }
+        }
+    }
+
+}
+
+.mobile{
+    width:414px;
+    overflow:hidden;
+    // background: url('~assets/img/mobile.png') no-repeat top center;
+    background-size: cover;
+    //手机模型的内容显示区
+    .header{
+        height:64px;
+        line-height:64px;
+        text-align:center;
+    }
+    .wrap{
+
+       height:672px;
+       .tooltip{
+ 
+        }
+        .mobile_content{
+            cursor: pointer;
+            
+            
+            
+        }
+        .mobile_content:hover{
+            opacity: 0.5;
+        }
+       .mobile_menu{
+        width:100%;
+        height: 44px;
+        background:#F9FAFC;
+        display:flex;
+        .menu_item {
+                // padding-left: 10px;
+                flex:1;
+                height:44px;
+                line-height:44px;
+                text-align:center;
+                box-sizing:border-box;
+                float:left;
+        }
+        }
+    }
+}
+
+.common{
+
+    width:360px;
+    >.el-tabs__header{
+        display:flex;
+        background:#f2f2f2;
+        .el-tabs__item{
+            height:60px;
+            line-height:60px;
+            font-size:16px;
+            flex:1;
+            text-align:center;
+        }
+    }
+    .container{
+        margin:10px 0px 35px ;
+        h5{
+            background:#C0CCDA;
+            padding:5px;
+            margin:5px 0;
+        }
+        .title{
+            margin:15px 0 10px;
+        }
+        
+    }
+    
+    .header{
+        padding:5px 0;
+        .header_tab{
+            margin-right: 15px;
+            padding-bottom: 5px;
+
+        }
+        :hover{
+            cursor: pointer;
+
+        }
+        .active{
+            color: #20a0ff;
+            border-bottom: 2px solid #20a0ff;
+        }
+    }
+
+    .origin{
+
+        .origin_form{
+
+        }
+        .origin_show{
+
+            p{
+                word-wrap:break-word;
+                line-height:1.5;
+                background:#E5E9F2;
+                border:1px solid #F9FAFC;
+                padding:5px;
+                cursor:pointer;
+            }
+        } 
+    }
+    .feature{
+        .container{
+             .cover,.logo{
+                img{
+                    display:block;
+                    margin:10px;
+                }
+            }
+        }
+    }
+    .allow{
+        .container{
+            margin-top:0px;
+            .limit{
+                margin-top:15px;
+            }
+
+        }
+
+    }
+
+}

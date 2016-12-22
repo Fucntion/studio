@@ -1,149 +1,170 @@
-const routes = [
-{
-    path: '/login',
-    component: require('./components/usr/login.vue'),
-    name: '用户登录',
-    title: '用户登录',
-    hidden: true
+const routes = [{
+	path: '/login',
+	component: require('./components/usr/login.vue'),
+	name: '用户登录',
+	hidden: true
 }, {
-    path: '/register',
-    component: require('./components/usr/register.vue'),
-    name: '用户注册',
-    title: '用户注册',
-    hidden: true
+	path: '/register',
+	component: require('./components/usr/register.vue'),
+	name: '用户注册',
+	hidden: true
 
-},{
-    path: '/error',
-    component: require('./components/error.vue'),
-    name: '出错了',
-    title: '出错了',
-    hidden: true
-
-},{
-    path: '/studio/:id',
-    component: require('./view/room/studio.vue'),
-    name: '美化直播间',
-    hidden: true
-
-},
-    {
-    path: '/home',
-    component: require('./view/home.vue'),
-    iconCls: 'el-icon-message', //图标样式class
-    name:'首页',
-    redirect: '/main',
-    leaf: true, //只有一个节点
-    children: [{
-        path: '/main',
-        component: require('./view/main.vue'),
-        name: '',
-    }]
-}
-,
-    {
-    path: '/room',
-    component: require('./view/home.vue'),
-    iconCls: 'el-icon-message', //图标样式class
-    name:'直播管理',
-    redirect: '/roomlist',
-    leaf: true, //只有一个节点
-    children: [{
-        path: '/roomlist',
-        component: require('./view/room/list.vue'),
-        name: '直播间列表',
-    }]
-}
-, {
-    path: '/',
-    component: require('./view/home.vue'),
-    iconCls: 'el-icon-message', //图标样式class
-    name:'商品管理',
-    children: [{
-        path: '/list',
-        name: 'list',
-        component: require('./view/goods/list.vue'),
-        name:'商品列表'
-    }, {
-        path: 'add',
-        name: 'add',
-        component: require('./view/goods/add.vue'),
-        name:'添加商品'
-    }, {
-        path: '/order',
-        name: 'order',
-        component: require('./view/goods/order.vue'),
-        name:'订单管理'
-    }]
 }, {
-    path: '/',
-    component: require('./view/home.vue'),
-    iconCls: 'el-icon-message', //图标样式class
-    name:'素材管理',
-    children: [{
-        path: '/live',
-        name: 'live',
-        component: require('./view/source/live.vue'),
-        name:'直播暂存'
+	path: '/error',
+	component: require('./components/error.vue'),
+	name: '出错了',
+	hidden: true
 
-    }, {
-        path: '/picture',
-        name: 'picture',
-        component: require('./view/source/picture.vue'),
-        name:'图片素材'
-
-
-    }, {
-        path: '/video',
-        name: 'video',
-        component: require('./view/source/video.vue'),
-        name:'我的视频'
-
-    }, ]
 }, {
-    path: '/',
-    component: require('./view/home.vue'),
-    iconCls: 'fa fa-id-card-o',
-    name:'充值提现',
-    children: [{
-        path: '/pay',
-        name: 'pay',
-        component: require('./view/money/pay.vue'),
-        name:'充值'
-    }, {
-        path: '/extract',
-        name: 'extract',
-        component: require('./view/money/extract.vue'),
-    }]
+	path: '/studio/:id',
+	component: require('./view/room/studio.vue'),
+	name: '美化直播间',
+	hidden: true
+
 }, {
-    path: '/',
-    component: require('./view/home.vue'),
-    iconCls: 'fa fa-line-chart',
-    name:'个人中心',
-    children: [{
-        path: '/information',
-        component: require('./view/usr/information.vue'),
-        name: 'information',
-        name:'个人信息'
-    }, {
-        path: '/taocan',
-        component: require('./view/usr/taocan.vue'),
-        name: 'taocan',
-        name:'套餐选择'
-    }, {
-        path: '/vip',
-        component: require('./view/usr/vip.vue'),
-        name: 'vip',
-        name:'高级功能'
-    }]
-}, 
-{
-    path: '*',
-    redirect: '/main',
-    name:'其他',
-    hidden: true
+	path: '/',
+	component: require('./view/layout.vue'),
+	iconCls: 'fa fa-home  fa-lg', //图标样式class
+	name: '首页',
+	redirect: '/home',
+	leaf: true, //只有一个节点
+	children: [{
+		path: '/home',
+		component: require('./view/home.vue'),
+		name: '',
+	}]
+}, {
+	path: '/room',
+	component: require('./view/layout.vue'),
+	iconCls: 'fa fa-youtube-play fa-lg', //图标样式class
+	name: '直播管理',
+	redirect: '/roomlist',
+	leaf: true, //只有一个节点
+	children: [{
+		path: '/roomlist',
+		component: require('./view/room/list.vue'),
+		name: '直播间列表',
+	}]
+}, {
+	path: '/',
+	component: require('./view/layout.vue'),
+	iconCls: 'fa fa-shopping-bag fa-lg', //图标样式class
+	name: '商品管理',
+	children: [{
+		path: '/list',
+		name: '商品列表',
+		component: require('./view/goods/list.vue'),
 
-},
-]
+	}, {
+		path: '/add',
+		name: '添加商品',
+		component: require('./view/goods/add.vue'),
 
+	}, {
+		path: '/order',
+		name: '订单管理',
+		component: require('./view/goods/order.vue'),
+
+	}]
+}, {
+	path: '/',
+	component: require('./view/layout.vue'),
+	iconCls: 'fa fa-th-large fa-lg', //图标样式class
+	name: '素材管理',
+	children: [{
+		path: '/live',
+		name: '直播暂存',
+		component: require('./view/source/live.vue'),
+
+	}, {
+		path: '/picture',
+		name: '图片素材',
+		component: require('./view/source/picture.vue'),
+
+	}, {
+		path: '/video',
+		name: '我的视频',
+		component: require('./view/source/video.vue'),
+
+	}, ]
+}, {
+	path: '/',
+	component: require('./view/layout.vue'),
+	iconCls: 'fa fa-puzzle-piece fa-lg', //图标样式class
+	name: '定制服务',
+	children: [{
+		path: '/live',
+		name: '活动直播',
+		component: require('./view/source/live.vue'),
+
+	}, {
+		path: '/picture',
+		name: '直播app开发',
+		component: require('./view/source/picture.vue'),
+
+	}, {
+		path: '/video',
+		name: '更多合作',
+		component: require('./view/source/video.vue'),
+
+	}, ]
+}, {
+	path: '/',
+	component: require('./view/layout.vue'),
+	iconCls: 'fa fa-id-card fa-lg',
+	name: '我的账户',
+	children: [{
+		path: '/information',
+		component: require('./view/usr/information.vue'),
+		name: 'information',
+		name: '个人信息'
+	}, {
+		path: '/taocan',
+		component: require('./view/usr/taocan.vue'),
+		name: 'taocan',
+		name: '套餐选择'
+	}, {
+		path: '/vip',
+		component: require('./view/usr/vip.vue'),
+		name: 'vip',
+		name: '高级功能'
+	}]
+}, {
+	path: '/',
+	component: require('./view/layout.vue'),
+	iconCls: 'fa fa-credit-card fa-lg',
+	name: '充值提现',
+	children: [{
+		path: '/pay',
+		name: '余额充值',
+		component: require('./view/money/pay.vue'),
+
+	}, {
+		path: '/extract',
+		name: '余额提现',
+		component: require('./view/money/extract.vue'),
+	}]
+}, {
+	path: '/',
+	component: require('./view/layout.vue'),
+	iconCls: 'fa fa-cog fa-lg',
+	name: '设置',
+	children: [{
+		path: '/information',
+		component: require('./view/usr/information.vue'),
+		name: 'information',
+		name: '修改密码'
+	}, {
+		path: '/taocan',
+		component: require('./view/usr/taocan.vue'),
+		name: 'taocan',
+		name: '联系电话'
+	}]
+}, {
+	path: '*',
+	redirect: '/home',
+	name: '其他',
+	hidden: true
+}]
 
 export default routes;

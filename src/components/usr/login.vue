@@ -20,7 +20,7 @@
 
 <script>
   export default {
-    
+  	name:'logo',
     data() {
 
       var validatePass = (rule, value, callback) => {

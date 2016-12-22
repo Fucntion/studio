@@ -1,5 +1,4 @@
 <template>
-	<header>
      <el-row class="panel-top">
         <el-col :span="22" >
             <img src="~assets/img/logo.png" class="logo"> 
@@ -16,9 +15,8 @@
             </el-tooltip>
         </el-col>
        
-
     </el-row>   
-    </header>
+
 
 </template>
 

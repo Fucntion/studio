@@ -1,0 +1,185 @@
+// Header
+.panel-top {
+    height: 60px;
+    line-height: 60px;
+    overflow: hidden;
+    background: @bg-header;
+    margin-bottom: 2px;
+    box-shadow: 0 2px 2px #bbbbbb;
+    .logo {
+        padding: 5px 20px;
+        height: 50px;
+    }
+    .tip {
+        float: right;
+        width: 40px;
+        height: 60px;
+        background: #34b4d4;
+        line-height: 30px;
+        div {
+            height: 30px;
+            width: 40px;
+            margin: 0 0 5px;
+            background: url('~assets/img/tip.png') no-repeat bottom center;
+        }
+        span {
+            display: block;
+            color: @bg-content;
+            height: 20px;
+            line-height: 20px;
+            font-size: 12px;
+            text-align: center;
+        }
+    }
+    .company {
+        float: right;
+        font-size: 14px;
+        color: @font-color;
+        line-height: 60px;
+        padding: 0 25px 0 20px;
+        font-weight: 400;
+    }
+    .tip-logout {
+        float: right;
+        margin-right: 30px;
+    }
+}
+// left
+
+.left {
+    width:200px;
+    border-right: 1px solid white;
+    float: left;
+    .nav {
+        background: #f2f2f2;
+        .el-submenu__title,
+        .el-menu-item {
+            height: 60px;
+            line-height: 60px;
+            margin-bottom: 4px;
+            background: white;
+            color: @font-color;
+        }
+        .el-submenu_title:hover,
+        .el-submenu__title:hover,
+        .el-menu-item:hover {
+            background: @el-blue;
+            color: white;
+        }
+        .el-menu-item {
+            margin-bottom: 2px;
+        }
+        .leaf {
+            text-align: left;
+        }
+        //hack element UI
+        .el-submenu [class^=fa] {
+            vertical-align: baseline;
+            margin-right: 10px;
+            width:25px;
+            text-align: right;
+        }
+        
+        .el-menu-item [class^=fa] {
+            vertical-align: baseline;
+            margin-right: 10px;
+            width:25px;
+            text-align: right;
+        }
+        .is-active{
+            background:@el-blue;
+            color:white;
+        }
+    }
+    
+    .kefu {
+        min-width:200px;
+        background: @bg-content;
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+
+
+
+// right
+.right {
+    position: absolute;
+    min-width:800px;
+    left:220px;
+    top:80px;
+    right:10px;
+    background: #f1f2f7;
+    .crumb-box {
+        padding: 10px 0;
+
+        span {
+            font-size: 18px;
+            color:#222222 !important;
+        }
+        span:first-child{
+            padding-left:5px;
+        }
+    }
+    .container{
+
+    }
+}
+
+
+@screen-md-min:1200px;
+@screen-lg-min:1440px;
+/* 中等屏幕（桌面显示器，大于等于 992px） */
+@media (min-width: @screen-md-min) { 
+    .left{
+        width: 200px;
+        .el-submenu__title,
+        .el-menu-item {
+            padding:0 25px;
+        }
+
+        .el-menu-item {
+
+            padding-left: 55px;
+        }
+        .leaf {
+
+            padding-left: 25px; //          background: white;
+        }
+        .kefu {
+            width: 200px;
+            height: 164px;
+        }
+    }
+    .right{
+        left:220px;
+        
+    }
+}
+
+/* 大屏幕（大桌面显示器，大于等于 1200px） */
+@media (min-width: @screen-lg-min) { 
+    .left{
+        width: 250px;
+        .el-submenu__title,
+        .el-menu-item {
+            padding-left:50px
+        }
+        .el-menu-item {
+            padding-left: 85px;
+        }
+        .leaf {
+
+            padding-left: 50px; 
+        }
+        .kefu {
+            width: 300px;
+            height: 164px;
+        }
+    }
+    .right{
+      left:270px;  
+    }
+}
