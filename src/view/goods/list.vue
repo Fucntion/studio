@@ -1,6 +1,7 @@
 <template>
-	<div class="goodsList" v-if="show">
-		<el-table  :data="goodsTableData" border style="width: 100%" @selection-change="handleSelectionChange">
+	<div class="goodsList" >
+		<el-table v-loading="loading"
+    element-loading-text="拼命加载中"  :data="goodsTableData" border style="width: 100%" @selection-change="handleSelectionChange">
 			<el-table-column type="selection" width="55"></el-table-column>
 			<el-table-column prop="goodsName" min-width="100px" label="商品"></el-table-column>
 			<el-table-column inline-template min-width="150px" label="缩略图">
@@ -18,7 +19,7 @@
 
 			</el-table-column>
 		</el-table>
-	<div class="control">
+		<div class="control">
 			<el-pagination class="audience_total" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[50, 100, 200, 400]" :page-size="50" layout="total, sizes, prev, pager, next, jumper" :total="400">
 			</el-pagination>
 			<!-- <el-button class="export">邮件发送</el-button> -->
@@ -34,7 +35,7 @@
 
 			return {
 				goodsTableData: [],
-				show: false
+				loading: true
 			}
 		},
 		methods: {
@@ -55,7 +56,7 @@
 				this.$http.get(url).then((response) => {
 
 					self.goodsTableData = response.body.data.root;
-					self.show = true;
+					self.loading = false;
 
 				}, (response) => {
 

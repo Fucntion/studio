@@ -9,25 +9,60 @@
 						<!--灰色的是必选-->
 						<fieldset class="base">
 							<legend> 基础 </legend>
-							<div v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'base')" class="plugin_item" v-for="(item,index) in pluginList.base">
-								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
-								<div class="name">{{item.name}}</div>
+							<div  v-bind:class="item.checked?'active':''"  @click="functionAdd(item.name,'base')" class="plugin_item" v-for="(item,index) in pluginList.base">
+
+								<template v-if="item.checked">
+									<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
+										<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+									</div>
+									
+									<div class="name">{{item.name}}</div>
+
+								</template>
+								<template v-else>
+									<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon">
+										<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+									</div>
+									<div class="name">{{item.name}}</div>
+								</template>
+
+								
 							</div>
 						</fieldset>
 
 						<fieldset class="interaction">
 							<legend> 互动 </legend>
 							<div v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'interaction')" class="plugin_item" v-for="(item,index) in pluginList.interaction">
-								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
+								<template v-if="item.checked">
+								<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
+									<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+								</div>
 								<div class="name">{{item.name}}</div>
+							</template>
+							<template v-else>
+								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon">
+									<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+								</div>
+								<div class="name">{{item.name}}</div>
+							</template>
 							</div>
 
 						</fieldset>
 						<fieldset class="plus">
 							<legend> 高级 </legend>
 							<div v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'plus')" class="plugin_item" v-for="(item,index) in pluginList.plus">
-								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon"></div>
+								<template v-if="item.checked">
+								<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
+									<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+								</div>
 								<div class="name">{{item.name}}</div>
+							</template>
+							<template v-else>
+								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon">
+									<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+								</div>
+								<div class="name">{{item.name}}</div>
+							</template>
 							</div>
 
 						</fieldset>
@@ -87,7 +122,7 @@
 									</el-date-picker>
 								</el-form-item>
 								<el-form-item>
-									<el-button type="primary" @click="onSubmit_origin">保存配置</el-button>
+									<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
 								</el-form-item>
 							</el-form>
 
@@ -100,23 +135,22 @@
 								</el-form-item>
 
 								<el-form-item>
-									<el-button type="primary" @click="onSubmit_origin">保存配置</el-button>
+									<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
 								</el-form-item>
 							</el-form>
 							<div class="origin_show">
 								<div class="hr"></div>
 								<div class="title">推流地址
-									<el-button size="small" type="primary">复制</el-button>
+									<el-button size="small" class="copy" type="primary">复制</el-button>
 								</div>
 								<p>{{studio.upstream_address}}</p>
 
 								<div class="title">预览地址
-									<el-button size="small" type="primary">复制</el-button>
+									<el-button size="small" class="copy" type="primary">复制</el-button>
 								</div>
 								<p>http://tv.icloudinn.live/{{studio.id}}</p>
-								<div class="title">扫我预览</div>
+								<div class="title">扫我预览<el-button @click="opencli" size="small" class="copy" type="primary">美化</el-button></div>
 								<qrcode :val="'http://tv.icloudinn.live/'+studio.id"></qrcode>
-								<a href="http://cli.im/" target="_blank">二维码美化</a>
 							</div>
 						</div>
 
@@ -127,7 +161,7 @@
 								</el-form-item>
 
 								<el-form-item>
-									<el-button type="primary" @click="onSubmit_origin">保存配置</el-button>
+									<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
 								</el-form-item>
 							</el-form>
 						</div>
@@ -146,7 +180,7 @@
 							<h5>设置封面，会让你的直播更有范哦</h5>
 							<div class="cover">
 								<template v-if="studio.cover_img_url">
-									<img width="350px" :src="studio.cover_img_url" />
+									<img width="300px" :src="studio.cover_img_url" />
 									<el-button type="primary" @click="checkDialog('pictureBox','设置封面','cover')">更改封面</el-button>
 								</template>
 								<template v-else>
@@ -238,7 +272,7 @@
 					"poster": "http://live.icloudinn.com/img3/logo.png",
 					"live": true,
 					"autoplay": false,
-					"height": 414 * 2 / 3,
+					"height": 359 * 9 / 16,
 					"language": 'zh-cn'
 
 				},
@@ -274,6 +308,9 @@
 			videoPlayer
 		},
 		methods: {
+			opencli:function(){
+				window.open('http://cli.im/')
+			},
 			functionAdd: function(functionName, type) {
 
 				//this.$parent

@@ -17,7 +17,7 @@
 	import StudioConfig from './config.vue'
 	import StudioAudience from './audience.vue'
 	import StudioAnalysis from './analysis.vue'
-
+	import { Loading } from 'element-ui'
 	import store from '../../vuex/store'
 
 	export default {
@@ -43,7 +43,8 @@
 				console.log(type,this.currentView);
 			},
 			init:function(){
-
+				
+				let loadingInstance = Loading.service({text:'拼命加载中'});
 				var self = this;		
 				var id = self.$router.currentRoute.params.id;
 				var url = "/rooms/" + id;
@@ -57,6 +58,7 @@
 					store.commit('setStudio', tempObj);
 					self.studio = store.getters.getStudio; //统一使用这个来调用
 					self.show =true;
+					loadingInstance.close();
 
 
 				}, (response) => {
@@ -67,7 +69,9 @@
 
 		},
 		mounted() {
-			this.init();	
+			
+			this.init();
+
 
 		}
 	}

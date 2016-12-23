@@ -8,7 +8,6 @@ Vue.use(Vuex);
 Vue.use(VueResource);
 
 const state = {
-	crumb: '面包屑',
 	studio: {},
 	dialog: {
 		visible: false,
@@ -21,36 +20,47 @@ const state = {
 		base: [{
 			name: '播放器', //名字
 			plugin: 'player', //对应的mobile显示组件,用来组件增删的时候同步预览组建的显示/隐藏
-			src: require('assets/img/player.png'), //图标样式class
+			src: require('assets/img/studio/player.png'), //图标样式class
+			srcActive: require('assets/img/studio/player_active.png'), //图标样式class
+			srcHover: require('assets/img/studio/player_hover.png'), //图标样式class
 			require: true, //是否必选
 			usable:true,
 			checked: true //是否选中  打算在组件中利用checked状态来判断是否显示对应组件。会不会存在require是true但是状态被改变的情况？在改变状态的函数里需要做过滤。if(!this.require)
 		}],
-		interaction: [{
-			name: '红包雨', //名字
-			plugin: null,
-			src: require('assets/img/hongbao.png'), //图标样式class
-			require: false, //是否必选
-			usable:false,
-			checked: false //是否选中  
-		}, {
+		interaction: [ {
 			name: '定制菜单', //名字
 			plugin: 'nav',
-			src: require('assets/img/menu.png'), //图标样式class
+			src: require('assets/img/studio/menu.png'), //图标样式class
+			srcActive: require('assets/img/studio/menu_active.png'), //图标样式class
+			srcHover: require('assets/img/studio/menu_hover.png'), //图标样式class
 			require: true, //是否必选
 			usable:true,
 			checked: true //是否选中  
-		}, {
+		}, 
+		{
+			name: '红包雨', //名字
+			plugin: null,
+			src: require('assets/img/studio/hongbao.png'), //图标样式class
+			srcActive: require('assets/img/studio/hongbao_active.png'), //图标样式class
+			srcHover: require('assets/img/studio/hongbao_hover.png'), //图标样式class
+			require: false, //是否必选
+			usable:false,
+			checked: false //是否选中  
+		},{
 			name: '大转盘', //名字
 			plugin: null,
-			src: require('assets/img/zhuanpan.png'), //图标样式class
+			src: require('assets/img/studio/zhuanpan.png'), //图标样式class
+			srcActive: require('assets/img/studio/zhuanpan_active.png'), //图标样式class
+			srcHover: require('assets/img/studio/zhuanpan_hover.png'), //图标样式class
 			require: false, //是否必选
 			usable:false,
 			checked: false //是否选中  
 		}, {
 			name: '抽奖', //名字
 			plugin: null,
-			src: require('assets/img/luckly.png'), //图标样式class
+			src: require('assets/img/studio/luckly.png'), //图标样式class
+			srcActive: require('assets/img/studio/luckly_active.png'), //图标样式class
+			srcHover: require('assets/img/studio/luckly_hover.png'), //图标样式class
 			require: false, //是否必选
 			usable:false,
 			checked: false //是否选中  
@@ -58,7 +68,9 @@ const state = {
 		plus: [{
 				name: '广告栏', //名字
 				plugin: 'advert',
-				src: require('assets/img/advert.png'), //图标样式class
+				src: require('assets/img/studio/advert.png'), //图标样式class
+			srcActive: require('assets/img/studio/advert_active.png'), //图标样式class
+			srcHover: require('assets/img/studio/advert_hover.png'), //图标样式class
 				require: false, //是否必选
 				usable:true,
 				checked: false //是否选中  
@@ -67,18 +79,23 @@ const state = {
 			{
 				name: '调查问卷', //名字
 				plugin: 'question',
-				src: require('assets/img/question.png'), //图标样式class
+				src: require('assets/img/studio/question.png'), //图标样式class
+			srcActive: require('assets/img/studio/question_active.png'), //图标样式class
+			srcHover: require('assets/img/studio/question_hover.png'), //图标样式class
 				require: false, //是否必选
 				usable:false,
 				checked: false //是否选中  
-			}, {
-				name: '商品列表', //名字
-				plugin: null,
-				src: require('assets/img/goods.png'), //图标样式class
-				require: false, //是否必选
-				usable:false,
-				checked: false //是否选中  
-			}
+			}, 
+			// {
+			// 	name: '商品列表', //名字
+			// 	plugin: null,
+			// 	src: require('assets/img/studio/goods.png'), //图标样式class
+			// srcActive: require('assets/img/studio/goods_active.png'), //图标样式class
+			// srcHover: require('assets/img/studio/goods_hover.png'), //图标样式class
+			// 	require: false, //是否必选
+			// 	usable:false,
+			// 	checked: false //是否选中  
+			// }
 		]
 	}
 

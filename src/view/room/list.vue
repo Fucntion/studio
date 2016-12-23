@@ -1,5 +1,6 @@
 <template>
-	<div class="roomList" v-if="roomList.length>0">
+	<div class="roomList" v-if="roomList.length>0" v-loading="loading"
+    element-loading-text="拼命加载中">
 
 		<el-row class="room_box">
 			<!--传入add然后让业务逻辑知道是创建新的直播间-->
@@ -28,7 +29,7 @@
 						<div class="room_control">
 							<img src="~assets/img/room/stop_icon.png" title="正在直播，点击停止" class="icon live_stop" />
 							<img src="~assets/img/room/start_icon.png"  title="直播停止，点击开启" class="icon live_start" />
-							<img @click="del(room.id)" src="~assets/img/room/delete_icon.png"  title="删除直播间" class="icon live_delete" />
+							<img @click="del(room.id,index)" src="~assets/img/room/delete_icon.png"  title="删除直播间" class="icon live_delete" />
 						</div>
 					</div>
 
@@ -46,11 +47,14 @@
 
 <script>
 	import store from '../../vuex/store'
+
 	export default {
 		data: function() {
 
 			return {
-				roomList: []
+				roomList: [],
+				loading:true
+				
 
 			}
 		},
@@ -73,34 +77,45 @@
 					},
 					url = "/rooms";
 				this.$http.post(url, data).then((response) => {
-					// console.log(response.body);return;
-					// store.commit('setStudio', response.body);
+
 					this.$router.push('studio/' + response.body.id);
 
 				}, (response) => {
-					// error callback
-					// console.log(response);
+
 				});
 
 				//回调中拿到直播间基础信息
 				//跳转到对应的页面。
 
 			},
-			del: function(id) {
+			del: function(id,index) {
 				//创建好直播间
+
 				console.log('delete room' + id);
 				this.$confirm(name + '是否删除该直播间?', '提示', {
 					confirmButtonText: '确定',
-					cancelButtonText: '取消',
+					cancelButtonText: '删除',
 					type: 'warning'
 				}).then(() => {
 
-					this.$http.post(url, data).then((response) => {
-
-						this.$notify.info({
-							title: '提示信息',
-							message: '删除成功'
-						});
+					var url = "/rooms/" + id;
+					this.$http.delete(url).then((response) => {
+						if(response.body.code ==100){
+							this.$notify.info({
+								title: '提示信息',
+								message: '删除成功'
+							});
+							 _.remove(this.roomList, function(item) {
+							  return item.index  == index;
+							});
+							this.roomList.splice(index,1);
+						}else{
+							this.$notify.info({
+								title: '提示信息',
+								message: '删除失败'
+							});
+						}
+						
 
 					}, (response) => {
 						this.$notify.info({
@@ -109,12 +124,7 @@
 						});
 					});
 
-				}).catch(() => {
-					this.$notify.info({
-						title: '提示信息',
-						message: '已取消删除'
-					});
-				});
+				})
 
 			},
 			intoRoom: function(id) {
@@ -142,10 +152,12 @@
 		},
 		mounted() {
 
+			
 			var url = "/rooms";
 			this.$http.get(url).then((response) => {
 				// success callback
 				this.roomList = response.body;
+				this.loading =false;
 
 				// console.log(response.body);
 			}, (response) => {

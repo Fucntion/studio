@@ -29,20 +29,26 @@
 .config{
     width:1200px;
     margin:30px auto;
-    // 300+60+414+60+360
+    // 300+60+359+60+360
     .plugin_box,.mobile_box,.common_box{    
         float:left;
-        height:736px;
+        min-height:736px;
+       
+        
+    }
+    .plugin_box{
         background:white;
-        box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+         box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
     }
 
     .mobile_box{
         margin-left:60px;
-
+        width:366px;
     }
     .common_box{
         margin-left:60px;
+        background:white;
+         box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -59,22 +65,27 @@
     }
     .box{
 
-        padding:6px;
+        padding:10px 20px;
         .active {
-            border: 1px solid #20A0FF;
+            // border: 1px solid #20A0FF;
             border-radius:3px;
+            .name{
+                color:@el-blue;
+            }
         }
         fieldset{
             margin-bottom:10px;
             border:1px solid #c0c0c0;
             padding:5px 0px 10px;
             legend{
-                padding:5px;
+                padding:0 5px;
                 color:#20a0ff;
+                font-size:14px;
             }
             .plugin_item{
                 text-align:center;
-                width:90px;
+
+                width:80px;
                 height:90px;
                 float:left;
                 padding:10px 0px;
@@ -82,6 +93,7 @@
                 box-sizing:border-box;
                 cursor: pointer;
                 .icon{
+                    position: relative;
                     width:50px;
                     height: 50px;
                     display:inline-block;
@@ -90,10 +102,10 @@
                     background-position: center center;
                 }
                 .name{
-                    color:#555555;
+                    // color:#555555;
                     margin:5px 0;
-                    height:15px;
-                    line-height:15px;
+                    // height:15px;
+                    // line-height:15px;
                     font-size:14px;
                 }
             }
@@ -103,19 +115,23 @@
 }
 
 .mobile{
-    width:414px;
+    width:359px;
+    height:736px;
     overflow:hidden;
-    // background: url('~assets/img/mobile.png') no-repeat top center;
-    background-size: cover;
+    border-radius:30px;
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+    background: url('~assets/img/studio/mobile.png') no-repeat top center;
+    // background-size: cover;
     //手机模型的内容显示区
     .header{
-        height:64px;
-        line-height:64px;
+        height:53px;
+        line-height:53px;
         text-align:center;
     }
     .wrap{
-
-       height:672px;
+        width:357px;
+        margin-left:1px;
+       height:630px;
        .tooltip{
  
         }
@@ -147,7 +163,8 @@
 }
 
 .common{
-
+    border:none;
+    box-shadow:none;
     width:360px;
     >.el-tabs__header{
         display:flex;
@@ -163,21 +180,33 @@
     .container{
         margin:10px 0px 35px ;
         h5{
-            background:#C0CCDA;
+            background:#e0e0e0;
             padding:5px;
             margin:5px 0;
         }
         .title{
-            margin:15px 0 10px;
+            font-weight:bold;
+            font-size:14px;
+            margin:15px 0 15px;
+        }
+        .submit_studio{
+            // float:right;
         }
         
     }
     
     .header{
-        padding:5px 0;
+        padding:5px 0 10px;
+        border-bottom:1px solid #c0c0c0;
         .header_tab{
-            margin-right: 15px;
-            padding-bottom: 5px;
+
+            display:inline-block;
+            padding: 0 10px;
+            height:30px;
+            line-height:30px;
+            border-radius: 4px;
+            font-size:14px;
+            margin-right:10px;
 
         }
         :hover{
@@ -185,8 +214,8 @@
 
         }
         .active{
-            color: #20a0ff;
-            border-bottom: 2px solid #20a0ff;
+            color:white;
+            background:@el-blue;
         }
     }
 
@@ -196,14 +225,19 @@
 
         }
         .origin_show{
+            margin-top:50px;
 
             p{
                 word-wrap:break-word;
                 line-height:1.5;
-                background:#E5E9F2;
-                border:1px solid #F9FAFC;
-                padding:5px;
-                cursor:pointer;
+                border-radius:4px;
+                border:1px solid #c0c0c0;
+                padding:10px;
+                font-size:14px;
+
+            }
+            .copy{
+                float:right;
             }
         } 
     }

@@ -65,6 +65,8 @@ Vue.http.interceptors.push((request, next)  =>{
 import ElementUI from './lib/index.js'
 Vue.use(ElementUI)
 
+import VueQuillEditor from 'vue-quill-editor'
+Vue.use(VueQuillEditor)
 
 import App from './App.vue'
 
