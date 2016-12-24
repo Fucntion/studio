@@ -1,18 +1,20 @@
 <template>
-	<div class="goodsAdd" v-if="new_multipart_params">
+	<div class="goodsAdd" >
 		<el-form ref="form" class="form" :model="form" label-width="100px">
 			<el-form-item required label="商品名称">
-				<el-input v-model="form.name"></el-input>
+				<el-input v-model="form.goodsName"></el-input>
 			</el-form-item>
 			<el-form-item required label="商品库存">
-				<el-input v-model="form.name"></el-input>
+				<el-input v-model="form.goodsStock"></el-input>
 			</el-form-item>
 			<el-form-item required label="商品单价">
-				<el-input v-model="form.name"></el-input>
+				<el-input v-model="form.shopPrice"></el-input>
 			</el-form-item>
-			<el-form-item required label="图片上传">
-				<el-upload class="upload" ref="uploads"
-				type="drag"
+			<el-form-item required label="图片上传" >
+				<el-upload v-if="new_multipart_params" class="upload" ref="uploads"
+				type="drag" 
+
+				v-model="form.goodsImg"
 				action="http://saaslive.oss-cn-shanghai.aliyuncs.com"
 				:data="new_multipart_params"
 				:on-success="call"
@@ -26,11 +28,11 @@
 				<div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
 				<div class="el-upload__tip" slot="tip">150*150或以上尺寸png/jpg格式图片，且不超过500kb</div>
 			</el-upload>
-			<img :src="thumb" v-if="thumb" height="160px;" class="thumb">
+			<img :src="form.goodsImg" v-if="form.goodsImg" height="160px;" class="thumb">
 		</el-form-item>
 		<el-form-item required  label="商品介绍">
 			<quill-editor ref="myTextEditor"
-			v-model="form.desc"
+			v-model="form.goodsDesc"
 			:config="editorOption"
 			@blur="onEditorBlur($event)"
 			@focus="onEditorFocus($event)"
@@ -56,16 +58,15 @@
 		data() {
 			return {
 				form: {
-					name: '',
-					region: '',
-					date1: '',
-					date2: '',
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
+					goodsSn:new Date().getTime(),
+					goodsName: '',
+					goodsStock:'',//库存
+					marketPrice:999,//市场价格
+					shopPrice:'',//商品价格
+					goodsImg:null,
+					goodsDesc: '',//商品介绍
+					goodsUnit:'个'
 				},
-				thumb:'',
 				content: '<h2>商品信息</h2>',
 				editorOption: {
 		       // something config
@@ -77,12 +78,31 @@
 
 	},
 	methods: {
+		onSubmit:function(){
+			//native= 表示这个是不需要自动添加host信息的
+			var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/add';
+			this.$http.post(url,this.form).then((response) => {
+				if(response.body.code ==100){
+					this.$notify.info({
+						title: '提示信息',
+						message: '添加成功'
+					});
+					this.$router.push('/list');
+				}else{
+					alert(response.body.msg);
+				}
+
+		    }, (response) => {
+		        // error callback
+		        // console.log(response);
+		    });
+		},
 		call:function(response,file, fileList){
 
 			var fileUlr ='http://saaslive.oss-cn-shanghai.aliyuncs.com/'+this.new_multipart_params.dir+file.name;
 			console.log(fileUlr);
 			this.$refs.uploads.clearFiles();
-			this.thumb = fileUlr;
+			this.form.goodsImg = fileUlr;
 
 
 
@@ -93,9 +113,6 @@
 			this.new_multipart_params.name = file.name;
 			this.new_multipart_params.key = this.new_multipart_params.dir+file.name;
 	        // console.log(this.new_multipart_params);return;
-	    },
-	    onSubmit() {
-	    	console.log('submit!');
 	    },
 	    onEditorBlur(editor) {
 	      // console.log('editor blur!', editor)
@@ -130,14 +147,13 @@
 		        	obj =response.body.data;
 		        }
 
-		        // console.log(obj);return;
 		        tempObj.policy = obj.policy;
 		        tempObj.OSSAccessKeyId = obj.accessid;
 		        tempObj.signature = obj.signature;
 		        tempObj.dir =obj.dir;
 		        tempObj.callbackbody = obj.callback;
 		        this.new_multipart_params = tempObj;
-	        // console.log(this.new_multipart_params);
+
 	    }, (response) => {
 	        // error callback
 	        // console.log(response);
@@ -171,8 +187,8 @@
 
 		} 
 		.thumb{
-			float:left;
-			margin-left: 25px;
+			// float:left;
+			// margin-left: 25px;
 			display:block;
 		}
 	}

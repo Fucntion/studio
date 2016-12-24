@@ -116,17 +116,14 @@ const routes = [{
 	children: [{
 		path: '/information',
 		component: require('./view/usr/information.vue'),
-		name: 'information',
 		name: '个人信息'
 	}, {
 		path: '/taocan',
 		component: require('./view/usr/taocan.vue'),
-		name: 'taocan',
 		name: '套餐选择'
 	}, {
 		path: '/vip',
 		component: require('./view/usr/vip.vue'),
-		name: 'vip',
 		name: '高级功能'
 	}]
 }, {
@@ -150,14 +147,14 @@ const routes = [{
 	iconCls: 'fa fa-cog fa-lg',
 	name: '设置',
 	children: [{
-		path: '/information',
-		component: require('./view/usr/information.vue'),
-		name: 'information',
+		path: '/changepwd',
+		component: require('./view/seting/pwd.vue'),
+		name: 'changepwd',
 		name: '修改密码'
 	}, {
-		path: '/taocan',
-		component: require('./view/usr/taocan.vue'),
-		name: 'taocan',
+		path: '/changetel',
+		component: require('./view/seting/tel.vue'),
+		name: 'changetel',
 		name: '联系电话'
 	}]
 }, {
