@@ -1,20 +1,19 @@
 <template>
-	<div class="goodsList" >
-		<el-table v-loading="loading"
-    element-loading-text="拼命加载中"  :data="goodsTableData" border style="width: 100%" @selection-change="handleSelectionChange">
+	<div class="goodsList">
+		<el-table v-loading="loading" element-loading-text="拼命加载中" :data="goodsTableData" border style="width: 100%" @selection-change="handleSelectionChange">
 			<el-table-column type="selection" width="55"></el-table-column>
 			<el-table-column prop="goodsName" min-width="230px" label="商品"></el-table-column>
 			<el-table-column inline-template min-width="100px" label="缩略图">
-				<div style="text-align:center;"><img style="max-width: 66px;"  :src="row.goodsImg" /></div>
+				<div style="text-align:center;"><img style="max-width: 66px;" :src="row.goodsImg" /></div>
 			</el-table-column>
 			<el-table-column prop="shopPrice" label="价格"></el-table-column>
 			<el-table-column prop="goodsStock" label="库存"></el-table-column>
 			<el-table-column prop="saleCount" label="销量"></el-table-column>
-			<el-table-column inline-template  min-width="200px" label="操作">
+			<el-table-column inline-template min-width="200px" label="操作">
 				<template>
 					<el-button type="primary">编辑</el-button>
 					<el-button type="primary" @click="del(row.goodsId,row)">删除</el-button>
-					
+
 				</template>
 
 			</el-table-column>
@@ -39,45 +38,40 @@
 			}
 		},
 		methods: {
-			del(id,row){
+			del(id, row) {
 
 				this.$confirm(name + '功能已经存在，是否删除?', '提示', {
-								confirmButtonText: '确定',
-								cancelButtonText: '取消',
-								type: 'warning'
-							}).then(() => {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
 
-								var key = _.findIndex(this.goodsTableData,row);
-								console.log(key);
-								this.goodsTableData.splice(key,1);
+					var key = _.findIndex(this.goodsTableData, row);
+					console.log(key);
+					this.goodsTableData.splice(key, 1);
 
-								var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/del/goodsId/'+id;
-				this.$http.get(url).then((response) => {
+					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/del/goodsId/' + id;
+					this.$http.get(url).then((response) => {
 
-					if(response.body.code ==100){
-						this.$notify.info({
-							title: '提示信息',
-							message: '删除成功'
-						});
-					}else{
-						this.$notify.info({
-							title: '删除失败',
-							message: response.body.msg
-						});
-					}
+						if(response.body.code == 100) {
+							this.$notify.info({
+								title: '提示信息',
+								message: '删除成功'
+							});
+						} else {
+							this.$notify.info({
+								title: '删除失败',
+								message: response.body.msg
+							});
+						}
 
-				}, (response) => {
+					}, (response) => {
+
+					});
+
+				}).catch(() => {
 
 				});
-
-
-							}).catch(() => {
-								
-							});
-
-
-
-				
 
 			},
 			handleSelectionChange(val) {

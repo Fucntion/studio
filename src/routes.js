@@ -93,17 +93,17 @@ const routes = [{
 	iconCls: 'fa fa-puzzle-piece fa-lg', //图标样式class
 	name: '定制服务',
 	children: [{
-		path: '/live',
+		path: '/live2',
 		name: '活动直播',
 		component: require('./view/source/live.vue'),
 
 	}, {
-		path: '/picture',
+		path: '/picture2',
 		name: '直播app开发',
 		component: require('./view/source/picture.vue'),
 
 	}, {
-		path: '/video',
+		path: '/video2',
 		name: '更多合作',
 		component: require('./view/source/video.vue'),
 
