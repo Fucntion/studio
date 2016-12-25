@@ -10,20 +10,20 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-
-    if(to.path =="/login" || to.path =="/register"){
-        next();      
-    }else{
+    next();
+    // if(to.path =="/login" || to.path =="/register"){
+    //     next();      
+    // }else{
         
-        if (!sessionStorage.getItem('accessToken')) {
-          next({
-            path: '/login',
-            query: { redirect: to.fullPath }
-          })
-        }else{
-            next();
-        }
-    }
+    //     if (!sessionStorage.getItem('accessToken')) {
+    //       next({
+    //         path: '/login',
+    //         query: { redirect: to.fullPath }
+    //       })
+    //     }else{
+    //         next();
+    //     }
+    // }
 })
 
 
@@ -35,9 +35,9 @@ Vue.http.options.emulateHTTP = true;
 
 Vue.http.interceptors.push((request, next)  =>{
 	
-    if(!sessionStorage.getItem('accessToken')){
-        location.hash ='login';
-    }
+    // if(!sessionStorage.getItem('accessToken')){
+    //     location.hash ='login';
+    // }
     var url = 'http://saas.icloudinn.com/api/v1';
 
       

@@ -7,14 +7,23 @@
 			<template v-for="(video,index) in videoList">
 
 				<div class="videoItem" >
-					<img width="300px" src="~assets/img/video_demo.png" class="thumb" alt="room.title" />
+					<img width="210px" src="~assets/img/video_demo.png" class="thumb" alt="room.title" />
 					<h4 class="video_title">{{video.name}}</h4>
 					<div class="info"><span class="cleartime">{{video.clearTime}}过期</span>   <span class="size">{{video.size}}</span></div>
-					<div class="controlbtn_box">
-						<el-button class="btn" type="primary">保存</el-button>	
-						<el-button class="btn" type="primary">下载</el-button>	
-						<el-button class="btn" type="primary">删除</el-button>	
-					</div>			
+					<el-row class="controlbtn_box">
+						<el-col class="btn_item" :span="8">
+							<div @click="intoRoom(room.id)">编辑房间</div>
+						</el-col>
+						<el-col class="btn_item" :span="8">
+							<div @click="show(room.id)">预览房间</div>
+						</el-col>
+						<!--数据分析-->
+						<el-col class="btn_item" :span="8">
+							<div @click="analysis(room.id)">数据分析</div>
+						</el-col>
+					</el-row>	
+					<div class="mask"></div>	
+					<div class="player"></div>
 				</div>
 
 
@@ -159,20 +168,22 @@
 		},
 		mounted() {
 
-			
-			var url = "/rooms";
-			this.$http.get(url).then((response) => {
-				// success callback
-				this.roomList = response.body;
-				this.loading =false;
-			}, (response) => {
+			this.loading =false;
+			// var url = "/rooms";
+			// this.$http.get(url).then((response) => {
+			// 	// success callback
+			// 	this.roomList = response.body;
+			// 	this.loading =false;
+			// }, (response) => {
 
-			});
+			// });
 
 		}
 	}
 </script>
 <style lang="less">
+
+
 
 
 
@@ -182,13 +193,33 @@
 
 			.videoItem{
 				margin:0 15px 15px 0;
-				border-width: 1px;
-				border-color: rgb(192, 192, 192);
-				border-style: solid;
-				border-radius: 10px;
+				border-radius: 6px;
+				background-color: rgb( 255, 255, 255 );
+				box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.4);
+				position: relative;
 				overflow: hidden;
-				width:300px;
+				width:210px;
 				float: left;
+				.mask{
+					position: absolute;
+					height: 119px;
+					width: 210px;
+					top: 0;
+					left: 0;
+					background-color: rgb( 0, 0, 0 );
+					opacity: 0.2;
+					z-index: 2;
+				}
+				.player{
+					position: absolute;
+					height: 119px;
+					width: 210px;
+					top: 0;
+					left: 0;
+					background: url('~assets/img/player.png') no-repeat center center;
+					z-index: 3;
+					cursor: pointer;
+				}
 				.thumb{
 
 				}
@@ -196,8 +227,8 @@
 					padding: 0 5px;
 				}
 				.info{
-					height: 36px;
-					font-size:14px;
+					// height: 36px;
+					font-size:12px;
 					line-height: 36px;
 					color:#e55a84;
 					padding:0 5px;
@@ -209,10 +240,14 @@
 					}
 				}
 				.controlbtn_box{
-					padding:0px 10px 15px;
-					display:flex;
-					.btn{
-						flex:1;
+					.btn_item{
+						height: 36px;
+						line-height: 36px;
+						border:1px solid #f2f2f2;
+						color: #20a0ff;
+						font-size:14px;
+						text-align: center;
+						cursor: pointer;
 					}
 				}
 
