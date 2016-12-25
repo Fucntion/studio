@@ -68,7 +68,7 @@
 						title: "云商直播",
 						is_record_play: 1,
 						style: ' ',
-						plugin: JSON.string({
+						plugin: JSON.stringify({
 							menu: [],
 							advert: []
 						}),

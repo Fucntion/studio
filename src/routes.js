@@ -24,7 +24,7 @@ const routes = [{
 }, {
 	path: '/',
 	component: require('./view/layout.vue'),
-	iconCls: 'fa fa-home  fa-lg', //图标样式class
+	iconCls: 'home', //图标样式class
 	name: '首页',
 	redirect: '/home',
 	leaf: true, //只有一个节点
@@ -36,7 +36,7 @@ const routes = [{
 }, {
 	path: '/room',
 	component: require('./view/layout.vue'),
-	iconCls: 'fa fa-youtube-play fa-lg', //图标样式class
+	iconCls: 'room', //图标样式class
 	name: '直播管理',
 	redirect: '/roomlist',
 	leaf: true, //只有一个节点
@@ -48,7 +48,7 @@ const routes = [{
 }, {
 	path: '/',
 	component: require('./view/layout.vue'),
-	iconCls: 'fa fa-shopping-bag fa-lg', //图标样式class
+	iconCls: 'goods', //图标样式class
 	name: '商品管理',
 	children: [{
 		path: '/list',
@@ -69,7 +69,7 @@ const routes = [{
 }, {
 	path: '/',
 	component: require('./view/layout.vue'),
-	iconCls: 'fa fa-th-large fa-lg', //图标样式class
+	iconCls: 'source', //图标样式class
 	name: '素材管理',
 	children: [{
 		path: '/live',
@@ -90,7 +90,7 @@ const routes = [{
 }, {
 	path: '/',
 	component: require('./view/layout.vue'),
-	iconCls: 'fa fa-puzzle-piece fa-lg', //图标样式class
+	iconCls: 'dz', //图标样式class
 	name: '定制服务',
 	children: [{
 		path: '/live2',
@@ -111,7 +111,7 @@ const routes = [{
 }, {
 	path: '/',
 	component: require('./view/layout.vue'),
-	iconCls: 'fa fa-id-card fa-lg',
+	iconCls: 'user',
 	name: '我的账户',
 	children: [{
 		path: '/information',
@@ -129,7 +129,7 @@ const routes = [{
 }, {
 	path: '/',
 	component: require('./view/layout.vue'),
-	iconCls: 'fa fa-credit-card fa-lg',
+	iconCls: 'money',
 	name: '充值提现',
 	children: [{
 		path: '/pay',
@@ -144,7 +144,7 @@ const routes = [{
 }, {
 	path: '/',
 	component: require('./view/layout.vue'),
-	iconCls: 'fa fa-cog fa-lg',
+	iconCls: 'seting',
 	name: '设置',
 	children: [{
 		path: '/changepwd',
