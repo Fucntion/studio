@@ -78,14 +78,6 @@
 </script>
 <style lang="less">
 
-// .矩形_15 {
-//   background-color: rgb(32, 160, 255);
-//   position: absolute;
-//   left: 431px;
-//   top: 57px;
-//   width: 94px;
-//   height: 4px;
-//   z-index: 5;
-// }
+
 
 </style>
