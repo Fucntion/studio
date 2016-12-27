@@ -33,11 +33,11 @@
 			methods: {
 				onSubmit() {
 					this.$alert('您的需求已收到，我们会尽快联系您', '反馈', {
-							confirmButtonText: '确定'
-			
+						confirmButtonText: '确定'
+
 					});
+				}
 			}
-	}
 	}
 </script>
 <style>

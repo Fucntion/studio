@@ -303,6 +303,8 @@
 			videoPlayer
 		},
 		computed:{
+			//放心大胆的用计算属性，默认无set属性。但是可以人为添加，一旦添加后依赖的属性也会相应改变
+			//也就是说初始化的时候用本地和线上的组件信息来综合出用于渲染的最终数据，但是维护更新各个组件状态的时候却要去维护源数据（即线上和本地写死的,因为一旦修改计算属性依赖的属性，计算属性会自动更新)
 			pluginList:function(){
 				var self =this,
 					storeList = self.deepCopy(store.getters.getPluginList),//本地的数据模板
@@ -317,6 +319,7 @@
 			}
 		},
 		methods: {
+			
 			deepCopy: function(o) {
 					var self = this;
 					if(o instanceof Array) {
