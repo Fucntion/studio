@@ -85,17 +85,7 @@ const state = {
 				require: false, //是否必选
 				usable:false,
 				checked: false //是否选中  
-			}, 
-			// {
-			// 	name: '商品列表', //名字
-			// 	plugin: null,
-			// 	src: require('assets/img/studio/goods.png'), //图标样式class
-			// srcActive: require('assets/img/studio/goods_active.png'), //图标样式class
-			// srcHover: require('assets/img/studio/goods_hover.png'), //图标样式class
-			// 	require: false, //是否必选
-			// 	usable:false,
-			// 	checked: false //是否选中  
-			// }
+			}
 		]
 	}
 

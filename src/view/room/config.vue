@@ -238,9 +238,9 @@
 </template>
 
 <script>
-	import dialogBox from "../../components/common/dialog.vue"
-	import Qrcode from '../../components/common/Qrcode.vue'
-	import store from '../../vuex/store'
+	import dialogBox from "plugin/common/dialog.vue"
+	import Qrcode from 'plugin/common/Qrcode.vue'
+	import store from 'store'
 	import {
 		swiper,
 		swiperSlide,
@@ -470,9 +470,9 @@
 	}
 </script>
 
-<style src="video.js/dist/video-js.css"></style>
+
 <style lang="less">
-	@import "../../assets/css/swiper.css";
+
 	/*style Mobile*/
 	
 	.swiper-container {

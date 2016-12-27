@@ -45,7 +45,7 @@
 	import {
 		Loading
 	} from 'element-ui';
-	import Qrcode from '../../components/common/Qrcode.vue'
+	import Qrcode from 'plugin/common/Qrcode.vue'
 	export default {
 
 		data: function() {

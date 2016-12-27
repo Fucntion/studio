@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import store from '../../vuex/store';
+import store from 'store';
 
 import pictureBox from "./pictureBox.vue"
 import videoBox from "./videoBox.vue"

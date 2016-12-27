@@ -58,8 +58,8 @@
 </template>
 
 <script>
-	import store from '../../vuex/store';
-	import dialogBox from "../../components/common/dialog.vue"
+	import store from 'store';
+	import dialogBox from "plugin/common/dialog.vue"
 	export default {
 		data() {
 				return {

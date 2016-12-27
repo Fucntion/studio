@@ -26,8 +26,8 @@
 
 <script>
 	//公共布局组件
-	import Top from '../components/header.vue'
-	import Left from '../components/left.vue'
+	import Top from 'plugin/header.vue'
+	import Left from 'plugin/left.vue'
 
 	export default {
 		name:'wrap',

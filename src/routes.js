@@ -31,7 +31,6 @@ const routes = [{
 	children: [{
 		path: '/home',
 		component: require('./view/home.vue'),
-		name: '',
 	}]
 }, {
 	path: '/room',
@@ -43,7 +42,6 @@ const routes = [{
 	children: [{
 		path: '/roomlist',
 		component: require('./view/room/list.vue'),
-		name: '直播间列表',
 	}]
 }, {
 	path: '/',
@@ -84,27 +82,6 @@ const routes = [{
 	}, {
 		path: '/video',
 		name: '我的视频',
-		component: require('./view/source/video.vue'),
-
-	}, ]
-}, {
-	path: '/',
-	component: require('./view/layout.vue'),
-	iconCls: 'dz', //图标样式class
-	name: '定制服务',
-	children: [{
-		path: '/live2',
-		name: '活动直播',
-		component: require('./view/source/live.vue'),
-
-	}, {
-		path: '/picture2',
-		name: '直播app开发',
-		component: require('./view/source/picture.vue'),
-
-	}, {
-		path: '/video2',
-		name: '更多合作',
 		component: require('./view/source/video.vue'),
 
 	}, ]
@@ -157,7 +134,34 @@ const routes = [{
 		name: 'changetel',
 		name: '联系电话'
 	}]
-}, {
+},
+{
+	path: '/dz',
+	component: require('./view/layout.vue'),
+	iconCls: 'dz', //图标样式class
+	name: '定制服务',
+	leaf:true,
+	redirect: '/app',
+	children: [{
+		path: '/app',
+		name: '更多合作',
+		component: require('./view/dz/app.vue'),
+
+	},
+//	{
+//		path: '/picture2',
+//		name: '直播app开发',
+//		component: require('./view/source/picture.vue'),
+//
+//	}, {
+//		path: '/video2',
+//		name: '更多合作',
+//		component: require('./view/source/video.vue'),
+//
+//	}, 
+	]
+}, 
+{
 	path: '*',
 	redirect: '/home',
 	name: '其他',

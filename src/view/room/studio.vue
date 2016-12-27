@@ -18,7 +18,7 @@
 	import StudioAudience from './audience.vue'
 	import StudioAnalysis from './analysis.vue'
 	import { Loading } from 'element-ui'
-	import store from '../../vuex/store'
+	import store from 'store'
 
 	export default {
 		name:'studio',

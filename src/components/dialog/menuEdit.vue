@@ -105,7 +105,7 @@
 </template>
 
 <script>
-	import store from '../../vuex/store';
+	import store from 'store';
 	export default {
 		name:'menuEdit',
 		data: function() {
@@ -153,6 +153,9 @@
 		},
 		props: ['dialog'],
 		methods: {
+			removeMenuTab:function(){
+				
+			},
 			onDelete:function(key){
 				var self =this;
 				self.$confirm('确认删除该菜单？', '提示', {
