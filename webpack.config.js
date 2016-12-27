@@ -1,4 +1,3 @@
-// webpack.config.js
 var path = require('path'),
 	webpack = require('webpack'),
 	ExtractTextPlugin = require("extract-text-webpack-plugin"); // 单独打包CSS //npm install --save-dev extract-text-webpack-plugin@2.0.0-beta.4 默认安装的版本有毒
@@ -6,34 +5,19 @@ var path = require('path'),
 module.exports = {
 	entry: {
 		app: './src/app.js',
-		vue: ['vue', 'vuex', 'vue-router', 'vue-resource'], //vue全家桶
-		room: ['vue-awesome-swiper', 'vue-video-player', 'qr.js'], //studio界面才用到的各种js
-		element:['element-ui'],
-		echarts: ['echarts']
+		vender:['vue','vuex','vue-resource','vue-router']
 	},
 	output: {
 		path: path.resolve(__dirname, './dist'),
 		publicPath: '/dist/',
 		filename: '[name].js',
-		chunkFilename: "[id].chunk.js?[hash:8]"
+		chunkFilename: "chunks/[name].chunk.js?[hash:8]"
 	},
 	plugins: [
-//		new webpack.optimize.CommonsChunkPlugin({
-//			name: 'vue',
-//			filename: "vender.chunk.js?[hash:8]"
-//		}),
-//		new webpack.optimize.CommonsChunkPlugin({
-//			name: 'room',
-//			filename: "room.chunk.js?[hash:8]"
-//		}),
-//		new webpack.optimize.CommonsChunkPlugin({
-//			name: 'element',
-//			filename: "element.chunk.js?[hash:8]"
-//		}),
-//		new webpack.optimize.CommonsChunkPlugin({
-//			name: 'echarts',
-//			filename: "echarts.chunk.js?[hash:8]"
-//		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name:'vender',
+			filenam:'vender.js'
+		}),
 		new ExtractTextPlugin({
 			filename: 'css/[name].css',
 			allChunks: true

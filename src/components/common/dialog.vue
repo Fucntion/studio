@@ -1,59 +1,53 @@
 <template>
 
-<el-modal  :title="dialog.title"   v-model="dialog.visible">
-  <div   :class="dialog.type"  :studio="studio"  :dialog="dialog"   :is="dialog.current"></div>
-</el-modal>
-
+	<el-modal :title="dialog.title" v-model="dialog.visible">
+		<div :class="dialog.type" :studio="studio" :dialog="dialog" :is="dialog.current"></div>
+	</el-modal>
 
 </template>
 
 <script>
-import store from 'store';
+	import store from 'store';
+	import pictureBox from "./pictureBox.vue"
+	import goodsBox from "./goodsBox.vue"
+	import menuEdit from "../dialog/menuEdit.vue"
+	import advertEdit from "../dialog/advertEdit.vue"
 
-import pictureBox from "./pictureBox.vue"
-import videoBox from "./videoBox.vue"
-import goodsBox from "./goodsBox.vue"
+	export default {
+		data: function() {
 
-import menuEdit from "../dialog/menuEdit.vue"
-import advertEdit from "../dialog/advertEdit.vue"
+			return {
+				dialog: {}
+			}
+		},
+		store,
+		methods: {
 
-export default {
-    data: function() {
-  
-         return {
-         	dialog:{}
-       }
-    },
-    store,
-    methods: {
-
-    },
-    props:['studio'],
-    components:{
-    	pictureBox,
+		},
+		props: ['studio'],
+		components: {
+			pictureBox,
 			goodsBox,
-			videoBox,
-        menuEdit,
-        advertEdit
+			menuEdit,
+			advertEdit
 
-    },mounted() {
+		},
+		mounted() {
 
 			this.dialog = store.getters.getDialog;
 
-
 		}
-}
-
+	}
 </script>
 
 <style lang="less">
-.menuModal{
-	.el-tabs__header{
-		.el-tabs__item:first-child{
-			.el-icon-close{
-				display: none;
+	.menuModal {
+		.el-tabs__header {
+			.el-tabs__item:first-child {
+				.el-icon-close {
+					display: none;
+				}
 			}
 		}
 	}
-}
 </style>

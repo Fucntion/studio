@@ -4,7 +4,7 @@
             <img src="~assets/img/logo.png" class="logo"> 
             <el-tooltip class="item tip-logout" @click="logout" effect="dark" content="退出" placement="bottom" style="padding:0px;">
 
-                <i class="fa fa-sign-out" aria-hidden="true" v-on:click="logout"></i>
+                <i class="logout" aria-hidden="true" v-on:click="logout"></i>
             </el-tooltip>
             <h2 class="company">您好！海南云宿乡土网络科技有限公司</h2>
             <div class="tip">
@@ -13,9 +13,7 @@
             </div>
              
         </el-col>
-        <!--<el-col :span="1">
-           
-        </el-col>-->
+
        
     </el-row>   
 
@@ -51,7 +49,14 @@
 	}
 </script>
 <style lang="less">
-
+.logout{
+	display: inline-block;
+	background: url('~assets/img/logout.png') no-repeat center;
+	background-size: cover;
+	margin-top: 20px;
+	width: 20px;
+	height: 20px;
+}
 .tip-logout{
     cursor: pointer;
 }

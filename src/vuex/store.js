@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueResource from 'vue-resource'
 
-  
 Vue.use(Vuex);
 
 Vue.use(VueResource);
@@ -17,76 +16,91 @@ const state = {
 	},
 	//定义测试数据
 	pluginList: {
-		base: [{
+		player:{
 			name: '播放器', //名字
+			title: 'player',
+			type: 'base',
 			plugin: 'player', //对应的mobile显示组件,用来组件增删的时候同步预览组建的显示/隐藏
 			src: require('assets/img/studio/player.png'), //图标样式class
 			srcActive: require('assets/img/studio/player_active.png'), //图标样式class
 			srcHover: require('assets/img/studio/player_hover.png'), //图标样式class
 			require: true, //是否必选
-			usable:true,
+			usable: true,
 			checked: true //是否选中  打算在组件中利用checked状态来判断是否显示对应组件。会不会存在require是true但是状态被改变的情况？在改变状态的函数里需要做过滤。if(!this.require)
-		}],
-		interaction: [ {
+		}, 
+		menu:{
 			name: '定制菜单', //名字
-			plugin: 'nav',
+			title: 'menu',
+			plugin: 'menu',
+			type: 'interaction',
 			src: require('assets/img/studio/menu.png'), //图标样式class
 			srcActive: require('assets/img/studio/menu_active.png'), //图标样式class
 			srcHover: require('assets/img/studio/menu_hover.png'), //图标样式class
 			require: true, //是否必选
-			usable:true,
+			usable: true,
 			checked: true //是否选中  
 		}, 
-		{
+		hongbao:{
 			name: '红包雨', //名字
+			title: 'hongbao',
 			plugin: null,
+			type: 'interaction',
 			src: require('assets/img/studio/hongbao.png'), //图标样式class
 			srcActive: require('assets/img/studio/hongbao_active.png'), //图标样式class
 			srcHover: require('assets/img/studio/hongbao_hover.png'), //图标样式class
 			require: false, //是否必选
-			usable:false,
+			usable: false,
 			checked: false //是否选中  
-		},{
+		}, 
+		zhuanpan:{
 			name: '大转盘', //名字
+			title: 'zhuanpan',
 			plugin: null,
+			type: 'interaction',
 			src: require('assets/img/studio/zhuanpan.png'), //图标样式class
 			srcActive: require('assets/img/studio/zhuanpan_active.png'), //图标样式class
 			srcHover: require('assets/img/studio/zhuanpan_hover.png'), //图标样式class
 			require: false, //是否必选
-			usable:false,
+			usable: false,
 			checked: false //是否选中  
-		}, {
+		}, 
+		luckly:{
 			name: '抽奖', //名字
+			title: 'luckly',
 			plugin: null,
+			type: 'interaction',
 			src: require('assets/img/studio/luckly.png'), //图标样式class
 			srcActive: require('assets/img/studio/luckly_active.png'), //图标样式class
 			srcHover: require('assets/img/studio/luckly_hover.png'), //图标样式class
 			require: false, //是否必选
-			usable:false,
+			usable: false,
 			checked: false //是否选中  
-		}],
-		plus: [{
-				name: '广告栏', //名字
-				plugin: 'advert',
-				src: require('assets/img/studio/advert.png'), //图标样式class
+		}, 
+		advert:{
+			name: '广告栏', //名字
+			title: 'advert',
+			type: 'plus',
+			plugin: 'advert',
+			src: require('assets/img/studio/advert.png'), //图标样式class
 			srcActive: require('assets/img/studio/advert_active.png'), //图标样式class
 			srcHover: require('assets/img/studio/advert_hover.png'), //图标样式class
-				require: false, //是否必选
-				usable:true,
-				checked: false //是否选中  
-			},
-
-			{
-				name: '调查问卷', //名字
-				plugin: 'question',
-				src: require('assets/img/studio/question.png'), //图标样式class
+			require: false, //是否必选
+			usable: true,
+			checked: false //是否选中  
+		}, 
+		question:{
+			name: '调查问卷', //名字
+			title: 'question',
+			plugin: 'question',
+			type: 'plus',
+			src: require('assets/img/studio/question.png'), //图标样式class
 			srcActive: require('assets/img/studio/question_active.png'), //图标样式class
 			srcHover: require('assets/img/studio/question_hover.png'), //图标样式class
-				require: false, //是否必选
-				usable:false,
-				checked: false //是否选中  
-			}
-		]
+			require: false, //是否必选
+			usable: false,
+			checked: false //是否选中  
+		}
+
 	}
 
 };
@@ -119,14 +133,31 @@ function isEmptyObject(e) {
 }
 
 const mutations = {
-
+	//重置pluginList的状态，防止不同直播间信息不一样
+//	initPluginList:function(state){
+//		
+//		for(var k in state.pluginList){
+//			if(state.pluginList[k].require ==true){			
+//				state.pluginList[k].checked =true;
+//			}else{
+//				state.pluginList[k].checked =false;
+//			}
+//		}
+//		
+//	},
+//	setPluginCheck:function(state,title){		
+//		for(var k in state.pluginList){
+//			if(state.pluginList[k].title ==name){			
+//				state.pluginList[k].checked =!state.pluginList[k].checked;
+//			}
+//		}	
+//	},
+	//对比服务器给的数据初始化pluginList各组件的选中状态
 	openModal: function(state, obj) {
 		if(!obj.components && !obj.title) {
 			console.log('参数有误无法弹出dialog');
 			return
 		}
-		
-		
 		state.dialog.title = obj.title;
 		state.dialog.current = obj.components;
 		state.dialog.type = obj.type;
@@ -143,7 +174,7 @@ const mutations = {
 	//用于创建直播间的时候给studio赋值。
 	setStudio: function(state, obj) {
 		state.studio = obj;
-//		console.log(state.studio);
+		//		console.log(state.studio);
 	},
 	changeStudio: function(state, data) {
 
@@ -151,47 +182,45 @@ const mutations = {
 			id = data.id;
 
 		function deepCopy(o) {
-				var self =this;
-			    if (o instanceof Array) {
-			        var n = [];
-			        for (var i = 0; i < o.length; ++i) {
-			            n[i] = deepCopy(o[i]);
-			        }
-			        return n;
-			
-			    } else if (o instanceof Object) {
-			        var n = {}
-			        for (var i in o) {
-			            n[i] = deepCopy(o[i]);
-			        }
-			        return n;
-			    } else {
-			        return o;
-			    }
+			var self = this;
+			if(o instanceof Array) {
+				var n = [];
+				for(var i = 0; i < o.length; ++i) {
+					n[i] = deepCopy(o[i]);
+				}
+				return n;
+
+			} else if(o instanceof Object) {
+				var n = {}
+				for(var i in o) {
+					n[i] = deepCopy(o[i]);
+				}
+				return n;
+			} else {
+				return o;
 			}
+		}
 		// 用新的对象来替换原有的studio信息对象,如果不是对象就炸
 		if(Object.prototype.toString.call(obj) != '[object Object]') {
 			console.log('要替换的值不是对象');
 			return;
 		}
-		
+
 		obj.pluginObj.advert = _.sortBy(obj.pluginObj.advert, function(item) {
 			return -item.index;
 		});
 		//先改变本地的值再向服务器同步
 		state.studio = obj;
-		
-		
+
 		var ajaxObj = deepCopy(obj);
-		ajaxObj.plugin =JSON.stringify(ajaxObj.pluginObj);
-		delete ajaxObj.pluginObj;//这里把对象清空了因为不必要传到服务器上，在初始化的时候记得加上pluginObj的初始化
+		ajaxObj.plugin = JSON.stringify(ajaxObj.pluginObj);
+		delete ajaxObj.pluginObj; //这里把对象清空了因为不必要传到服务器上，在初始化的时候记得加上pluginObj的初始化
 		var url = '/rooms/' + id;
-//		console.log(ajaxObj);return;
-		Vue.http.put(url,ajaxObj).then((response) => {
+		//		console.log(ajaxObj);return;
+		Vue.http.put(url, ajaxObj).then((response) => {
 
 			// state.studio =response.body;
 			console.log(response.body, '更新配置成功');
-
 
 		}, (response) => {
 			// error callback

@@ -13,7 +13,6 @@ router.beforeEach((to, from, next) => {
 	if(to.path == "/login" || to.path == "/register") {
 		next();
 	} else {
-
 		if(!sessionStorage.getItem('accessToken')) {
 			next({
 				path: '/login',
@@ -63,8 +62,6 @@ Vue.http.interceptors.push((request, next) => {
 import ElementUI from './lib/index.js'
 Vue.use(ElementUI)
 
-import VueQuillEditor from 'vue-quill-editor'
-Vue.use(VueQuillEditor)
 
 import App from './App.vue'
 

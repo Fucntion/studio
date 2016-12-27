@@ -1,23 +1,23 @@
 const routes = [{
 	path: '/login',
-	component: require('./components/usr/login.vue'),
+	component: function(resolve){require(['./components/usr/login.vue'],resolve)},
 	name: '用户登录',
 	hidden: true
 }, {
 	path: '/register',
-	component: require('./components/usr/register.vue'),
+	component: function(resolve){require(['./components/usr/register.vue'],resolve)},
 	name: '用户注册',
 	hidden: true
 
 }, {
 	path: '/error',
-	component: require('./components/error.vue'),
+	component: function(resolve){require(['./components/error.vue'],resolve)},
 	name: '出错了',
 	hidden: true
 
 }, {
 	path: '/studio/:id',
-	component: require('./view/room/studio.vue'),
+	component: function(resolve){require(['./view/room/studio.vue'],resolve)},
 	name: '美化直播间',
 	hidden: true
 
@@ -30,7 +30,7 @@ const routes = [{
 	leaf: true, //只有一个节点
 	children: [{
 		path: '/home',
-		component: require('./view/home.vue'),
+		component: function(resolve){require(['./view/home.vue'],resolve)},
 	}]
 }, {
 	path: '/room',
@@ -41,7 +41,7 @@ const routes = [{
 	leaf: true, //只有一个节点
 	children: [{
 		path: '/roomlist',
-		component: require('./view/room/list.vue'),
+		component: function(resolve){require(['./view/room/list.vue'],resolve)},
 	}]
 }, {
 	path: '/',
@@ -51,56 +51,58 @@ const routes = [{
 	children: [{
 		path: '/list',
 		name: '商品列表',
-		component: require('./view/goods/list.vue'),
+		component: function(resolve){require(['./view/goods/list.vue'],resolve)},
 
 	}, {
 		path: '/add',
 		name: '添加商品',
-		component: require('./view/goods/add.vue'),
+		component: function(resolve){require(['./view/goods/add.vue'],resolve)},
 
 	}, {
 		path: '/order',
 		name: '订单管理',
-		component: require('./view/goods/order.vue'),
+		component: function(resolve){require(['./view/goods/order.vue'],resolve)},
 
 	}]
-}, {
-	path: '/',
-	component: require('./view/layout.vue'),
-	iconCls: 'source', //图标样式class
-	name: '素材管理',
-	children: [{
-		path: '/live',
-		name: '直播暂存',
-		component: require('./view/source/live.vue'),
-
-	}, {
-		path: '/picture',
-		name: '图片素材',
-		component: require('./view/source/picture.vue'),
-
-	}, {
-		path: '/video',
-		name: '我的视频',
-		component: require('./view/source/video.vue'),
-
-	}, ]
-}, {
+}, 
+//{
+//	path: '/',
+//	component: require('./view/layout.vue'),
+//	iconCls: 'source', //图标样式class
+//	name: '素材管理',
+//	children: [{
+//		path: '/live',
+//		name: '直播暂存',
+//		component: function(resolve){require(['./view/source/live.vue'],resolve)},
+//
+//	}, {
+//		path: '/picture',
+//		name: '图片素材',
+//		component: function(resolve){require(['./view/source/picture.vue'],resolve)},
+//
+//	}, {
+//		path: '/video',
+//		name: '我的视频',
+//		component: function(resolve){require(['./view/source/video.vue'],resolve)},
+//
+//	}, ]
+//}, 
+{
 	path: '/',
 	component: require('./view/layout.vue'),
 	iconCls: 'user',
 	name: '我的账户',
 	children: [{
 		path: '/information',
-		component: require('./view/usr/information.vue'),
+		component: function(resolve){require(['./view/usr/information.vue'],resolve)},
 		name: '个人信息'
 	}, {
 		path: '/taocan',
-		component: require('./view/usr/taocan.vue'),
+		component: function(resolve){require(['./view/usr/taocan.vue'],resolve)},
 		name: '套餐选择'
 	}, {
 		path: '/vip',
-		component: require('./view/usr/vip.vue'),
+		component: function(resolve){require(['./view/usr/vip.vue'],resolve)},
 		name: '高级功能'
 	}]
 }, {
@@ -111,12 +113,12 @@ const routes = [{
 	children: [{
 		path: '/pay',
 		name: '余额充值',
-		component: require('./view/money/pay.vue'),
+		component: function(resolve){require(['./view/money/pay.vue'],resolve)},
 
 	}, {
 		path: '/extract',
 		name: '余额提现',
-		component: require('./view/money/extract.vue'),
+		component: function(resolve){require(['./view/money/extract.vue'],resolve)},
 	}]
 }, {
 	path: '/',
@@ -125,12 +127,12 @@ const routes = [{
 	name: '设置',
 	children: [{
 		path: '/changepwd',
-		component: require('./view/seting/pwd.vue'),
+		component: function(resolve){require(['./view/seting/pwd.vue'],resolve)},
 		name: 'changepwd',
 		name: '修改密码'
 	}, {
 		path: '/changetel',
-		component: require('./view/seting/tel.vue'),
+		component: function(resolve){require(['./view/seting/tel.vue'],resolve)},
 		name: 'changetel',
 		name: '联系电话'
 	}]
@@ -145,7 +147,7 @@ const routes = [{
 	children: [{
 		path: '/app',
 		name: '更多合作',
-		component: require('./view/dz/app.vue'),
+		component: function(resolve){require(['./view/dz/app.vue'],resolve)},
 
 	},
 //	{

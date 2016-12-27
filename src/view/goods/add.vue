@@ -34,6 +34,10 @@
 </template>
 
 <script>
+	import {
+		quillEditor
+	} from 'vue-quill-editor'
+
 	export default {
 
 		data() {
@@ -56,7 +60,7 @@
 				}
 			},
 			components: {
-
+				quillEditor
 			},
 			methods: {
 				onSubmit: function() {
@@ -164,14 +168,14 @@
 				}
 				.el-upload__tip {
 					font-size: 14px;
-					width:500px !important;
+					width: 500px !important;
 				}
 				.el-upload__files {
-					display:none;
+					display: none;
 				}
 			}
 			.thumb {
-				float:left;
+				float: left;
 				margin-left: 25px;
 				display: block;
 			}

@@ -1,43 +1,24 @@
 <template>
-	<el-row class="config" v-if="show">
+<el-row class="config" v-if="show">
 
-		<div class="plugin_box">
-			<div class="plugin">
-				<el-row>
-					<div class="title">功能列表</div>
-					<div class="box">
-						<!--灰色的是必选-->
-						<fieldset class="base">
-							<legend> 基础 </legend>
-							<div  v-bind:class="item.checked?'active':''"  @click="functionAdd(item.name,'base')" class="plugin_item" v-for="(item,index) in pluginList.base">
+	<div class="plugin_box">
+		<div class="plugin">
+			<el-row>
+				<div class="title">功能列表</div>
+				<div class="box">
 
-								<template v-if="item.checked">
-									<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
-										<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
-									</div>
-									
-									<div class="name">{{item.name}}</div>
+					<!--灰色的是必选-->
+					<fieldset class="base">
+						<legend> 基础 </legend>
+						<div   @click="functionAdd(item.name,'base')" class="plugin_item" v-if="item.type=='base'" v-for="(item,index) in pluginList">
 
-								</template>
-								<template v-else>
-									<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon">
-										<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
-									</div>
-									<div class="name">{{item.name}}</div>
-								</template>
-
+							<template v-if="item.checked">
+								<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
+									<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+								</div>
 								
-							</div>
-						</fieldset>
-
-						<fieldset class="interaction">
-							<legend> 互动 </legend>
-							<div v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'interaction')" class="plugin_item" v-for="(item,index) in pluginList.interaction">
-								<template v-if="item.checked">
-								<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
-									<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
-								</div>
 								<div class="name">{{item.name}}</div>
+
 							</template>
 							<template v-else>
 								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon">
@@ -45,196 +26,212 @@
 								</div>
 								<div class="name">{{item.name}}</div>
 							</template>
-							</div>
 
-						</fieldset>
-						<fieldset class="plus">
-							<legend> 高级 </legend>
-							<div v-bind:class="item.checked?'active':''" @click="functionAdd(item.name,'plus')" class="plugin_item" v-for="(item,index) in pluginList.plus">
-								<template v-if="item.checked">
-								<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
-									<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
-								</div>
-								<div class="name">{{item.name}}</div>
-							</template>
-							<template v-else>
-								<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon">
-									<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
-								</div>
-								<div class="name">{{item.name}}</div>
-							</template>
-							</div>
+							
+						</div>
+					</fieldset>
 
-						</fieldset>
+					<fieldset class="interaction">
+						<legend> 互动 </legend>
+						<div  @click="functionAdd(item.name,'interaction')" class="plugin_item"  v-if="item.type=='interaction'" v-for="(item,index) in pluginList">
+							<template v-if="item.checked">
+							<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
+								<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+							</div>
+							<div class="name">{{item.name}}</div>
+						</template>
+						<template v-else>
+							<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon">
+								<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+							</div>
+							<div class="name">{{item.name}}</div>
+						</template>
+						</div>
+
+					</fieldset>
+					<fieldset class="plus">
+						<legend> 高级 </legend>
+						<div  @click="functionAdd(item.name,'plus')" class="plugin_item"  v-if="item.type=='plus'" v-for="(item,index) in pluginList">
+							<template v-if="item.checked">
+							<div :style="{backgroundImage: 'url(' + item.srcActive + ')'}" class="icon">
+								<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+							</div>
+							<div class="name">{{item.name}}</div>
+						</template>
+						<template v-else>
+							<div :style="{backgroundImage: 'url(' + item.src + ')'}" class="icon">
+								<sup class="el-badge__content is-fixed" v-if="item.usable">hot</sup>
+							</div>
+							<div class="name">{{item.name}}</div>
+						</template>
+						</div>
+
+					</fieldset>
+
+				</div>
+			</el-row>
+		</div>
+
+	</div>
+	<div class="mobile_box">
+		<div class="mobile">
+			<div class="header">直播间名称</div>
+			<div class="wrap">
+
+				<!--播放器-->
+				<video-Player :options="videoOptions" ref="videoPlayer"></video-Player>
+				<!--幻灯片-->
+				
+				<template v-if="advertListData.length>0">
+					<div class="mobile_advert mobile_content" @click="checkDialog('advertEdit','设置广告栏','advertModal')">
+						<swiper :options="swiperOption">
+							<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
+						</swiper>
+					</div>
+				</template>
+				<!--自定义菜单-->
+				<div class="mobile_menu mobile_content" @click="checkDialog('menuEdit','自定义菜单','menuModal')">
+					<div class="menu_item" :data-id="1">观众点评</div>
+					<template v-if="menuListData.length>0">
+						<div v-for="(item,index) in menuListData" class="menu_item" :data-id="item.title">{{item.title}}</div>
+					</template>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="common_box">
+
+		<el-tabs class="common"  type="border-card" :active-name="activeName">
+			<el-tab-pane label="直播源" name="first">
+
+				<div class="origin">
+
+					<div class="header">
+						<span class="header_tab" :class="showStatus_common.origin ?'active':''" @click="changeShow_common('origin')">直播源</span>
+						<span class="header_tab" :class="showStatus_common.countDown ?'active':''" @click="changeShow_common('countDown')">定时开播</span>
+						<span class="header_tab" :class="showStatus_common.total ?'active':''" @click="changeShow_common('total')">人数限制</span>
+					</div>
+					<div class="container" v-if="showStatus_common.countDown">
+						<!-- <h5>倒计时功能可以帮您有效留住用户</h5> -->
+
+						<el-form label-width="70px">
+							<el-form-item label="开播时间">
+								<el-date-picker v-model="studio.play_time_show" type="datetime" format="yyyy-MM-dd HH:mm" placeholder="选择日期时间">
+								</el-date-picker>
+							</el-form-item>
+							<el-form-item>
+								<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
+							</el-form-item>
+						</el-form>
 
 					</div>
-				</el-row>
-			</div>
+					<div v-if="showStatus_common.origin" class="container origin_container">
 
-		</div>
-		<div class="mobile_box">
-			<div class="mobile">
-				<div class="header">直播间名称</div>
-				<div class="wrap">
+						<el-form class="origin_form" label-width="70px">
+							<el-form-item label="房间名称">
+								<el-input placeholder="直播间名称" v-model="studio.title"></el-input>
+							</el-form-item>
 
-					<!--播放器-->
-					<video-Player :options="videoOptions" ref="videoPlayer"></video-Player>
-					<!--幻灯片-->
-					
-					<template v-if="advertListData.length>0">
-						<div class="mobile_advert mobile_content" @click="checkDialog('advertEdit','设置广告栏','advertModal')">
-							<swiper :options="swiperOption">
-								<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
-							</swiper>
+							<el-form-item>
+								<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
+							</el-form-item>
+						</el-form>
+						<div class="origin_show">
+							<div class="hr"></div>
+							<div class="title">推流地址
+								<el-button size="small" class="copy" type="primary">复制</el-button>
+							</div>
+							<p>{{studio.upstream_address}}</p>
+
+							<div class="title">预览地址
+								<el-button size="small" class="copy" type="primary">复制</el-button>
+							</div>
+							<p>http://tv.icloudinn.live/{{studio.id}}</p>
+							<div class="title">扫我预览<el-button @click="opencli" size="small" class="copy" type="primary">美化</el-button></div>
+							<qrcode :val="'http://tv.icloudinn.live/'+studio.id"></qrcode>
 						</div>
-					</template>
-					<!--自定义菜单-->
-					<div class="mobile_menu mobile_content" @click="checkDialog('menuEdit','自定义菜单','menuModal')">
-						<div class="menu_item" :data-id="1">观众点评</div>
-						<template v-if="menuListData.length>0">
-							<div v-for="(item,index) in menuListData" class="menu_item" :data-id="item.title">{{item.title}}</div>
-						</template>
+					</div>
+
+					<div v-if="showStatus_common.total" class="container ">
+						<el-form class="origin_form" label-width="70px">
+							<el-form-item label="人数限制">
+								<el-input placeholder="设置直播间同时观看的人数上限" v-model="studio.watch_num_limit"></el-input>
+							</el-form-item>
+
+							<el-form-item>
+								<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
+							</el-form-item>
+						</el-form>
 					</div>
 
 				</div>
-			</div>
+			</el-tab-pane>
+			<el-tab-pane label="风格设置" name="second">
+				<div class="feature">
+					<div class="header">
+						<span class="header_tab" :class="showStatus_origin.cover?'active':''" @click="changeShow_origin('cover')">封面</span>
+
+						<span class="header_tab" :class="showStatus_origin.logo ?'active':''" @click="changeShow_origin('logo')">logo</span>
+					</div>
+
+					<div class="container" v-if="showStatus_origin.cover">
+						<h5>设置封面，会让你的直播更有范哦</h5>
+						<div class="cover">
+							<template v-if="studio.cover_img_url">
+								<img width="300px" :src="studio.cover_img_url" />
+								<el-button type="primary" @click="checkDialog('pictureBox','设置封面','cover')">更改封面</el-button>
+							</template>
+							<template v-else>
+								<el-button type="primary" @click="checkDialog('pictureBox','设置封面','cover')">设置封面</el-button>
+							</template>
+						</div>
+					</div>
+
+					<div class="container" v-if="showStatus_origin.logo">
+						<h5>有创意的logo会使直播间显得高大上</h5>
+						<div class="logo">
+							<template v-if="studio.logo_url">
+								<img width="100px" class="logo_img" :src="studio.logo_url" />
+								<el-button type="primary" @click="checkDialog('pictureBox','设置logo','logo')">更改Logo</el-button>
+							</template>
+							<template v-else>
+								<el-button type="primary" @click="checkDialog('pictureBox','设置logo','logo')">设置Logo</el-button>
+							</template>
+
+						</div>
+
+					</div>
+
+			</el-tab-pane>
+			<el-tab-pane label="授权观看" name="third">
+
+				<div class="allow">
+					<div class="container">
+						<h5>只有符合要求的用户才能进入直播间</h5>
+						<div class="limit">
+							<el-tooltip class="item" effect="dark" content="所有人均可看" placement="bottom">
+								<el-radio v-model="radio" label="1">无限制</el-radio>
+							</el-tooltip>
+
+							<el-tooltip class="item" effect="dark" content="验证手机号可看" placement="bottom">
+								<el-radio disabled v-model="radio" label="3">手机验证</el-radio>
+							</el-tooltip>
+
+							<el-tooltip class="item" effect="dark" content="支付费用可看" placement="bottom">
+								<el-radio disabled v-model="radio" label="2">付费观看</el-radio>
+							</el-tooltip>
+						</div>
+
+					</div>
+
+				</div>
+			</el-tab-pane>
+		</el-tabs>
 		</div>
+	<dialog-box :studio="studio"></dialog-box>
 
-		<!-- 公共设置 -->
-		<div class="common_box">
-
-			<el-tabs class="common"  type="border-card" :active-name="activeName">
-				<el-tab-pane label="直播源" name="first">
-
-					<div class="origin">
-
-						<div class="header">
-							<span class="header_tab" :class="showStatus_common.origin ?'active':''" @click="changeShow_common('origin')">直播源</span>
-							<span class="header_tab" :class="showStatus_common.countDown ?'active':''" @click="changeShow_common('countDown')">定时开播</span>
-							<span class="header_tab" :class="showStatus_common.total ?'active':''" @click="changeShow_common('total')">人数限制</span>
-						</div>
-						<div class="container" v-if="showStatus_common.countDown">
-							<!-- <h5>倒计时功能可以帮您有效留住用户</h5> -->
-
-							<el-form label-width="70px">
-								<el-form-item label="开播时间">
-									<el-date-picker v-model="studio.play_time_show" type="datetime" format="yyyy-MM-dd HH:mm" placeholder="选择日期时间">
-									</el-date-picker>
-								</el-form-item>
-								<el-form-item>
-									<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
-								</el-form-item>
-							</el-form>
-
-						</div>
-						<div v-if="showStatus_common.origin" class="container origin_container">
-
-							<el-form class="origin_form" label-width="70px">
-								<el-form-item label="房间名称">
-									<el-input placeholder="直播间名称" v-model="studio.title"></el-input>
-								</el-form-item>
-
-								<el-form-item>
-									<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
-								</el-form-item>
-							</el-form>
-							<div class="origin_show">
-								<div class="hr"></div>
-								<div class="title">推流地址
-									<el-button size="small" class="copy" type="primary">复制</el-button>
-								</div>
-								<p>{{studio.upstream_address}}</p>
-
-								<div class="title">预览地址
-									<el-button size="small" class="copy" type="primary">复制</el-button>
-								</div>
-								<p>http://tv.icloudinn.live/{{studio.id}}</p>
-								<div class="title">扫我预览<el-button @click="opencli" size="small" class="copy" type="primary">美化</el-button></div>
-								<qrcode :val="'http://tv.icloudinn.live/'+studio.id"></qrcode>
-							</div>
-						</div>
-
-						<div v-if="showStatus_common.total" class="container ">
-							<el-form class="origin_form" label-width="70px">
-								<el-form-item label="人数限制">
-									<el-input placeholder="设置直播间同时观看的人数上限" v-model="studio.watch_num_limit"></el-input>
-								</el-form-item>
-
-								<el-form-item>
-									<el-button class="submit_studio" type="primary" @click="onSubmit_origin">保存配置</el-button>
-								</el-form-item>
-							</el-form>
-						</div>
-
-					</div>
-				</el-tab-pane>
-				<el-tab-pane label="风格设置" name="second">
-					<div class="feature">
-						<div class="header">
-							<span class="header_tab" :class="showStatus_origin.cover?'active':''" @click="changeShow_origin('cover')">封面</span>
-
-							<span class="header_tab" :class="showStatus_origin.logo ?'active':''" @click="changeShow_origin('logo')">logo</span>
-						</div>
-
-						<div class="container" v-if="showStatus_origin.cover">
-							<h5>设置封面，会让你的直播更有范哦</h5>
-							<div class="cover">
-								<template v-if="studio.cover_img_url">
-									<img width="300px" :src="studio.cover_img_url" />
-									<el-button type="primary" @click="checkDialog('pictureBox','设置封面','cover')">更改封面</el-button>
-								</template>
-								<template v-else>
-									<el-button type="primary" @click="checkDialog('pictureBox','设置封面','cover')">设置封面</el-button>
-								</template>
-							</div>
-						</div>
-
-						<div class="container" v-if="showStatus_origin.logo">
-							<h5>有创意的logo会使直播间显得高大上</h5>
-							<div class="logo">
-								<template v-if="studio.logo_url">
-									<img width="100px" class="logo_img" :src="studio.logo_url" />
-									<el-button type="primary" @click="checkDialog('pictureBox','设置logo','logo')">更改Logo</el-button>
-								</template>
-								<template v-else>
-									<el-button type="primary" @click="checkDialog('pictureBox','设置logo','logo')">设置Logo</el-button>
-								</template>
-
-							</div>
-
-						</div>
-
-				</el-tab-pane>
-				<el-tab-pane label="授权观看" name="third">
-
-					<div class="allow">
-						<div class="container">
-							<h5>只有符合要求的用户才能进入直播间</h5>
-							<div class="limit">
-								<el-tooltip class="item" effect="dark" content="所有人均可看" placement="bottom">
-									<el-radio v-model="radio" label="1">无限制</el-radio>
-								</el-tooltip>
-
-								<el-tooltip class="item" effect="dark" content="验证手机号可看" placement="bottom">
-									<el-radio disabled v-model="radio" label="3">手机验证</el-radio>
-								</el-tooltip>
-
-								<el-tooltip class="item" effect="dark" content="支付费用可看" placement="bottom">
-									<el-radio disabled v-model="radio" label="2">付费观看</el-radio>
-								</el-tooltip>
-							</div>
-
-						</div>
-
-					</div>
-				</el-tab-pane>
-			</el-tabs>
-			</div>
-
-			<!-- 弹出框 -->
-			<dialog-box :studio="studio"></dialog-box>
-
-	</el-row>
+</el-row>
 </template>
 
 <script>
@@ -256,8 +253,6 @@
 
 			return {
 				show: false,
-				//menu Data
-				pluginList: {},
 				//mobile Data
 				menuListData: [],
 				advertListData: [],
@@ -307,7 +302,40 @@
 			Qrcode,
 			videoPlayer
 		},
+		computed:{
+			pluginList:function(){
+				var self =this,
+					storeList = self.deepCopy(store.getters.getPluginList),//本地的数据模板
+					onlineList = self.studio.pluginObj;//线上的组件数据
+					//通过两个数组的比对，然后获得最终会被渲染的pluginList
+					for(var k in onlineList){
+						if(k.length<1)continue;
+						
+						
+					}
+					return storeList;
+			}
+		},
 		methods: {
+			deepCopy: function(o) {
+					var self = this;
+					if(o instanceof Array) {
+						var n = [];
+						for(var i = 0; i < o.length; ++i) {
+							n[i] = self.deepCopy(o[i]);
+						}
+						return n;
+	
+					} else if(o instanceof Object) {
+						var n = {}
+						for(var i in o) {
+							n[i] = self.deepCopy(o[i]);
+						}
+						return n;
+					} else {
+						return o;
+					}
+				},
 			opencli:function(){
 				window.open('http://cli.im/')
 			},
@@ -453,12 +481,14 @@
 			init: function() {
 				var self = this;
 
-				//从vuex中读取组件的默认信息
-				self.pluginList = store.getters.getPluginList;
+
 				self.studio.pluginObj = JSON.parse(self.studio.plugin);
 				self.menuListData = self.studio.pluginObj.menu;
 				self.advertListData = self.studio.pluginObj.advert;
 				self.videoOptions.source.src = 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8';
+
+				//从vuex中读取组件的默认信息
+				
 				self.show = true;
 
 			}
