@@ -2,10 +2,10 @@
 
 	<div>
 		<el-table v-if="show" @cell-click="changepic" class="advert_table" :data="AdvertData" style="width: 100%">
-			<el-table-column property="index" label="排序" width="30">
+			<el-table-column property="index" label="排序" width="100">
 			</el-table-column>
 
-			<el-table-column  inline-template label="缩略图" width="130">
+			<el-table-column  inline-template label="缩略图" width="150">
 				<div>
 					<template v-if="row.pic">
 
@@ -16,11 +16,8 @@
 							:before-upload="set_key" :multiple="false">
 							<img width="100px" :src="row.pic" style="cursor: pointer;" title="点我更换图片" alt="点我更换图片" />
 						</el-upload>
-
-
 					</template>
-					<template v-else>
-					
+					<template v-else>	
 							<el-upload action="http://saaslive.oss-cn-shanghai.aliyuncs.com" 
 							:on-preview="handlePreview" :on-remove="handleRemove" 
 							:on-success="call" :data="new_multipart_params" 
@@ -34,7 +31,7 @@
 				</div>
 			</el-table-column>
 
-			<el-table-column inline-template label="链接地址" width="200">
+			<el-table-column inline-template label="链接地址" width="300">
 				<template>
 					<el-input placeholder="请输入连接" v-model="row.link"></el-input>
 				</template>
@@ -59,11 +56,13 @@
 
 <script>
 	import store from 'store';
-	import dialogBox from "plugin/common/dialog.vue"
+	import dialogBox from "plugin/common/modal.vue"
 	export default {
+		store,
 		data() {
 				return {
 					show:false,
+					studio:null,
 					new_multipart_params:{},
 					AdvertData: [],
 					dir:'',
@@ -73,7 +72,7 @@
 			computed: {
 
 			},
-			props:['studio'],
+			
 			components: {
 				dialogBox,
 			},
@@ -88,7 +87,7 @@
 					var self =this;
 					self.studio.pluginObj.advert = self.AdvertData;
 			        var data ={
-			          id:this.$router.currentRoute.params.id,
+			          id:self.$router.currentRoute.params.id,
 			          studio:this.studio,
 			        }
 		
@@ -96,7 +95,7 @@
 				},
 				set_key(file){
 			        var self =this;
-			        console.log(file,self);
+//			        console.log(file,self);
 			        this.new_multipart_params.name = file.name;
         			this.new_multipart_params.key = this.new_multipart_params.dir+file.name;
 			        
@@ -145,7 +144,7 @@
 						pic: '',
 						link: ''
 					})
-					self.subConfig();
+//					self.subConfig();
 					
 
 				},
@@ -188,7 +187,8 @@
 				},
 				init() {
 					var self = this;
-
+					
+					self.studio = store.getters.getStudio;
 					self.AdvertData =self.studio.pluginObj.advert;
 
 					

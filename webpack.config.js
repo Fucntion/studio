@@ -5,7 +5,7 @@ var path = require('path'),
 module.exports = {
 	entry: {
 		app: './src/app.js',
-		vender:['vue','vuex','vue-resource','vue-router']
+		vender:['vue','vuex','vue-resource','vue-router','element-ui']
 	},
 	output: {
 		path: path.resolve(__dirname, './dist'),

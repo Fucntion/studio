@@ -132,6 +132,14 @@ function isEmptyObject(e) {
 }
 
 const mutations = {
+	initPluginList:function(state){
+		for(var k in state.pluginList){
+			//初始化的时候不是必选的组件，就恢复初始状态
+			if(!state.pluginList[k].require && state.pluginList[k].checked){
+				state.pluginList[k].checked=false;
+			}
+		}
+	},
 	//重置pluginList的状态，防止不同直播间信息不一样
 //	initPluginList:function(state){
 //		
@@ -173,7 +181,6 @@ const mutations = {
 	//用于创建直播间的时候给studio赋值。
 	setStudio: function(state, obj) {
 		state.studio = obj;
-		//		console.log(state.studio);
 	},
 	changeStudio: function(state, data) {
 

@@ -46,8 +46,14 @@ Vue.http.interceptors.push((request, next) => {
 		var token = '?access-token=' + sessionStorage.getItem('accessToken');
 		//万洲的url也有毒
 		if(request.url.indexOf('shop=') == 0) {
+			
 			request.url = request.url.substr(5) + token + '&system_id=10';
-		} else {
+			
+		} else if(request.url.indexOf('--token--')!=-1){
+			//针对分页要get传参的hack
+			request.url = url + request.url.replace(/--token--/,token);
+			
+		}else{
 			request.url = url + request.url + token;
 		}
 
@@ -59,7 +65,7 @@ Vue.http.interceptors.push((request, next) => {
 
 });
 
-import ElementUI from './lib/index.js'
+import ElementUI from 'element-ui'
 Vue.use(ElementUI)
 
 

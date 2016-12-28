@@ -130,18 +130,8 @@
 			intoRoom: function(id) {
 				//创建好直播间
 				console.log('into room');
-				//				var url = "/rooms/" + id;
-				this.$router.push('studio/' + id);
-				//				this.$http.get(url).then((response) => {
-				//					// 直接把初始化内容放在studio.vue或许更合适
-				//					// store.commit('setStudio', response.body);
-				//					
-				//
-				//				}, (response) => {
-				//					// error callback
-				//					// console.log(response);
-				//				});
 
+				this.$router.push('studio/' + id);
 				//回调中拿到直播间基础信息
 				//跳转到对应的页面。
 
@@ -151,18 +141,16 @@
 			}
 		},
 		mounted() {
+		
 
-			
-			var url = "/rooms";
+
+			var url = "/rooms--token--&page=1&per-page=5";
 			this.$http.get(url).then((response) => {
-				// success callback
-				this.roomList = response.body;
+				
+				this.roomList = response.body.data.list;
 				this.loading =false;
 
-				// console.log(response.body);
 			}, (response) => {
-				// error callback
-				// console.log(response);
 			});
 
 		}

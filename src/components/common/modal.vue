@@ -1,8 +1,8 @@
 <template>
 
-	<el-modal :title="dialog.title" v-model="dialog.visible">
-		<div :class="dialog.type" :studio="studio" :dialog="dialog" :is="dialog.current"></div>
-	</el-modal>
+	<el-dialog :title="dialog.title" v-model="dialog.visible">
+		<div :class="dialog.type"  :dialog="dialog" :is="dialog.current"></div>
+	</el-dialog>
 
 </template>
 
@@ -41,13 +41,5 @@
 </script>
 
 <style lang="less">
-	.menuModal {
-		.el-tabs__header {
-			.el-tabs__item:first-child {
-				.el-icon-close {
-					display: none;
-				}
-			}
-		}
-	}
+
 </style>

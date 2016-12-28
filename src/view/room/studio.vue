@@ -7,9 +7,9 @@
 			<div @click="setcurrentView('analysis')"  v-bind:class="{isActive:currentView=='analysis'}" class="item">数据分析</div>
 		</div>
 	</div>
-	<config v-if="currentView=='config'" :studio="studio"></config>
-	<audience v-if="currentView=='audience'"  :studio="studio"></audience>
-	<analysis v-if="currentView=='analysis'"  :studio="studio"></analysis>
+	<config v-if="currentView=='config'"></config>
+	<audience v-if="currentView=='audience'"></audience>
+	<analysis v-if="currentView=='analysis'"></analysis>
 	</div>
 </template>
 
@@ -56,7 +56,6 @@
 					tempObj.play_time_show = tempObj.play_time ? tempObj.play_time * 1000 : null;
 					tempObj.pluginObj =JSON.parse(tempObj.plugin)?JSON.parse(tempObj.plugin):{menu:[],advert:[]};//空数组
 					store.commit('setStudio', tempObj);
-					self.studio = store.getters.getStudio; //统一使用这个来调用
 					self.show =true;
 					loadingInstance.close();
 
