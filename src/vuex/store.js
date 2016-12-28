@@ -226,7 +226,7 @@ const mutations = {
 		Vue.http.put(url, ajaxObj).then((response) => {
 
 			// state.studio =response.body;
-			console.log(response.body, '更新配置成功');
+			console.log('更新配置成功');
 
 		}, (response) => {
 			// error callback

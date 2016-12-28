@@ -61,9 +61,9 @@
 			</el-form>
 		</el-tab-pane>-->
 
-		<template v-if="studio.pluginObj.menu.length>0">
+		<template v-if="menuList.length>0">
 			<el-tabs class="menuEditBox" closable ref="Menutab" type="border-card" @tab-remove="removeMenuTab">
-				<el-tab-pane v-for="(item, key, index)  in studio.pluginObj.menu" :name="key+''" :label="item.title">
+				<el-tab-pane v-for="(item, key, index)  in menuList" :name="key+''" :label="item.title">
 
 					<el-form ref="formedit" :rules="rules" :model="item" label-width="80px">
 						<el-form-item label="菜单名称" prop="title">
@@ -145,12 +145,7 @@
 				tabs: [],
 				studio: null,
 				goodsData: null,
-				formadd: {
-					title: 'tab',
-					type: '',
-					article: '',
-					goods: [], //线上用
-				},
+
 				rules: {
 					title: [{
 						validator: validateTitle
@@ -164,25 +159,39 @@
 		},
 		store,
 		computed: {
-
+			menuList:function(){
+				var self=this;
+				return self.studio.pluginObj.menu;
+			}
 		},
 		props: ['dialog'],
 		methods: {
 			removeMenuTab: function(tabItem) {
 
-				var self = this;
-				for(var i=0;i<self.studio.pluginObj.menu.length;i++){
-					if(self.studio.pluginObj.menu[i].title ==tabItem.title){
-						
+				var self = this,
+					obj = self.studio.pluginObj.menu;
+				for(var i = 0; i < obj.length; i++) {
+					//不允许自定义标题有同名的
+					if(obj[i].title == tabItem.label) {
+						obj.splice(i, 1);
+						break;
 					}
+
 				}
-				self.studio.pluginObj.menu.splice(tabItem.index, 1);
 
 				//更新sutdio和服务器配置
-				self.subConfig();
+				var data = {
+					id: self.$router.currentRoute.params.id,
+					studio: this.studio,
+				}
+
+				store.commit('changeStudio', data);
+				
 			},
-			subConfig() {
+			subConfig(obj) {
+
 				var self = this;
+
 				var data = {
 					id: self.$router.currentRoute.params.id,
 					studio: this.studio,
@@ -232,7 +241,7 @@
 			//只要修改对应的item数据即可，至于格式化之类的操作全部写在store里面
 			onSubmitEdit: function(item) {
 				var self = this;
-				console.log(item);
+
 				if(item.article == '' && item.type == 'article') {
 					this.$notify({
 						title: '提示',
@@ -329,7 +338,33 @@
 					});
 					return;
 				}
-				self.studio.pluginObj.menu.push(self.formadd);
+				
+				
+				var addObj = {
+					title: 0,
+					type: '',
+					article: '',
+					goods: [], //线上用
+				};
+				function name(title){
+					for(var k in self.studio.pluginObj.menu){
+
+						if(self.studio.pluginObj.menu[k].title==title){	
+							title++;
+						}else{
+							continue;
+						}
+						
+						name(obj.title);
+					}
+					return title;
+				}
+
+				
+				
+				addObj.title ='tab'+name(addObj.title);
+
+				self.studio.pluginObj.menu.push(self.deepCopy(addObj));
 				self.subConfig();
 			},
 			handleSelectionChange(row) {
