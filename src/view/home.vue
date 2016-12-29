@@ -1,5 +1,6 @@
 <template>
 	<div class="main">
+		
 		<div class="hot"><i class="horn"></i>
 			<a href="#">新功能上线啦~</a><i class="close"><i></div>
 

@@ -187,25 +187,7 @@ const mutations = {
 		var obj = data.studio,
 			id = data.id;
 
-		function deepCopy(o) {
-			var self = this;
-			if(o instanceof Array) {
-				var n = [];
-				for(var i = 0; i < o.length; ++i) {
-					n[i] = deepCopy(o[i]);
-				}
-				return n;
 
-			} else if(o instanceof Object) {
-				var n = {}
-				for(var i in o) {
-					n[i] = deepCopy(o[i]);
-				}
-				return n;
-			} else {
-				return o;
-			}
-		}
 		// 用新的对象来替换原有的studio信息对象,如果不是对象就炸
 		if(Object.prototype.toString.call(obj) != '[object Object]') {
 			console.log('要替换的值不是对象');
@@ -218,7 +200,7 @@ const mutations = {
 		//先改变本地的值再向服务器同步
 		state.studio = obj;
 
-		var ajaxObj = deepCopy(obj);
+		var ajaxObj = _.assign({},obj);
 		ajaxObj.plugin = JSON.stringify(ajaxObj.pluginObj);
 		delete ajaxObj.pluginObj; //这里把对象清空了因为不必要传到服务器上，在初始化的时候记得加上pluginObj的初始化
 		var url = '/rooms/' + id;

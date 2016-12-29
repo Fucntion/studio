@@ -32,5 +32,5 @@
 </script>
 <style lang="less">
 @import './assets/css/app.less';
-@import './lib/theme-default/index.css';
+@import '../node_modules/element-ui/lib/theme-default/index.css';
 </style>

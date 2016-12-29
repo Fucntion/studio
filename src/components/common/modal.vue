@@ -1,7 +1,7 @@
 <template>
 
-	<el-dialog :title="dialog.title" v-model="dialog.visible">
-		<div :class="dialog.type"  :dialog="dialog" :is="dialog.current"></div>
+	<el-dialog :title="dialog.title" v-model="dialog.visible" >
+		<div :class="dialog.type"  :dialog="dialog" :is="dialog.current" :key="new Date()"></div>
 	</el-dialog>
 
 </template>
@@ -30,7 +30,6 @@
 			goodsBox,
 			menuEdit,
 			advertEdit
-
 		},
 		mounted() {
 

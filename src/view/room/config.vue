@@ -1,6 +1,5 @@
 <template>
 	<el-row class="config" v-if="show">
-
 		<div class="plugin_box">
 			<div class="plugin">
 				<el-row>
@@ -172,7 +171,6 @@
 					<div class="feature">
 						<div class="header">
 							<span class="header_tab" :class="showStatus_origin.cover?'active':''" @click="changeShow_origin('cover')">封面</span>
-
 							<span class="header_tab" :class="showStatus_origin.logo ?'active':''" @click="changeShow_origin('logo')">logo</span>
 						</div>
 
@@ -206,24 +204,23 @@
 
 				</el-tab-pane>
 				<el-tab-pane label="授权观看" name="third">
-
 					<div class="allow">
 						<div class="container">
 							<h5>只有符合要求的用户才能进入直播间</h5>
 							<div class="limit">
-								<el-tooltip class="item" effect="dark" content="所有人均可看" placement="bottom">
-									<el-radio v-model="radio" label="1">无限制</el-radio>
-								</el-tooltip>
-
-								<el-tooltip class="item" effect="dark" content="验证手机号可看" placement="bottom">
-									<el-radio disabled v-model="radio" label="3">手机验证</el-radio>
-								</el-tooltip>
-
-								<el-tooltip class="item" effect="dark" content="支付费用可看" placement="bottom">
-									<el-radio disabled v-model="radio" label="2">付费观看</el-radio>
-								</el-tooltip>
+								<el-radio-group v-model="radio">
+							    <el-tooltip class="item" effect="dark" content="所有人均可看" placement="bottom">
+							    	<el-radio  :label="3" @change="cccc()">无限制</el-radio>	
+							    </el-tooltip>
+							    <el-tooltip class="item" disabled effect="dark" content="验证手机号可看" placement="bottom">
+							    	<el-radio disabled :label="6">手机验证</el-radio>
+							    </el-tooltip>
+							    <el-tooltip class="item" disabled effect="dark" content="支付费用可看" placement="bottom">
+							    	<el-radio disabled :label="9">付费观看</el-radio>	
+							    </el-tooltip>
+							  </el-radio-group>
 							</div>
-
+  
 						</div>
 
 					</div>
@@ -253,6 +250,7 @@
 		data: function() {
 
 			return {
+				radio:3,
 				studio:null,
 				show: false,
 				//mobile Data
@@ -276,7 +274,7 @@
 				},
 
 				//common Data
-				radio: '1',
+				
 				showStatus_origin: {
 					cover: true,
 					logo: false,
@@ -296,33 +294,8 @@
 			Qrcode,
 			videoPlayer
 		},
-//		watch: {
-//
-//			studio: {
-//				handler: function(val, oldVal) {
-//					var self =this;
-//					//如果oldVal为null，即程序初始化的时候
-//					if (!oldVal && typeof oldVal != "undefined" && oldVal != 0)return;
-//					
-//					var ajaxObj = self.deepCopy(self.studio);
-//					ajaxObj.plugin = JSON.stringify(ajaxObj.pluginObj);
-//					delete ajaxObj.pluginObj; //这里把对象清空了因为不必要传到服务器上，在初始化的时候记得加上pluginObj的初始化
-//					var url = '/rooms/' + id;
-//					//		console.log(ajaxObj);return;
-//					Vue.http.put(url, ajaxObj).then((response) => {
-//			
-//						// state.studio =response.body;
-//						console.log(response.body, '更新配置成功');
-//			
-//					}, (response) => {
-//						// error callback
-//						// console.log(response);
-//					});
-//				},
-//				deep: true
-//			}
-//		},
 		computed: {
+			
 			//放心大胆的用计算属性，默认无set属性。但是可以人为添加，一旦添加后依赖的属性也会相应改变
 			//也就是说初始化的时候用本地和线上的组件信息来综合出用于渲染的最终数据，但是维护更新各个组件状态的时候却要去维护源数据（即线上和本地写死的,因为一旦修改计算属性依赖的属性，计算属性会自动更新)
 			pluginList: function() {
@@ -350,6 +323,9 @@
 			}
 		},
 		methods: {
+			cccc:function(label){
+				console.log(label);
+			},
 			subConfig(){
 					var self =this;
 			        var data ={
@@ -358,25 +334,7 @@
 			        }
 			        store.commit('changeStudio',data);
 				},
-			deepCopy: function(o) {
-					var self = this;
-					if(o instanceof Array) {
-						var n = [];
-						for(var i = 0; i < o.length; ++i) {
-							n[i] = self.deepCopy(o[i]);
-						}
-						return n;
-	
-					} else if(o instanceof Object) {
-						var n = {}
-						for(var i in o) {
-							n[i] = self.deepCopy(o[i]);
-						}
-						return n;
-					} else {
-						return o;
-					}
-				},
+
 			opencli: function() {
 				window.open('http://cli.im/')
 			},

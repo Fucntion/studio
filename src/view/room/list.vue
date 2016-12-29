@@ -1,5 +1,5 @@
 <template>
-	<div class="roomList" v-if="roomList.length>0" v-loading="loading"
+	<div class="roomList"  v-loading="loading"
     element-loading-text="拼命加载中">
 
 		<el-row class="room_box">
@@ -7,7 +7,7 @@
 			<div class="roomAdd">
 				<div @click="addRoom()">创建房间</div>
 			</div>
-			<template v-for="(room,index) in roomList">
+			<template v-if="roomList.length>0" v-for="(room,index) in roomList">
 
 					<div class="roomItem" :id="room.id">
 						<img :src="room.logo_url" class="thumb" alt="room.title" />
