@@ -15,12 +15,14 @@
 						</el-form-item>
 						<el-form-item label="菜单类型" prop="type">
 							<el-select v-model="item.type" placeholder="请选择菜单的类型">
-								<el-option label="图文内容" select value="article"></el-option>
+								<el-option label="图文内容" select value="show"></el-option>
 								<el-option label="商品列表" value="goods"></el-option>
 							</el-select>
 						</el-form-item>
-						<el-form-item label="菜单内容" v-if="item.type&&item.type=='article'">
-							<el-input type="textarea" prop="article" v-model="item.article">图文内容</el-input>
+						<el-form-item label="菜单内容" v-if="item.type&&item.type=='show'">
+							<quill-editor ref="myTextEditor" v-model="item.show" :config="editorOption" @blur="onEditorBlur($event)" @focus="onEditorFocus($event)" @ready="onEditorReady($event)">
+							</quill-editor>
+							<!--<el-input type="textarea" prop="show" v-model="">图文内容</el-input>-->
 						</el-form-item>
 						<el-form-item label="菜单内容" v-if="item.type&&item.type=='goods'">
 							<div>
@@ -62,7 +64,10 @@
 </template>
 
 <script>
-	import store from 'store';
+	import store from 'store'
+	import {
+		quillEditor
+	} from 'vue-quill-editor'
 	export default {
 		name: 'menuEdit',
 		data: function() {
@@ -89,6 +94,9 @@
 				studio: null,
 				goodsData: null,
 				menuList: null,
+				editorOption: {
+					// something config
+				},
 				rules: {
 					title: [{
 						validator: validateTitle
@@ -106,9 +114,28 @@
 
 		},
 		computed: {
-
+			editor() {
+				return this.$refs.myTextEditor.quillEditor
+			}
 		},
 		methods: {
+			onEditorBlur(editor) {
+				// console.log('editor blur!', editor)
+			},
+			onEditorFocus(editor) {
+				// console.log('editor focus!', editor)
+			},
+			onEditorReady(editor) {
+				// console.log('editor ready!', editor)
+			},
+			onEditorChange({
+				editor,
+				html,
+				text
+			}) {
+				// console.log('editor change!', editor, html, text)
+				this.content = html
+			},
 			removeMenuTab: function(tabItem) {
 				var self = this;
 				self.studio.pluginObj.menu = _.filter(self.studio.pluginObj.menu, function(item) {
@@ -144,23 +171,24 @@
 				store.commit("openModal", obj);
 			},
 			//只要修改对应的item数据即可，至于格式化之类的操作全部写在store里面
-			onSubmitEdit: function(item,key) {
+			onSubmitEdit: function(item, key) {
 
-				var self = this,tempRefsObj={};
+				var self = this,
+					tempRefsObj = {};
 
-				for(var k in self.$refs){
-					
-					if(k =='formedit'+key){
-						
-						tempRefsObj =self.$refs[k][0];//0有点坑
+				for(var k in self.$refs) {
+
+					if(k == 'formedit' + key) {
+
+						tempRefsObj = self.$refs[k][0]; //0有点坑
 						break;
 					}
 				}
 
 				tempRefsObj.validate((valid) => {
 					if(valid) {
-						
-						if(item.article == '' && item.type == 'article') {
+
+						if(item.show == '' && item.type == 'show') {
 							this.$notify({
 								title: '提示',
 								message: '图文内容不能为空',
@@ -182,10 +210,10 @@
 
 					} else {
 						this.$notify({
-								title: '提示',
-								message: '表单格式有误',
-								type: 'warning'
-							});
+							title: '提示',
+							message: '表单格式有误',
+							type: 'warning'
+						});
 						return false;
 					}
 				});
@@ -206,7 +234,7 @@
 				var addObj = {
 					title: 0,
 					type: '',
-					article: '',
+					show: '',
 					goods: [], //线上用
 				};
 
@@ -221,9 +249,11 @@
 				}
 
 				addObj.title = 'tab' + name(addObj.title);
-				self.studio.pluginObj.menu.push(_.assign([], addObj));
+				self.studio.pluginObj.menu.push(_.assign({}, addObj));
 				self.menuList.push(_.assign({}, addObj)); //这里是对象
+
 				self.subConfig();
+				console.log(self.studio.pluginObj.menu)
 			},
 			handleSelectionChange(row, item) {
 				if(!row.goodsId) {
@@ -266,7 +296,7 @@
 			}
 		},
 		components: {
-
+			quillEditor
 		},
 		created() {
 
