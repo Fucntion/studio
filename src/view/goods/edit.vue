@@ -1,5 +1,5 @@
 <template>
-	<div class="goodsAdd">
+	<div class="goodsEdit" v-if="show">
 		<el-form ref="form" class="form" :model="form" label-width="100px">
 			<el-form-item required label="商品名称">
 				<el-input v-model="form.goodsName"></el-input>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+
 	import {
 		quillEditor
 	} from 'vue-quill-editor'
@@ -45,19 +46,14 @@
 
 		data() {
 				return {
-					form: {
-						goodsSn: new Date().getTime(),
-						goodsName: '',
-						goodsStock: '', //库存
-						marketPrice: 999, //市场价格
-						shopPrice: '', //商品价格
-						goodsImg: null,
-						goodsDesc: '', //商品介绍
-						goodsUnit: ''//商品单位
-					},
+					show:false,
+					form:{},
 					content: '<h2>商品信息</h2>',
 					editorOption: {
 						// something config
+						lineNumbers: true,
+        				line: true,
+						mode: 'text/html',
 					},
 					new_multipart_params: null,
 				}
@@ -73,7 +69,7 @@
 						if(response.body.code == 100) {
 							this.$notify.info({
 								title: '提示信息',
-								message: '添加成功'
+								message: '修改成功'
 							});
 							this.$router.push('/list');
 						} else {
@@ -115,6 +111,24 @@
 				}) {
 					// console.log('editor change!', editor, html, text)
 					this.content = html
+				},
+				init:function(){
+					// console.log()
+					var id = this.$route.params.id
+					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/edit'
+					console.log(id)
+					this.$http.post(url,{goodsId:id}).then(function(response){
+						if(response.body.code!=0){
+							console.log('商品信息获取失败')
+							return
+						}
+						this.form =response.body.data
+						this.show =true
+					},function(response){
+
+					})
+					
+					// this.form = JSON.parse(sessionStorage.getItem('tempGoods'))
 				}
 			},
 			computed: {
@@ -123,6 +137,7 @@
 				}
 			},
 			mounted() {
+				this.init()
 				// console.log('商品描述', this.editor);
 				var url = "/aliyuns/oss";
 
@@ -156,7 +171,7 @@
 </script>
 
 <style lang="less">
-	.goodsAdd {
+	.goodsEdit {
 		.form {
 			position: relative;
 			padding-right: 50px;

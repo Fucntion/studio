@@ -77,7 +77,8 @@
 				<div class="wrap">
 
 					<!--播放器-->
-					<video-Player :options="videoOptions" ref="videoPlayer"></video-Player>
+					<!-- <video-Player :options="videoOptions" ref="videoPlayer"></video-Player> -->
+					<div id="id_video_container"></div>
 					<!--幻灯片-->
 
 					<template v-if="studio.pluginObj.advert.length>0">
@@ -241,9 +242,6 @@
 		swiperSlide,
 		swiperPlugins
 	} from 'vue-awesome-swiper'
-	import {
-		videoPlayer
-	} from 'vue-video-player'
 
 	export default {
 		store,
@@ -254,19 +252,6 @@
 				studio:null,
 				show: false,
 				//mobile Data
-				videoOptions: {
-					source: {
-						"type": "application/x-mpegURL",
-						"src": '',
-						"withCredentials": false
-					},
-					"poster": "http://live.icloudinn.com/img3/logo.png",
-					"live": true,
-					"autoplay": false,
-					"height": 359 * 9 / 16,
-					"language": 'zh-cn'
-
-				},
 				swiperOption: {
 					name: 'currentSwiper',
 					notNextTick: true,
@@ -291,8 +276,7 @@
 			swiper,
 			swiperSlide,
 			dialogBox,
-			Qrcode,
-			videoPlayer
+			Qrcode
 		},
 		computed: {
 			
@@ -476,13 +460,27 @@
 				//初始化房间信息
 				self.studio = store.getters.getStudio;
 
-				//格式化本地使用的组件总对象及各个子对象
-				self.videoOptions.source.src = 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8'; //mock直播播放地址
-
 				//从vuex中读取组件的默认信息
 				self.show = true;
+				self.$nextTick(function(){
 
-			}
+					var hls = parent.hls||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"
+						var option = {
+						"live_url" : hls,
+						"width" :359,
+						"height" :201,
+
+						
+						//...可选填其他属性
+						};
+
+					var player = new qcVideo.Player("id_video_container", option)
+					// console.log(player)
+					player.play()
+							})
+				
+
+						}
 		},
 		mounted() {
 			this.init();
@@ -516,4 +514,8 @@
 		align-items: center;
 		background-size: cover;
 	}
+#TcPlayer{
+	width:359px;
+	height:205px;
+}
 </style>

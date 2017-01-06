@@ -64,6 +64,10 @@
 		components:{
 
 
+		},
+		mounted(){
+					
+			
 		}
 	}
 

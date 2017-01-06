@@ -1,8 +1,8 @@
 <template>
 	
-	<transition name="bounce">
+	<!--<transition name="bounce">-->
 		<router-view></router-view>
-	</transition>
+	<!--</transition>-->
 
 </template>
 

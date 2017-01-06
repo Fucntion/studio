@@ -59,6 +59,12 @@ const routes = [{
 		component: function(resolve){require(['./view/goods/add.vue'],resolve)},
 
 	}, {
+		path: '/edit/:id',
+		name: '修改商品',
+		hidden: true,
+		component: function(resolve){require(['./view/goods/edit.vue'],resolve)},
+
+	}, {
 		path: '/order',
 		name: '订单管理',
 		component: function(resolve){require(['./view/goods/order.vue'],resolve)},

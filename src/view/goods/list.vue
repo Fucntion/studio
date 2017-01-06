@@ -11,7 +11,7 @@
 			<el-table-column prop="saleCount" label="销量"></el-table-column>
 			<el-table-column inline-template min-width="200px" label="操作">
 				<template>
-					<el-button type="primary">编辑</el-button>
+					<el-button type="primary" @click="edit(row.goodsId,row)">编辑</el-button>
 					<el-button type="primary" @click="del(row.goodsId,row)">删除</el-button>
 
 				</template>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+
 	//这个页面终于不要捣鼓烦人的studio对象了，放个注释庆祝下
 	export default {
 		data: function() {
@@ -38,6 +39,9 @@
 			}
 		},
 		methods: {
+			edit(id,row){
+				this.$router.push('/edit/'+id)
+			},
 			del(id, row) {
 
 				this.$confirm(name + '功能已经存在，是否删除?', '提示', {

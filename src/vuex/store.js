@@ -7,6 +7,8 @@ Vue.use(VueResource);
 
 const state = {
 	studio: {},
+	//用来临时储存需要修改商品的信息
+	tempGoods:{},
 	dialog: {
 		visible: false,
 		title: 'dialog',
@@ -132,6 +134,7 @@ function isEmptyObject(e) {
 }
 
 const mutations = {
+
 	initPluginList:function(state){
 		for(var k in state.pluginList){
 			//初始化的时候不是必选的组件，就恢复初始状态

@@ -70,6 +70,7 @@
 		mounted() {
 			
 			this.init();
+			
 
 
 		}

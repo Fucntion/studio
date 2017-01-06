@@ -5,11 +5,22 @@ import VueRouter from 'vue-router'
 import routes from './routes'
 Vue.use(VueRouter)
 const router = new VueRouter({
-	routes
+	routes,
+	scrollBehavior (to, from, savedPosition) {
+		if (savedPosition) {
+			return savedPosition
+		} else {
+			return { x: 0, y: 0 }
+		}
+	}
 });
 
-router.beforeEach((to, from, next) => {
 
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+router.beforeEach((to, from, next) => {
+	NProgress.start()
 	if(to.path == "/login" || to.path == "/register") {
 		next();
 	} else {
@@ -24,6 +35,11 @@ router.beforeEach((to, from, next) => {
 			next();
 		}
 	}
+})
+
+router.afterEach((to, from, next) => {
+
+	NProgress.done()
 })
 
 import VueResource from 'vue-resource'

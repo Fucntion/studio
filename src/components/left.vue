@@ -5,7 +5,7 @@
 				<el-submenu class="nav_item" :index="index+''" v-if="item.children && !item.leaf">
 					<!--为了满足hover变白色的需要，所以改用nav_navname的形式定义className-->
 					<template slot="title"><i :class="'nav_'+item.iconCls" class="nav_icon"></i><span class="nav_name">{{item.name}}</span></template>
-					<el-menu-item v-for="child in item.children" :index="child.path">{{child.name}}</el-menu-item>
+					<el-menu-item v-for="child in item.children" v-if="!child.hidden" :index="child.path">{{child.name}}</el-menu-item>
 				</el-submenu>
 				<el-menu-item class="leaf nav_item" v-else :index="item.path">
 					<i :class="'nav_'+item.iconCls" class="nav_icon"></i>
