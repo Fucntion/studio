@@ -23,18 +23,37 @@ router.beforeEach((to, from, next) => {
 	NProgress.start()
 	if(to.path == "/login" || to.path == "/register") {
 		next();
-	} else {
-		if(!sessionStorage.getItem('accessToken')) {
+	}else{
+
+		if(typeof(localStorage.getItem('loginTime'))!='undefined'&&typeof(localStorage.getItem('accessToken'))!='undefined'&&typeof(localStorage.getItem('userName'))!='undefined'){
+			var d = new Date(),
+				newTime = d.getTime(),
+				oldTime = parseInt(localStorage.getItem('loginTime'))
+				
+				//超过一小时炸了
+				if(newTime-oldTime<1000*3600){
+					console.log('token有效')
+					next()
+				}else{
+					console.log('token过期')
+					next({
+						path: '/login',
+						query: {
+							redirect: to.fullPath
+						}
+					})
+				}	
+		}else{
 			next({
 				path: '/login',
 				query: {
 					redirect: to.fullPath
 				}
 			})
-		} else {
-			next();
 		}
-	}
+		
+	} 
+
 })
 
 router.afterEach((to, from, next) => {
@@ -50,7 +69,7 @@ Vue.http.options.emulateHTTP = true;
 
 Vue.http.interceptors.push((request, next) => {
 
-	if(!sessionStorage.getItem('accessToken')) {
+	if(!localStorage.getItem('accessToken')) {
 		location.hash = 'login';
 	}
 	var url = 'http://saas.icloudinn.com/api/v1';
@@ -59,11 +78,16 @@ Vue.http.interceptors.push((request, next) => {
 		request.url = url + request.url;
 	} else {
 		//万洲的token有毒
-		var token = '?access-token=' + sessionStorage.getItem('accessToken');
+		var token = '?access-token=' + localStorage.getItem('accessToken');
 		//万洲的url也有毒
 		if(request.url.indexOf('shop=') == 0) {
+			//商城的有分页参数
+			if(request.url.indexOf('--token--')!=-1){
+				request.url = request.url.substr(5) + request.url.replace(/--token--/,token)
+			}else{
+				request.url = request.url.substr(5) + token + '&system_id=10'
+			}
 			
-			request.url = request.url.substr(5) + token + '&system_id=10';
 			
 		} else if(request.url.indexOf('--token--')!=-1){
 			//针对分页要get传参的hack

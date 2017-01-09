@@ -13,7 +13,7 @@ const state = {
 		visible: false,
 		title: 'dialog',
 		current: 'pictureBox',
-		type: null //logo、cover、goods定义回调事件
+		callback:null,//函数类型,在调用的时候就要传入回调函数,唯一参数是选中图片地址,格式如下function(url){}
 	},
 	//定义测试数据
 	pluginList: {
@@ -170,10 +170,10 @@ const mutations = {
 		}
 		state.dialog.title = obj.title;
 		state.dialog.current = obj.components;
-		state.dialog.type = obj.type;
+		state.dialog.callback = obj.callback;
 		state.dialog.visible = true;
 	},
-	closeModal: function(state, obj) {
+	closeModal: function(state) {
 		state.dialog.visible = false;
 	},
 	changeCrumb: function(state, crumbText) {

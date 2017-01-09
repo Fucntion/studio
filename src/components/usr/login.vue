@@ -1,26 +1,28 @@
 <template>
   <div class="usr_box" v-on:keyup.enter="handleSubmit2">
-  <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm card-box loginform">
-    <h3 class="title">系统登录</h3>
-    <el-form-item prop="account">
-      <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="登录邮箱"></el-input>
-    </el-form-item>
-    <el-form-item prop="Pass">
-      <el-input type="password" v-model="ruleForm2.Pass" auto-complete="off" placeholder="密码"></el-input>
-    </el-form-item>
-    <el-checkbox v-model="checked" checked style="margin:0px 0px 35px 0px;">记住密码</el-checkbox>
-    <el-form-item style="width:100%;">
-      <el-button type="primary" class="loginBtn"  style="width:100%;" @click.native.prevent="handleSubmit2">登录</el-button>
-      <router-link to="register"><el-button  style="width:100%;" >注册</el-button></router-link>
-    </el-form-item>
-  </el-form>
+    <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm card-box loginform">
+      <h3 class="title">系统登录</h3>
+      <el-form-item prop="account">
+        <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="登录邮箱"></el-input>
+      </el-form-item>
+      <el-form-item prop="Pass">
+        <el-input type="password" v-model="ruleForm2.Pass" auto-complete="off" placeholder="密码"></el-input>
+      </el-form-item>
+      <el-checkbox v-model="checked" checked style="margin:0px 0px 35px 0px;">记住密码</el-checkbox>
+<el-form-item style="width:100%;">
+<el-button type="primary" class="loginBtn" style="width:100%;" @click.native.prevent="handleSubmit2">登录</el-button>
+<router-link to="register">
+  <el-button style="width:100%;" >注册</el-button>
+</router-link>
+</el-form-item>
+</el-form>
 
-  </div>
+</div>
 </template>
 
 <script>
   export default {
-  	name:'logo',
+    name: 'logo',
     data() {
 
       var validatePass = (rule, value, callback) => {
@@ -35,12 +37,12 @@
       var validateAccount = (rule, value, callback) => {
         var reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         if (value === '') {
-              callback(new Error('请输入邮箱'));
-            } else if (!reg.test(value)) {
-              callback(new Error('请输入正确格式的邮箱'));
-            } else {
-              callback();
-            }
+          callback(new Error('请输入邮箱'));
+        } else if (!reg.test(value)) {
+          callback(new Error('请输入正确格式的邮箱'));
+        } else {
+          callback();
+        }
       };
 
       return {
@@ -50,11 +52,11 @@
         },
         rules2: {
           account: [
-            { validator: validateAccount,required: true,trigger: 'blur' },
+            { validator: validateAccount, required: true, trigger: 'blur' },
             //{ validator: validaePass }
           ],
           Pass: [
-            { validator: validatePass,required: true,trigger: 'blur' },
+            { validator: validatePass, required: true, trigger: 'blur' },
             //{ validator: validaePass2 }
           ]
         },
@@ -62,86 +64,80 @@
       };
     },
     methods: {
-      hehe(){
-        console.log(33)
-      },
+
       handleReset2() {
         this.$refs.ruleForm2.resetFields();
       },
       handleSubmit2(ev) {
-        var _this=this;
+        var _this = this;
         this.$refs.ruleForm2.validate((valid) => {
-            if (valid) {
+          if (valid) {
 
-              // 请原谅我太懒
-              var url="/users",
-              data ={
-                account:this.ruleForm2.account,
-                pwd:this.ruleForm2.Pass
+            var url = "/users",
+              data = {
+                account: this.ruleForm2.account,
+                pwd: this.ruleForm2.Pass
               };
-              // console.log(data);return;
-              this.$http.post(url,data).then((response) => {
-                // console.log(response.body);
 
-                var result = {};
-                if(Object.prototype.toString.call(response.body) === "[object String]"){
-                  result = JSON.parse(response.body);
-                }else{
-                  result =response.body;
+            this.$http.post(url, data).then((response) => {
+                var result = response.body;
+
+              if (result.code == 100) {
+                var d=new Date();
+                localStorage.setItem('accessToken', result.data.access_token)
+                localStorage.setItem('userName', result.data.account)
+                localStorage.setItem('loginTime',d.getTime())
+
+                this.$notify({
+                  title: '成功',
+                  message: '登陆成功',
+                  type: 'success'
+                });
+                //向jq致敬,监测一个对象是否为空对象
+                function isEmptyObject(e) {
+                  var t;
+                  for (t in e)
+                    return !1;
+                  return !0
                 }
-                // console.log(result);return;
-                if(result.code==100){
-
-                      sessionStorage.setItem('accessToken', result.data.access_token)
-                      sessionStorage.setItem('userName', result.data.username)
-
-                      this.$notify({
-                      title: '成功',
-                      message: '登陆成功',
-                      type: 'success'
-                    });
-                   //向jq致敬,监测一个对象是否为空对象
-                    function isEmptyObject(e) {  
-                      var t;  
-                      for (t in e)  
-                          return !1;  
-                      return !0  
-                    }  
-                    var redirectUrl='main';
-                    // console.log(this.$route.query.redirect);
-                    // // return;
-                    // if(!isEmptyObject(this.$route.query)){
-                    //   redirectUrl=this.$route.query.redirect;
-                    // }
-                    this.$router.push(redirectUrl);
-                }else{
-                    this.$notify({
-                    title: '登陆失败',
-                    message: result.msg,
-                    type: 'warning'
-                  });
-                }
-            
-
-          }, (response) => {
-var result = JSON.parse(response.body);
-            this.$notify({
+                var redirectUrl = 'main';
+                // console.log(this.$route.query.redirect);
+                // // return;
+                // if(!isEmptyObject(this.$route.query)){
+                //   redirectUrl=this.$route.query.redirect;
+                // }
+                this.$router.push(redirectUrl);
+              } else {
+                this.$notify({
                   title: '登陆失败',
                   message: result.msg,
                   type: 'warning'
                 });
+              }
 
-          });
 
+            }, (response) => {
+              var result = JSON.parse(response.body);
+              this.$notify({
+                title: '登陆失败',
+                message: result.msg,
+                type: 'warning'
+              });
+
+            });
 
           } else {
             console.log('error submit!!');
             return false;
           }
         });
-      },
+      }
 
+    },
+    mounted(){
+      
     }
+
   }
 </script>
 

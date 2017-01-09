@@ -162,14 +162,6 @@
 
 				store.commit('changeStudio', data);
 			},
-			checkDialog: function(components, title, type) {
-				// type用来区分不同的用途，用来设置不同的回调
-				var obj = {};
-				obj.components = components;
-				obj.title = title;
-				obj.type = type;
-				store.commit("openModal", obj);
-			},
 			//只要修改对应的item数据即可，至于格式化之类的操作全部写在store里面
 			onSubmitEdit: function(item, key) {
 

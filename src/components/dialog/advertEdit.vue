@@ -8,7 +8,6 @@
 			<el-table-column  inline-template label="缩略图" width="150">
 				<div>
 					<template v-if="row.pic">
-
 							<el-upload action="http://saaslive.oss-cn-shanghai.aliyuncs.com" 
 							:on-preview="handlePreview" :on-remove="handleRemove" 
 							:on-success="call" :data="new_multipart_params"
@@ -26,7 +25,6 @@
 							<el-button size="small" >添加图片</el-button>
 						</el-upload>
 					
-
 					</template>
 				</div>
 			</el-table-column>
@@ -66,7 +64,8 @@
 					new_multipart_params:{},
 					AdvertData: [],
 					dir:'',
-					isUploadItem:{}//标记哪一行正在上传图片，方便回到利用。
+					isUploadItem:{},//标记哪一行正在上传图片，方便回到利用。
+					setAdvertImg:function(){}
 				}
 			},
 			computed: {
@@ -81,7 +80,9 @@
 					var self =this;
 					if(column.label !='缩略图')return;
 					self.isUploadItem = row;
-				
+					self.setAdvertImg = function(imgUrl,obj=self.isUploadItem){
+						obj.pic =imgUrl
+					}
 				},
 				subConfig(){
 					var self =this;

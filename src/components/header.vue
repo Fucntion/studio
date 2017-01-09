@@ -3,13 +3,12 @@
         <el-col :span="24" >
             <img src="~assets/img/logo.png" class="logo"> 
             <el-tooltip class="item tip-logout" @click="logout" effect="dark" content="退出" placement="bottom" style="padding:0px;">
-
                 <i class="logout" aria-hidden="true" v-on:click="logout"></i>
             </el-tooltip>
-            <h2 class="company">您好！海南云宿乡土网络科技有限公司</h2>
+            <h2 class="company">您好！{{company}}</h2>
             <div class="tip">
                 <div></div>
-                <span>22</span>
+                <span>0</span>
             </div>
              
         </el-col>
@@ -25,7 +24,9 @@
 		// import { alert } from 'vue-strap'
 
 		data: function() {
-			return {}
+			return {
+                company:localStorage.getItem('userName')
+            }
 
 		},
 		methods:{
@@ -36,8 +37,8 @@
                 this.$confirm('确认退出吗?', '提示', {
 
                 }).then(() => {
-                    sessionStorage.removeItem('userName');
-                    sessionStorage.removeItem('accessToken');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('accessToken');
                     _this.$router.replace('/login');
                 }).catch(() => {
 

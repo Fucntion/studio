@@ -1,5 +1,4 @@
 <template>
-
 	<div id="studio">
 		<top></top>
 		<left></left>
@@ -54,6 +53,9 @@
 		},
 		mounted() {
 			this.currentPathName =this.$route.name;
+
+			
+
 		}
 	}
 </script>

@@ -180,10 +180,10 @@
 							<div class="cover">
 								<template v-if="studio.cover_img_url">
 									<img width="300px" :src="studio.cover_img_url" />
-									<el-button type="primary" @click="checkDialog('pictureBox','设置封面','cover')">更改封面</el-button>
+									<el-button type="primary" @click="checkDialog('pictureBox','设置封面',setcover)">更改封面</el-button>
 								</template>
 								<template v-else>
-									<el-button type="primary" @click="checkDialog('pictureBox','设置封面','cover')">设置封面</el-button>
+									<el-button type="primary" @click="checkDialog('pictureBox','设置封面',setcover)">设置封面</el-button>
 								</template>
 							</div>
 						</div>
@@ -193,10 +193,10 @@
 							<div class="logo">
 								<template v-if="studio.logo_url">
 									<img width="100px" class="logo_img" :src="studio.logo_url" />
-									<el-button type="primary" @click="checkDialog('pictureBox','设置logo','logo')">更改Logo</el-button>
+									<el-button type="primary" @click="checkDialog('pictureBox','设置logo',setlogo)">更改Logo</el-button>
 								</template>
 								<template v-else>
-									<el-button type="primary" @click="checkDialog('pictureBox','设置logo','logo')">设置Logo</el-button>
+									<el-button type="primary" @click="checkDialog('pictureBox','设置logo',setlogo)">设置Logo</el-button>
 								</template>
 
 							</div>
@@ -211,7 +211,7 @@
 							<div class="limit">
 								<el-radio-group v-model="radio">
 							    <el-tooltip class="item" effect="dark" content="所有人均可看" placement="bottom">
-							    	<el-radio  :label="3" @change="cccc()">无限制</el-radio>	
+							    	<el-radio  :label="3" >无限制</el-radio>	
 							    </el-tooltip>
 							    <el-tooltip class="item" disabled effect="dark" content="验证手机号可看" placement="bottom">
 							    	<el-radio disabled :label="6">手机验证</el-radio>
@@ -251,6 +251,7 @@
 				radio:3,
 				studio:null,
 				show: false,
+
 				//mobile Data
 				swiperOption: {
 					name: 'currentSwiper',
@@ -259,7 +260,6 @@
 				},
 
 				//common Data
-				
 				showStatus_origin: {
 					cover: true,
 					logo: false,
@@ -268,7 +268,10 @@
 					origin: true,
 					total: false,
 					countDown: false
-				}
+				},
+				setcover:function(){},
+				setlogo:function(){},
+				
 
 			}
 		},
@@ -307,9 +310,7 @@
 			}
 		},
 		methods: {
-			cccc:function(label){
-				console.log(label);
-			},
+
 			subConfig(){
 					var self =this;
 			        var data ={
@@ -443,12 +444,12 @@
 				store.commit('changeStudio', data);
 
 			},
-			checkDialog: function(components, title, type) {
+			checkDialog: function(components, title,callback) {
 				// type用来区分不同的用途，用来设置不同的回调
 				var obj = {};
 				obj.components = components;
 				obj.title = title;
-				obj.type = type;
+				obj.callback = callback;
 				store.commit("openModal", obj);
 			},
 			init: function() {
@@ -460,6 +461,16 @@
 				//初始化房间信息
 				self.studio = store.getters.getStudio;
 
+				self.setcover=function(imgUrl,obj=self.studio){
+					obj.cover_img_url = imgUrl
+
+				}
+
+				self.setlogo=function(imgUrl,obj=self.studio){
+					obj.logo_url = imgUrl
+				}
+
+
 				//从vuex中读取组件的默认信息
 				self.show = true;
 				self.$nextTick(function(){
@@ -469,18 +480,13 @@
 						"live_url" : hls,
 						"width" :359,
 						"height" :201,
-
-						
-						//...可选填其他属性
 						};
 
 					var player = new qcVideo.Player("id_video_container", option)
-					// console.log(player)
 					player.play()
-							})
-				
+				})	
 
-						}
+			}
 		},
 		mounted() {
 			this.init();

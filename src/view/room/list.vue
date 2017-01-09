@@ -1,18 +1,17 @@
 <template>
 	<div class="roomList"  v-loading="loading"
-    element-loading-text="拼命加载中">
+    element-loading-text="拼命加载中"> 
 
 		<el-row class="room_box">
 			<!--传入add然后让业务逻辑知道是创建新的直播间-->
 			<div class="roomAdd">
-				<div @click="addRoom()">创建房间</div>
+				<div  @click="addRoom()">创建房间</div>
 			</div>
 			<template v-if="roomList.length>0" v-for="(room,index) in roomList">
 
 					<div class="roomItem" :id="room.id">
 						<img :src="room.logo_url" class="thumb" alt="room.title" />
 						<h3 class="room_title">{{room.title}}</h3>
-
 						<el-row class="btn">
 							<el-col class="btn_item" :span="8">
 								<div @click="intoRoom(room.id)">编辑房间</div>
@@ -38,7 +37,7 @@
 			<!-- <el-col :span="1" >&nbsp;</el-col> -->
 		</el-row>
 		<div class="control">
-			<el-pagination layout="prev, pager, next" :total="roomList.length">
+			<el-pagination layout="prev, pager, next" :total="roomTotal" :page-size="7">
 			</el-pagination>
 		</div>
 
@@ -47,13 +46,16 @@
 
 <script>
 	import store from 'store'
+	import { Loading } from 'element-ui'
 
 	export default {
 		data: function() {
 
 			return {
 				roomList: [],
-				loading:true
+				loading:true,
+				roomTotal:0,
+				ctime:0
 				
 
 			}
@@ -62,10 +64,11 @@
 			addRoom: function() {
 				//创建好直播间
 				console.log('add room');
+				let loadingInstance = Loading.service({ fullscreen: true,text:'努力创建' })
 				var d = new Date(),
 					data = {
 						cover_img_url: "http://www.icloudinn.com/statics/images/logo.png",
-						title: "云商直播",
+						title: "云商直播间",
 						is_record_play: 1,
 						style: ' ',
 						plugin: JSON.stringify({
@@ -76,8 +79,9 @@
 
 					},
 					url = "/rooms";
+				
 				this.$http.post(url, data).then((response) => {
-
+					loadingInstance.close()
 					this.$router.push('studio/' + response.body.id);
 
 				}, (response) => {
@@ -148,6 +152,7 @@
 			this.$http.get(url).then((response) => {
 				
 				this.roomList = response.body.data.list;
+				this.roomTotal = parseInt(response.body.data.pageInfo.totalCount)
 				this.loading =false;
 
 			}, (response) => {

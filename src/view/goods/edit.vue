@@ -50,7 +50,6 @@
 					form:{},
 					content: '<h2>商品信息</h2>',
 					editorOption: {
-						// something config
 						lineNumbers: true,
         				line: true,
 						mode: 'text/html',
@@ -127,8 +126,7 @@
 					},function(response){
 
 					})
-					
-					// this.form = JSON.parse(sessionStorage.getItem('tempGoods'))
+
 				}
 			},
 			computed: {
