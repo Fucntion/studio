@@ -180,10 +180,10 @@
 							<div class="cover">
 								<template v-if="studio.cover_img_url">
 									<img width="300px" :src="studio.cover_img_url" />
-									<el-button type="primary" @click="checkDialog('pictureBox','设置封面',setcover)">更改封面</el-button>
+									<el-button type="primary" @click="openPicture('设置封面',setcover)">更改封面</el-button>
 								</template>
 								<template v-else>
-									<el-button type="primary" @click="checkDialog('pictureBox','设置封面',setcover)">设置封面</el-button>
+									<el-button type="primary" @click="openPicture('设置封面',setcover)">设置封面</el-button>
 								</template>
 							</div>
 						</div>
@@ -193,10 +193,10 @@
 							<div class="logo">
 								<template v-if="studio.logo_url">
 									<img width="100px" class="logo_img" :src="studio.logo_url" />
-									<el-button type="primary" @click="checkDialog('pictureBox','设置logo',setlogo)">更改Logo</el-button>
+									<el-button type="primary" @click="openPicture('设置logo',setlogo)">更改Logo</el-button>
 								</template>
 								<template v-else>
-									<el-button type="primary" @click="checkDialog('pictureBox','设置logo',setlogo)">设置Logo</el-button>
+									<el-button type="primary" @click="openPicture('设置logo',setlogo)">设置Logo</el-button>
 								</template>
 
 							</div>
@@ -229,12 +229,14 @@
 			</el-tabs>
 			</div>
 			<dialog-box></dialog-box>
+			<picture-box></picture-box>
 
 	</el-row>
 </template>
 
 <script>
 	import dialogBox from "plugin/common/modal.vue"
+	import pictureBox from "plugin/common/pictureBox.vue"
 	import Qrcode from 'plugin/common/Qrcode.vue'
 	import store from 'store'
 	import {
@@ -271,15 +273,14 @@
 				},
 				setcover:function(){},
 				setlogo:function(){},
-				
-
 			}
 		},
 		components: {
 			swiper,
 			swiperSlide,
 			dialogBox,
-			Qrcode
+			Qrcode,
+			pictureBox
 		},
 		computed: {
 			
@@ -451,6 +452,13 @@
 				obj.title = title;
 				obj.callback = callback;
 				store.commit("openModal", obj);
+			},
+			openPicture: function(components, title,callback) {
+				// type用来区分不同的用途，用来设置不同的回调
+				var obj = {};
+				obj.title = title;
+				obj.callback = callback;
+				store.commit("openPicture", obj);
 			},
 			init: function() {
 				var self = this;

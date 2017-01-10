@@ -22,8 +22,14 @@
 				<img :src="form.goodsImg" v-if="form.goodsImg" height="160px;" class="thumb">
 			</el-form-item>
 			<el-form-item required label="商品介绍">
-				<quill-editor ref="myTextEditor" v-model="form.goodsDesc" :config="editorOption" @blur="onEditorBlur($event)" @focus="onEditorFocus($event)" @ready="onEditorReady($event)">
-				</quill-editor>
+				<!--<div id="editor"  style="line-height:1.3"></div>-->
+				 <!-- 加载编辑器的容器 -->
+				<!--<script id="editor" name="content" type="text/plain">
+					这里写你的初始化内容
+				</script>-->
+				<textarea id="editor_id" name="content" style="width:700px;height:300px;">
+				添加商品信息
+				</textarea>
 			</el-form-item>
 
 			<el-form-item>
@@ -40,9 +46,9 @@
 	import {
 		quillEditor
 	} from 'vue-quill-editor'
-
+	
 	export default {
-
+		name:'addgoods',
 		data() {
 				return {
 					form: {
@@ -58,6 +64,7 @@
 					content: '<h2>商品信息</h2>',
 					editorOption: {
 						// something config
+						
 					},
 					new_multipart_params: null,
 				}
@@ -65,8 +72,17 @@
 			components: {
 				quillEditor
 			},
+			destroy(){
+
+			},
 			methods: {
 				onSubmit: function() {
+
+
+					this.form.goodsDesc = editor.html()
+					console.log(this.form.goodsDesc)
+					return;
+					editor =undefined
 					//native= 表示这个是不需要自动添加host信息的
 					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/add';
 					this.$http.post(url, this.form).then((response) => {
@@ -88,7 +104,7 @@
 				call: function(response, file, fileList) {
 
 					var fileUlr = 'http://saaslive.oss-cn-shanghai.aliyuncs.com/' + this.new_multipart_params.dir + file.name;
-					console.log(fileUlr);
+
 					this.$refs.uploads.clearFiles();
 					this.form.goodsImg = fileUlr;
 
@@ -98,32 +114,29 @@
 					this.new_multipart_params.name = file.name;
 					this.new_multipart_params.key = this.new_multipart_params.dir + file.name;
 					// console.log(this.new_multipart_params);return;
-				},
-				onEditorBlur(editor) {
-					// console.log('editor blur!', editor)
-				},
-				onEditorFocus(editor) {
-					// console.log('editor focus!', editor)
-				},
-				onEditorReady(editor) {
-					// console.log('editor ready!', editor)
-				},
-				onEditorChange({
-					editor,
-					html,
-					text
-				}) {
-					// console.log('editor change!', editor, html, text)
-					this.content = html
 				}
 			},
 			computed: {
-				editor() {
-					return this.$refs.myTextEditor.quillEditor
-				}
+
 			},
 			mounted() {
-				// console.log('商品描述', this.editor);
+				
+				this.$nextTick(function () {
+					// console.log(KindEditor.ready(function(){console.log()}))
+					KindEditor.ready(function(K) {
+						// window.K = K
+						window.editor = K.create('#editor_id');
+						// console.log(window.K,editor)
+						// sessionStorage.setItem('isEditor',1)
+					});
+
+					/
+					
+					 
+					
+					// 
+				})
+
 				var url = "/aliyuns/oss";
 
 				this.$http.get(url).then((response) => {
@@ -156,6 +169,9 @@
 </script>
 
 <style lang="less">
+	#editor{
+		line-height: 1.4
+	}
 	.goodsAdd {
 		.form {
 			position: relative;
