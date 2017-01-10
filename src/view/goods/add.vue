@@ -80,9 +80,6 @@
 
 
 					this.form.goodsDesc = editor.html()
-					console.log(this.form.goodsDesc)
-					return;
-					editor =undefined
 					//native= 表示这个是不需要自动添加host信息的
 					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/add';
 					this.$http.post(url, this.form).then((response) => {
@@ -122,15 +119,14 @@
 			mounted() {
 				
 				this.$nextTick(function () {
-					// console.log(KindEditor.ready(function(){console.log()}))
+
 					KindEditor.ready(function(K) {
-						// window.K = K
+
 						window.editor = K.create('#editor_id');
-						// console.log(window.K,editor)
-						// sessionStorage.setItem('isEditor',1)
+
 					});
 
-					/
+					
 					
 					 
 					

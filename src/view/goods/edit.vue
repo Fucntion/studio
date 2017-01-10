@@ -23,7 +23,7 @@
 			</el-form-item>
 			<el-form-item required label="商品介绍">
 				<textarea id="editor_goods_edit" name="content" style="width:700px;height:300px;">
-					42423
+					{{form.goodsDesc}}
 				</textarea>
 
 			</el-form-item>
@@ -115,12 +115,15 @@
 						this.show =true
 						var self =this
 						this.$nextTick(function () {
-							console.log(KindEditor.ready)
+
 							KindEditor.ready(function(K) {
-								console.log(333)
 								window.editor_goods_edit = K.create('#editor_goods_edit');
-								
-								console.log(editor_goods_edit)
+								console.log(self.form.goodsDesc)
+								// var element =document.createElement('div')
+								// element.innerHTML = self.form.goodsDesc
+								// document.body.appendChild(element)
+								// console.log(element.innerHTML)
+								// editor_goods_edit.html(element.innerHTML)
 							});
 
 						})
