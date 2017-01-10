@@ -22,17 +22,14 @@
 				<img :src="form.goodsImg" v-if="form.goodsImg" height="160px;" class="thumb">
 			</el-form-item>
 			<el-form-item required label="商品介绍">
-				<textarea id="editor_goods_edit" name="content" style="width:700px;height:300px;">
-					42423
-				</textarea>
-
+				<quill-editor ref="myTextEditor" v-model="form.goodsDesc" :config="editorOption" @blur="onEditorBlur($event)" @focus="onEditorFocus($event)" @ready="onEditorReady($event)">
+				</quill-editor>
 			</el-form-item>
 
 			<el-form-item>
 				<el-button type="primary" @click="onSubmit">立即创建</el-button>
 				<el-button>取消</el-button>
 			</el-form-item>
-
 
 		</el-form>
 
@@ -57,7 +54,6 @@
         				line: true,
 						mode: 'text/html',
 					},
-					ue:null,
 					new_multipart_params: null,
 				}
 			},
@@ -66,10 +62,8 @@
 			},
 			methods: {
 				onSubmit: function() {
-
-					this.form.goodsDesc = editor_goods_edit.html()
 					//native= 表示这个是不需要自动添加host信息的
-					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/edit';
+					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/add';
 					this.$http.post(url, this.form).then((response) => {
 						if(response.body.code == 100) {
 							this.$notify.info({
@@ -100,30 +94,35 @@
 					this.new_multipart_params.key = this.new_multipart_params.dir + file.name;
 					// console.log(this.new_multipart_params);return;
 				},
-				
+				onEditorBlur(editor) {
+					// console.log('editor blur!', editor)
+				},
+				onEditorFocus(editor) {
+					// console.log('editor focus!', editor)
+				},
+				onEditorReady(editor) {
+					// console.log('editor ready!', editor)
+				},
+				onEditorChange({
+					editor,
+					html,
+					text
+				}) {
+					// console.log('editor change!', editor, html, text)
+					this.content = html
+				},
 				init:function(){
 					// console.log()
 					var id = this.$route.params.id
 					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/edit'
 					console.log(id)
 					this.$http.post(url,{goodsId:id}).then(function(response){
-						if(response.body.code!=100){
+						if(response.body.code!=0){
 							console.log('商品信息获取失败')
 							return
 						}
 						this.form =response.body.data
 						this.show =true
-						var self =this
-						this.$nextTick(function () {
-							console.log(KindEditor.ready)
-							KindEditor.ready(function(K) {
-								console.log(333)
-								window.editor_goods_edit = K.create('#editor_goods_edit');
-								
-								console.log(editor_goods_edit)
-							});
-
-						})
 					},function(response){
 
 					})
@@ -132,16 +131,11 @@
 			},
 			computed: {
 				editor() {
-
+					return this.$refs.myTextEditor.quillEditor
 				}
 			},
 			mounted() {
-
-
 				this.init()
-				
-
-				
 				// console.log('商品描述', this.editor);
 				var url = "/aliyuns/oss";
 

@@ -15,11 +15,6 @@ const state = {
 		current: 'pictureBox',
 		callback:null,//函数类型,在调用的时候就要传入回调函数,唯一参数是选中图片地址,格式如下function(url){}
 	},
-	picture: {
-		visible: false,
-		title: '图片框',
-		callback:null,//函数类型,在调用的时候就要传入回调函数,唯一参数是选中图片地址,格式如下function(url){}
-	},
 	//定义测试数据
 	pluginList: {
 		player:{
@@ -124,9 +119,6 @@ const getters = {
 	getDialog: function(state) {
 		return state.dialog;
 	},
-	getPicture: function(state) {
-		return state.picture;
-	},
 	getPluginList: function(state, type) {
 
 		return state.pluginList;
@@ -183,18 +175,6 @@ const mutations = {
 	},
 	closeModal: function(state) {
 		state.dialog.visible = false;
-	},
-	openPicture: function(state, obj) {
-		if(!obj.components && !obj.title) {
-			console.log('参数有误无法弹出dialog');
-			return
-		}
-		state.picture.title = obj.title;
-		state.picture.callback = obj.callback;
-		state.picture.visible = true;
-	},
-	closePicture: function(state) {
-		state.picture.visible = false;
 	},
 	changeCrumb: function(state, crumbText) {
 		// 变更状态

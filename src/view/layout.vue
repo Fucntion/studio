@@ -11,9 +11,9 @@
 					</el-breadcrumb>
 					<div class="hr"></div>
 				</el-col>
-				<el-col :span="24"  class="container">
+				<el-col :span="24" class="container">
 					<transition name="fade">
-						<router-view ></router-view>
+						<router-view></router-view>
 					</transition>
 				</el-col>
 			</el-row>

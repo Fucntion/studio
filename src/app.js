@@ -21,9 +21,6 @@ import 'nprogress/nprogress.css'
 
 router.beforeEach((to, from, next) => {
 	NProgress.start()
-	// if(typeof(editor)!='undefined'){
-	// 	editor =undefined
-	// }
 	if(to.path == "/login" || to.path == "/register") {
 		next();
 	}else{
