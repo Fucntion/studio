@@ -1,30 +1,28 @@
 <template>
-  <div class="pictureBox">
-    <div class="upload"><span>logo尺寸建议150*150,封面尺寸建议750*1334像素 </span>
-      <el-upload action="http://saaslive.oss-cn-shanghai.aliyuncs.com" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="call"
-        :data="new_multipart_params" :before-upload="set_key" :multiple="false">
-        <el-button type="primary" size="small">上传图片</el-button>
-      </el-upload>
-      <div class="hr"></div>
-    </div>
-    <div class="img_box">
-      <div class="img_item" v-if="imgList.length>0" v-for="(item,index) in imgList" @click="select(item)" :class="{active: item.isActive}">
-        <div class="img"  :style="{backgroundImage:'url(' + item.img_url + ')'}"></div>
+  <el-dialog :title="picture.title" v-model="picture.visible">
+    <div class="pictureBox">
+      <div class="upload"><span>logo尺寸建议150*150,封面尺寸建议750*1334像素 </span>
+        <el-upload action="http://saaslive.oss-cn-shanghai.aliyuncs.com" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="call"
+          :data="new_multipart_params" :before-upload="set_key" :multiple="false">
+          <el-button type="primary" size="small">上传图片</el-button>
+        </el-upload>
+        <div class="hr"></div>
       </div>
-    </div>
+      <div class="img_box">
+        <div class="img_item" v-if="imgList.length>0" v-for="(item,index) in imgList" @click="select(item)" :class="{active: item.isActive}">
+          <div class="img" :style="{backgroundImage:'url(' + item.img_url + ')'}"></div>
+        </div>
+      </div>
 
-    <div class="control">
-      <el-pagination
-  small
-  layout="prev, pager, next" :page-size="24"
-  @current-change="handleCurrentChange"
-  :total="pagination.total">
-</el-pagination>
-      <el-button :disabled="isCheck" class="export" type="primary">确定</el-button>
+      <div class="control">
+        <el-pagination small layout="prev, pager, next" :page-size="24" @current-change="handleCurrentChange" :total="pagination.total">
+        </el-pagination>
+        <el-button :disabled="isCheck" @click="save()" class="export" type="primary">确定</el-button>
 
-    </div>
+      </div>
 
-  </div>
+  </el-dialog>
+
 </template>
 
 <script>
@@ -34,44 +32,36 @@
     data: function () {
 
       return {
-        isCheck:true,
+        isCheck: true,
         new_multipart_params: {},
         studio: {},
-        pagination:{
-          total:0
+        pagination: {
+          total: 0
         },
-        imgList: []
+        selectUrl:'',//用来储存已经选中的图片
+        imgList: [],
+        picture: {}
       }
     },
-    props: ['dialog'],
     methods: {
-
+      save:function(selectUrl=this.selectUrl){
+          var callback = this.picture.callback
+          callback(selectUrl)
+          store.commit('closePicture')
+      },
       call: function (response, file, fileList) {
-        console.log(response)
-        var callback =this.dialog.callback,
-          fileUlr = response.data.img_url
 
-        // switch (type) {
-        //   case 'cover':
-        //     this.studio.cover_img_url = fileUlr;
-        //     break;
-        //   case 'logo':
-        //     this.studio.logo_url = fileUlr;
-        //     break;
-        // }
-
-
-        callback(fileUlr)
+        var fileUlr = response.data.img_url
         //给他加上未选中的状态
         response.data.isActive = false
-        
-        if(this.imgList.length==24){ 
+
+        if (this.imgList.length == 24) {
           //去掉最后一个咯
-         this.imgList.length = 23
+          this.imgList.length = 23
 
         }
 
-       this.imgList = [response.data].concat(this.imgList)
+        this.imgList = [response.data].concat(this.imgList)
 
         // store.commit("closeModal");
         // var data = {
@@ -95,23 +85,24 @@
         console.log(file);
       },
       select: function (item) {
-       
+
         for (var key in this.imgList) {
           this.imgList[key].isActive = false;
         }
-        
+
         item.isActive = true
-        this.isCheck =false
+        this.selectUrl =item.img_url
+        this.isCheck = false
         // console.log(item)
       },
-      getPage:function(page){
-         //获取已有图片
-        
-        var picLink = '/materials/picture/list--token--&page='+page+'&per-page=24'
+      getPage: function (page) {
+        //获取已有图片
+
+        var picLink = '/materials/picture/list--token--&page=' + page + '&per-page=24'
         this.$http.get(picLink).then((response) => {
-          
-          _.forEach(response.body.data.list,function(item,key){
-            item.isActive =false
+
+          _.forEach(response.body.data.list, function (item, key) {
+            item.isActive = false
           })
           this.imgList = response.body.data.list
           this.pagination.total = parseInt(response.body.data.pageInfo.totalCount)
@@ -128,7 +119,7 @@
         //初始化的时候是1
         this.getPage(this.page)
 
-      
+
         //阿里云
         var url = "/aliyuns/oss";
         this.$http.get(url).then((response) => {
@@ -158,7 +149,7 @@
 
     },
     mounted() {
-
+      this.picture = store.getters.getPicture;
       this.init()
 
     }
