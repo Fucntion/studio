@@ -77,7 +77,6 @@
 				<div class="wrap">
 
 					<!--播放器-->
-					<!-- <video-Player :options="videoOptions" ref="videoPlayer"></video-Player> -->
 					<div id="id_video_container"></div>
 					<!--幻灯片-->
 
@@ -146,11 +145,11 @@
 								<div class="title">预览地址
 									<el-button size="small" class="copy" type="primary">复制</el-button>
 								</div>
-								<p>http://tv.icloudinn.com/{{studio.id}}</p>
+								<p>http://tv.icloudinn.com/#/{{studio.id}}</p>
 								<div class="title">扫我预览
 									<el-button @click="opencli" size="small" class="copy" type="primary">美化</el-button>
 								</div>
-								<qrcode :val="'http://tv.icloudinn.com/'+studio.id"></qrcode>
+								<qrcode :val="'http://tv.icloudinn.com/#/'+studio.id"></qrcode>
 							</div>
 						</div>
 
@@ -460,6 +459,47 @@
 				obj.callback = callback;
 				store.commit("openPicture", obj);
 			},
+			loadPlayer:function(){
+
+				var self =this
+
+				function callback(self) {
+					
+					// var player =  new TcPlayer('id_video_container', {
+					// 	"m3u8": self.studio.hls_downstream_address||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
+					// 	// "flv": self.studio.flv_downstream_address, //增加了一个flv的播放地址，用于PC平台的播放
+					// 	"autoplay" : false,      //iOS下safari浏览器是不开放这个能力的
+					// 	// "coverpic" : "http://www.test.com/myimage.jpg",
+					// 	"width" :  '359',//视频的显示宽度，请尽量使用视频分辨率宽度
+					// 	"height" : '201'//视频的显示高度，请尽量使用视频分辨率高度
+					// });
+					console.log(self.studio.flv_downstream_address)
+					var player = cyberplayer("id_video_container").setup({
+						flashplayer:"http://www.easydarwin.org/cyberplayer.flash.swf",
+						width: 359,
+						height: 201,
+						stretching: "uniform",
+						file: 'http://3510.liveplay.myqcloud.com/live/3510_96ea4c9cd64f11e691eae435c87f075e.flv',
+						autostart: true,
+						repeat: false,
+						volume: 90,
+						controls: true,
+						ak: '2f3e3d305f7d4e308d56f8d61577d723' // 公有云平台注册即可获得accessKey
+					});
+				}
+				var head= document.getElementsByTagName('head')[0]; 
+				var script= document.createElement('script'); 
+				script.type= 'text/javascript'; 
+				script.onreadystatechange= function () { 
+				if (this.readyState == 'complete') 
+					callback(self); 
+				} 
+				script.onload= function(){ 
+					callback(self); 
+				} 
+				script.src= '/static/cyberplayer/cyberplayer.js'; 
+				head.appendChild(script); 
+			},
 			init: function() {
 				var self = this;
 				//把store中的组件信息初始化
@@ -481,23 +521,34 @@
 
 				//从vuex中读取组件的默认信息
 				self.show = true;
+				self.loadPlayer()
 				self.$nextTick(function(){
+					// var player =  new TcPlayer('id_video_container', {
+					// 	"m3u8": self.studio.hls_downstream_address||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
+					// 	// "flv": self.studio.flv_downstream_address, //增加了一个flv的播放地址，用于PC平台的播放
+					// 	"autoplay" : false,      //iOS下safari浏览器是不开放这个能力的
+					// 	// "coverpic" : "http://www.test.com/myimage.jpg",
+					// 	"width" :  '359',//视频的显示宽度，请尽量使用视频分辨率宽度
+					// 	"height" : '201'//视频的显示高度，请尽量使用视频分辨率高度
+					// });
 
-					var hls = parent.hls||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"
-						var option = {
-						"live_url" : hls,
-						"width" :359,
-						"height" :201,
-						};
+					// var hls = parent.hls||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"
+					// 	var option = {
+					// 	"live_url" : hls,
+					// 	"width" :359,
+					// 	"height" :201,
+						
+					// 	};
 
-					var player = new qcVideo.Player("id_video_container", option)
-					player.play()
+					// var player = new qcVideo.Player("id_video_container", option)
+					// player.play()
 				})	
 
 			}
 		},
 		mounted() {
 			this.init();
+			
 
 		}
 	}
@@ -505,7 +556,10 @@
 
 <style lang="less">
 	/*style Mobile*/
-	
+	#id_video_container{
+		width:359px;
+		height:201px;
+	}
 	.swiper-container {
 		width: 100%;
 		height: 100px

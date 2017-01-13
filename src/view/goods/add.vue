@@ -22,14 +22,11 @@
 				<img :src="form.goodsImg" v-if="form.goodsImg" height="160px;" class="thumb">
 			</el-form-item>
 			<el-form-item required label="商品介绍">
-				<!--<div id="editor"  style="line-height:1.3"></div>-->
-				 <!-- 加载编辑器的容器 -->
-				<!--<script id="editor" name="content" type="text/plain">
-					这里写你的初始化内容
-				</script>-->
-				<textarea id="editor_id" name="content" style="width:700px;height:300px;">
-				添加商品信息
-				</textarea>
+				<!--<textarea id="editor_id" name="content" style="width:700px;height:300px;">
+					在这里添加商品信息
+				</textarea>-->
+				<quill-editor ref="goodsAdd"  :config="editorOption" @change="onEditorChange($event)">
+							</quill-editor>
 			</el-form-item>
 
 			<el-form-item>
@@ -76,10 +73,17 @@
 
 			},
 			methods: {
+			onEditorChange({
+				editor,
+				html,
+				text
+			}) {
+				this.$refs.goodsAdd.tempStr = html
+			},
 				onSubmit: function() {
 
 
-					this.form.goodsDesc = editor.html()
+					this.form.goodsDesc = this.$refs.goodsAdd.tempStr||'无介绍'
 					//native= 表示这个是不需要自动添加host信息的
 					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/add';
 					this.$http.post(url, this.form).then((response) => {
@@ -113,25 +117,12 @@
 					// console.log(this.new_multipart_params);return;
 				}
 			},
+
 			computed: {
 
 			},
 			mounted() {
-				
-				this.$nextTick(function () {
-
-					KindEditor.ready(function(K) {
-
-						window.editor = K.create('#editor_id');
-
-					});
-
-					
-					
-					 
-					
-					// 
-				})
+			
 
 				var url = "/aliyuns/oss";
 

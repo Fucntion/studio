@@ -22,9 +22,14 @@
 				<img :src="form.goodsImg" v-if="form.goodsImg" height="160px;" class="thumb">
 			</el-form-item>
 			<el-form-item required label="商品介绍">
-				<textarea id="editor_goods_edit" name="content" style="width:700px;height:300px;">
-					{{form.goodsDesc}}
-				</textarea>
+				<quill-editor ref="goodsEdit"  
+				:value="escape2Html(form.goodsDesc)" 
+				:config="editorOption" 
+				@change="onEditorChange($event)" >
+							</quill-editor>
+				<!--<textarea id="editor_goods_edit" v-html="form.goodsDesc" name="content" style="width:900px;height:500px;">
+					
+				</textarea>-->
 
 			</el-form-item>
 
@@ -65,9 +70,16 @@
 				quillEditor
 			},
 			methods: {
+			onEditorChange({
+				editor,
+				html,
+				text
+			}) {
+				this.$refs.goodsEdit.tempStr = html
+			},
 				onSubmit: function() {
 
-					this.form.goodsDesc = editor_goods_edit.html()
+					this.form.goodsDesc = this.$refs.goodsEdit.tempStr||'无介绍'
 					//native= 表示这个是不需要自动添加host信息的
 					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/edit';
 					this.$http.post(url, this.form).then((response) => {
@@ -100,6 +112,17 @@
 					this.new_multipart_params.key = this.new_multipart_params.dir + file.name;
 					// console.log(this.new_multipart_params);return;
 				},
+				 escape2Html:function(str) {
+					var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+					return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+				},
+				 HTMLEncode:function(html) {
+					var temp = document.createElement("div");
+					(temp.textContent != null) ? (temp.textContent = html) : (temp.innerText = html);
+					var output = temp.innerHTML;
+					temp = null;
+					return output;
+				},
 				
 				init:function(){
 					// console.log()
@@ -113,20 +136,8 @@
 						}
 						this.form =response.body.data
 						this.show =true
-						var self =this
-						this.$nextTick(function () {
 
-							KindEditor.ready(function(K) {
-								window.editor_goods_edit = K.create('#editor_goods_edit');
-								console.log(self.form.goodsDesc)
-								// var element =document.createElement('div')
-								// element.innerHTML = self.form.goodsDesc
-								// document.body.appendChild(element)
-								// console.log(element.innerHTML)
-								// editor_goods_edit.html(element.innerHTML)
-							});
-
-						})
+						
 					},function(response){
 
 					})

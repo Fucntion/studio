@@ -20,13 +20,14 @@
 							</el-select>
 						</el-form-item>
 						<el-form-item label="菜单内容" v-if="item.type&&item.type=='show'">
-							<quill-editor ref="myTextEditor" v-model="item.show" :config="editorOption" @blur="onEditorBlur($event)" @focus="onEditorFocus($event)" @ready="onEditorReady($event)">
+							<quill-editor :ref="'myTextEditor'+key"  :value="escape2Html(item.show)" :config="editorOption"  @change="onEditorChange($event,item,key)" >
 							</quill-editor>
-							<!--<el-input type="textarea" prop="show" v-model="">图文内容</el-input>-->
+							<!--<textarea id="editor_content" v-html="item.show" name="content" style="height:300px;">
+							</textarea>-->
 						</el-form-item>
 						<el-form-item label="菜单内容" v-if="item.type&&item.type=='goods'">
 							<div>
-								<el-table v-if="goodsData" :key="index" :data="goodsData"> (item.goods,goodsData)" stripe>
+								<el-table v-if="goodsData" :key="index" :data="goodsData">
 									<el-table-column prop="goodsName" width="180px" label="商品"></el-table-column>
 									<el-table-column inline-template label="缩略图">
 										<div><img style="width: 100px;" :src=row.goodsImg /></div>
@@ -97,6 +98,7 @@
 				editorOption: {
 					// something config
 				},
+				Tempcontent:'',//暂存文章素材的变量
 				rules: {
 					title: [{
 						validator: validateTitle
@@ -110,12 +112,9 @@
 		},
 		store,
 		props: ['dialog'],
-		watch: {
-
-		},
 		computed: {
 			editor() {
-				return this.$refs.myTextEditor.quillEditor
+				// return this.$refs.myTextEditor.quillEditor
 			}
 		},
 		methods: {
@@ -132,9 +131,22 @@
 				editor,
 				html,
 				text
-			}) {
-				// console.log('editor change!', editor, html, text)
-				this.content = html
+			},item,key) {
+				var self = this,
+					tempRefsEditor={};
+				for(var k in self.$refs) {
+
+					//替换富文本编辑器中内容
+					if(k=='myTextEditor'+key){
+						tempRefsEditor = self.$refs[k][0] 
+					}
+				}
+				tempRefsEditor.tempStr = html;
+				// console.log(tempRefsEditor)
+
+			},
+			html2Escape:function(sHtml) {
+			return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
 			},
 			removeMenuTab: function(tabItem) {
 				var self = this;
@@ -166,17 +178,29 @@
 			onSubmitEdit: function(item, key) {
 
 				var self = this,
-					tempRefsObj = {};
+					tempRefsObj = {},tempRefsEditor={};
 
 				for(var k in self.$refs) {
 
+					// 用ref来定位是哪个表单
 					if(k == 'formedit' + key) {
-
+						
 						tempRefsObj = self.$refs[k][0]; //0有点坑
-						break;
+					}
+
+					//替换富文本编辑器中内容
+					if(k=='myTextEditor'+key){
+						tempRefsEditor = self.$refs[k][0] 
 					}
 				}
+				if(item.type =='show'){
+					item.show = tempRefsEditor.tempStr||''
+				}
+				
+				// console.log(item)
+				// return;
 
+				//表单验证
 				tempRefsObj.validate((valid) => {
 					if(valid) {
 
@@ -196,6 +220,11 @@
 								type: 'warning'
 							});
 							return;
+						}
+
+						if(item.type==''){
+							console.log('类别未选')
+							return
 						}
 
 						self.subConfig();
@@ -225,7 +254,7 @@
 
 				var addObj = {
 					title: 0,
-					type: '',
+					type: 'show',
 					show: '',
 					goods: [], //线上用
 				};
@@ -245,7 +274,7 @@
 				self.menuList.push(_.assign({}, addObj)); //这里是对象
 
 				self.subConfig();
-				console.log(self.studio.pluginObj.menu)
+
 			},
 			handleSelectionChange(row, item) {
 				if(!row.goodsId) {
@@ -265,10 +294,17 @@
 				}
 
 			},
+			escape2Html:function(str) {
+				var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+				return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+			},
 			init() {
 				var self = this;
 				self.studio = store.getters.getStudio;
 				self.show = true;
+
+
+
 				self.menuList = _.assign([], self.studio.pluginObj.menu);
 
 				//native= 表示这个是不需要自动添加host信息的
@@ -291,7 +327,6 @@
 			quillEditor
 		},
 		created() {
-
 			this.init();
 		}
 	}
