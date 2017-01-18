@@ -31,11 +31,13 @@
 			</el-form-item>
 		</el-form>
 
-		<el-dialog class="wxpayDialog" title="微信支付" v-model="wxdialog.show">
-			<qrcode :val="wxdialog.src"></qrcode><br/>
-			<el-button class="btn_wxpay" size="small" type="primary" @click="onSubmit">支付完成</el-button>
-			<!-- <el-button class="btn_wxpay"  size="small" @click="onSubmit">遇到问题</el-button> -->
-			<a class="kefu" target="blank" href="http://wpa.qq.com/msgrd?v=3&uin=1327244494&site=qq&menu=yes">遇到问题?问客服</a>
+		<el-dialog class="payDialog" title="微信支付" v-model="payDialog.show">
+			<qrcode :val="payDialog.src" v-if="payStyle=='wx'"></qrcode><br/>
+			<div style="text-align: center"><el-button class="btn_wxpay" size="small" type="primary" @click="checkPayStatus()">支付完成</el-button>
+			 <el-button class="btn_wxpay"  size="small" @click="goKefu()">遇到问题,点我咨询客服</el-button> 
+			 <!--<a class="kefu" target="blank" href="">遇到问题?问客服</a>-->
+			 </div>
+			
 		</el-dialog>
 
 	</div>
@@ -55,31 +57,98 @@
 				payData: {
 					number: null
 				},
-				wxdialog: {
+				tradeId:null,//用来查回充值结果的
+				payDialog: {
 					src: null,
-					show: false
+					show: false,
+					
 				}
 
 			}
 		},
 		methods: {
+			goKefu:function(){
+				window.open('http://wpa.qq.com/msgrd?v=3&uin=1327244494&site=qq&menu=yes')
+			},
+			clear:function(){
+				this.payStyle = '',
+				this.payData={
+					number: null
+				}
+			},
+			checkPayStatus:function(){
+
+				if(!this.tradeId||!this.payStyle){
+					alert('支付信息错误,请联系客服')
+					return
+				}
+
+
+				var url = '/pays/getpaystatus'
+
+				this.$http.post(url,{tradeId:this.tradeId,payType:this.payStyle}).then((response)=>{
+					
+					if(response.body.code!=100||response.body.msg!='success'){
+
+						
+						//初始化充值信息
+						this.clear()
+						this.$confirm('支付未成功,是否联系客服?', '温馨提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							this.goKefu()
+						}).catch(() => {
+							this.$notify({
+								title: '验证支付状态失败',
+								message: response.body.msg,
+								type: 'warning'
+							});         
+						});
+						return
+					}else{
+						this.payDialog={
+							src: '',
+							show: false,	
+						}
+						this.$notify({
+							title: '成功提示',
+							message: '恭喜您充值成功',
+							type: 'success'
+						});
+					}
+
+
+
+
+				},(response)=>{
+					this.$notify({
+						title: '验证支付状态失败',
+						message: response.body.msg,
+						type: 'warning'
+					});  
+
+				})
+
+			},
 			onSubmit: function() {
 
 				var options = {
 					fullscreen: true,
 					text: '拼命加载中'
 				};
+				//充值最少五百一次，我感觉我写的是假代码
+				// if(this.payData.number < 500) {
 
-				if(this.payData.number < 500) {
+				// 	this.$alert('单次充值最少五百元起', '错误提示', {
+				// 		confirmButtonText: '知道了',
+				// 		callback: action => {
 
-					this.$alert('单次充值最少五百元起', '错误提示', {
-						confirmButtonText: '知道了',
-						callback: action => {
-
-						}
-					});
-					return;
-				}
+				// 		}
+				// 	});
+				// 	return;
+				// }
 
 				if(this.payStyle != 'ali' && this.payStyle != 'wx') {
 
@@ -97,7 +166,8 @@
 
 					var url = "/pays/alipay",
 						data = {
-							money: parseInt(this.payData.number) //充值只接受整数
+							money: parseFloat(this.payData.number) //充值只接受整数
+							// money: parseInt(this.payData.number) //充值只接受整数
 						};
 
 					let loadingInstance = Loading.service(options);
@@ -105,8 +175,8 @@
 
 						loadingInstance.close();
 						if(response.body.code == 100) {
-
-							window.open(response.body.data);
+							this.tradeId =response.body.data.tradeId
+							window.open(response.body.data.payurl)
 
 						} else {
 							this.$notify({
@@ -134,7 +204,8 @@
 				if(this.payStyle == 'wx') {
 					var url = "/pays/wechat",
 						data = {
-							money: parseInt(this.payData.number) //充值只接受整数
+							money: parseFloat(this.payData.number) //充值只接受整数,最少一块钱一次测试？我测不起，不玩了。我估计写的是假代码
+							// money: parseInt(this.payData.number) //充值只接受整数
 						};
 					let loadingInstance = Loading.service(options);
 					this.$http.post(url, data).then((response) => {
@@ -142,8 +213,9 @@
 						loadingInstance.close();
 						if(response.body.code == 100) {
 
-							this.wxdialog.src = response.body.data;
-							this.wxdialog.show = true;
+							this.payDialog.src = response.body.data.payurl
+							this.tradeId = response.body.data.tradeId
+							this.payDialog.show = true
 
 						} else {
 							this.$notify({
@@ -205,7 +277,7 @@
 		}
 	}
 	
-	.wxpayDialog {
+	.payDialog {
 		.el-dialog {
 			font-size: 16px;
 			width: 300px;
@@ -215,13 +287,12 @@
 			}
 			.btn_wxpay {
 				display: block;
-				// margin-left: 15px;
+
 				margin: 0px auto 5px;
-				// display:inline-block;
+				display:inline-block;
 			}
 			.kefu {
 				text-align: center;
-				// text-decoration:none; 
 				color: #222222;
 				display: block;
 				margin: 0 auto;
