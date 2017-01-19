@@ -141,7 +141,7 @@
 
 			},
 			show: function(id) {
-				window.open("http://tv.icloudinn.live/" + id);
+				window.open("http://tv.icloudinn.com/" + id);
 			}
 		},
 		mounted() {

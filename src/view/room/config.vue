@@ -145,11 +145,11 @@
 								<div class="title">预览地址
 									<el-button size="small" class="copy" type="primary">复制</el-button>
 								</div>
-								<p>http://tv.icloudinn.com/#/{{studio.id}}</p>
+								<p>http://tv.icloudinn.com/{{studio.id}}</p>
 								<div class="title">扫我预览
 									<el-button @click="opencli" size="small" class="copy" type="primary">美化</el-button>
 								</div>
-								<qrcode :val="'http://tv.icloudinn.com/#/'+studio.id"></qrcode>
+								<qrcode :val="'http://tv.icloudinn.com/'+studio.id"></qrcode>
 							</div>
 						</div>
 
@@ -452,7 +452,7 @@
 				obj.callback = callback;
 				store.commit("openModal", obj);
 			},
-			openPicture: function(components, title,callback) {
+			openPicture: function(title,callback) {
 				// type用来区分不同的用途，用来设置不同的回调
 				var obj = {};
 				obj.title = title;

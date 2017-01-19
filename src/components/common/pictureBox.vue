@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="picture.title" v-model="picture.visible">
     <div class="pictureBox">
-      <div class="upload"><span>logo尺寸建议150*150,封面尺寸建议750*1334像素 </span>
+      <div class="upload"><span>logo建议尺寸150*150,幻灯片长宽比建议5:1,封面长宽比建议 </span>
         <el-upload action="http://saaslive.oss-cn-shanghai.aliyuncs.com" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="call"
           :data="new_multipart_params" :before-upload="set_key" :multiple="false">
           <el-button type="primary" size="small">上传图片</el-button>
@@ -192,16 +192,19 @@
 	overflow:hidden;
    min-height: 448px;
 	.img_item{
+    box-sizing: border-box;
 		float:left;
-    margin: 5px 0 5px 10px;
+    width:102px;
+    height:102px;
+    margin: 5px 0 5px 5px;
 
 		.img{
       cursor: pointer;
 			width:100px;
 			height:100px;
-      border: 1px solid #e6effb;
       background-position: center;
-      background-size: cover;
+      background-size: 100% auto;
+    background-repeat: no-repeat;
 		}
 		.img_title{
 			text-align: center;
@@ -209,6 +212,7 @@
 		}
 	}
     .active{  
+      box-sizing: border-box;
     border:1px solid red;
   }
   

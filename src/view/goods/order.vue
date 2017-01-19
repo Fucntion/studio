@@ -2,7 +2,6 @@
 	<div>
 		<el-table v-loading="loading" element-loading-text="拼命加载中" :data="orderDataList" border style="width: 100%" @selection-change="handleSelectionChange">
 			<el-table-column prop="orderId" min-width="50px" label="订单号"></el-table-column>
-			<!-- <el-table-column prop="goodsName" min-width="230px" label="商品"></el-table-column> -->
 			<el-table-column inline-template min-width="220px" label="商品" align="center">
 				<div class="goods_info">
 

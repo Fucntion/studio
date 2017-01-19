@@ -53,10 +53,10 @@
 						goodsName: '',
 						goodsStock: '', //库存
 						marketPrice: 999, //市场价格
-						shopPrice: '', //商品价格
+						shopPrice: 0, //商品价格
 						goodsImg: null,
 						goodsDesc: '', //商品介绍
-						goodsUnit: ''//商品单位
+						goodsUnit: '个'//商品单位
 					},
 					content: '<h2>商品信息</h2>',
 					editorOption: {
@@ -174,7 +174,8 @@
 				}
 				.el-upload__tip {
 					font-size: 14px;
-					width: 500px !important;
+					text-align: left;
+					/*width: 500px !important;*/
 				}
 				.el-upload__files {
 					display: none;

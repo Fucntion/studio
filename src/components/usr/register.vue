@@ -150,21 +150,20 @@ methods: {
 				};
 				this.$http.post(url,data).then((response) => {
 
-					var result = JSON.parse(response.body);
+					var result = response.body;
                 if(result.code==100){
-
-                      this.$notify({
-                      title: '成功',
-                      message: '注册成功',
-                      type: 'success'
-                    });
-                      this.$router.push('home')
+										this.$notify({
+										title: '成功',
+										message: '注册成功',
+										type: 'success'
+									});
+									this.$router.push('login')
                 }else{
-                    this.$notify({
-                    title: '注册失败',
-                    message: result.msg,
-                    type: 'warning'
-                  });
+										this.$notify({
+										title: '注册失败',
+										message: result.msg,
+										type: 'warning'
+									});
                 }
 
 					

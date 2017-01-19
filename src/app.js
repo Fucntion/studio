@@ -35,10 +35,10 @@ router.beforeEach((to, from, next) => {
 				
 				//超过一小时炸了
 				if(newTime-oldTime<1000*3600){
-					console.log('token有效')
+					// console.log('token有效')
 					next()
 				}else{
-					console.log('token过期')
+					// console.log('token过期')
 					next({
 						path: '/login',
 						query: {
@@ -86,7 +86,9 @@ Vue.http.interceptors.push((request, next) => {
 		if(request.url.indexOf('shop=') == 0) {
 			//商城的有分页参数
 			if(request.url.indexOf('--token--')!=-1){
-				request.url = request.url.substr(5) + request.url.replace(/--token--/,token)
+				request.url = request.url.substr(5)
+				request.url = request.url.replace(/--token--/,token)+ '&system_id=10'
+
 			}else{
 				request.url = request.url.substr(5) + token + '&system_id=10'
 			}

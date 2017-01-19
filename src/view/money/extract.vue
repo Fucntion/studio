@@ -1,5 +1,6 @@
 <template>
-	<el-form ref="payform" :rules="rules" :model="extractData" label-width="100px">
+	<div>
+		<el-form ref="payform" :rules="rules" :model="extractData" label-width="100px">
 		<el-form-item label="当前余额">
 			￥3000.00 元
 		</el-form-item>
@@ -21,6 +22,26 @@
 
 		</el-form-item>
 	</el-form>
+
+	<div class="payList" >
+		<h3>提现列表</h3>
+		<div class="hr"></div>
+		<el-table v-if="extractInfoList.length>0" :data="extractInfoList" stripe height="450" border>
+			<el-table-column prop="id" label="序号"></el-table-column>
+			<el-table-column label="充值时间">
+				<template  scope="scope">{{scope.row.updated_at*1000|timeStamp}}</template>
+			</el-table-column>
+			<el-table-column  label="充值方式">
+				<template  scope="scope">
+					<div v-if="scope.row.recharge_type==1">微信</div>
+					<div v-else>支付宝</div>
+				</template>
+			</el-table-column>
+			<el-table-column prop="money" label="充值金额"></el-table-column>
+		</el-table>
+	</div>
+
+	</div>
 </template>
 
 <script>
@@ -43,8 +64,10 @@
 				extractData: {
 					number: '',
 					ali: '',
-					aliNick: ''
+					aliNick: '',
+					
 				},
+				extractInfoList:[],//提现列表
 				rules: {
 	          number: [
 	            { validator: validateNumber}
@@ -69,6 +92,14 @@
 					}
 				});
 				this.$router.push('/information');
+			},
+			init:function(){
+				this.$http.get('/deposits').then((response)=>{
+					//分页的问题
+					this.extractInfoList = response.body.data.list
+				},(response)=>{
+					
+				})
 			}
 		},
 		components: {
@@ -78,5 +109,7 @@
 </script>
 
 <style lang="less">
-
+.payList{
+		padding: 15px;
+	}
 </style>
