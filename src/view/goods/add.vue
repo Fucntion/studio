@@ -28,7 +28,10 @@
 				<quill-editor ref="goodsAdd"  :config="editorOption" @change="onEditorChange($event)">
 							</quill-editor>
 			</el-form-item>
-
+			<!-- 加载编辑器的容器 -->
+    <!--<script id="container" name="content" type="text/plain">
+        这里写你的初始化内容
+    </script>-->
 			<el-form-item>
 				<el-button type="primary" @click="onSubmit">立即创建</el-button>
 				<el-button>取消</el-button>
@@ -43,6 +46,7 @@
 	import {
 		quillEditor
 	} from 'vue-quill-editor'
+	// import ueditor from 'plugin/common/ueditor.vue';
 	
 	export default {
 		name:'addgoods',
@@ -64,10 +68,16 @@
 						
 					},
 					new_multipart_params: null,
+					defaultMsg: '初始文本',  
+        config: {
+          initialFrameWidth: null,
+          initialFrameHeight: 320,
+        },
 				}
 			},
 			components: {
-				quillEditor
+				quillEditor,
+				// ueditor
 			},
 			destroy(){
 
@@ -150,6 +160,8 @@
 					// error callback
 					// console.log(response);
 				});
+
+				var ue = UE.getEditor('container');
 
 			}
 	}

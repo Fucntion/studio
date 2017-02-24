@@ -35,22 +35,23 @@
 			'config': StudioConfig,
 			'analysis': StudioAnalysis,
 			'audience': StudioAudience,
-		},	
+		},
 		methods: {
 			setcurrentView:function(type){
-				
+
 				this.currentView = type;
 				console.log(type,this.currentView);
 			},
 			init:function(){
-				
+
 				let loadingInstance = Loading.service({text:'拼命加载中'});
-				var self = this;		
+				var self = this;
 				var id = self.$router.currentRoute.params.id;
 				var url = "/rooms/" + id;
 				self.$http.get(url).then((response) => {
-					
+
 					var tempObj = response.body;
+					// console.log(response.data)
 					var d=new Date();
 					//如果服务器有时间就取服务器，没有的话时间选择器就默认显示当前时间。
 					tempObj.play_time_show = tempObj.play_time ? tempObj.play_time * 1000 : null;
@@ -63,14 +64,14 @@
 				}, (response) => {
 					console.log(response);
 				});
-				
+
 			}
 
 		},
 		mounted() {
-			
+
 			this.init();
-			
+
 
 
 		}

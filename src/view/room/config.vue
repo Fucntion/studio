@@ -138,12 +138,12 @@
 							<div class="origin_show">
 								<div class="hr"></div>
 								<div class="title">推流地址
-									<el-button size="small" class="copy" type="primary">复制</el-button>
+									<el-button @click='copy' :data-clipboard-text='studio.upstream_address' size="small" class="copy" type="primary">复制</el-button>
 								</div>
 								<p>{{studio.upstream_address}}</p>
 
 								<div class="title">预览地址
-									<el-button size="small" class="copy" type="primary">复制</el-button>
+									<el-button @click='copy2' :data-clipboard-text='"http://tv.icloudinn.com/"+studio.id' size="small" class="copy copy2" type="primary">复制</el-button>
 								</div>
 								<p>http://tv.icloudinn.com/{{studio.id}}</p>
 								<div class="title">扫我预览
@@ -210,17 +210,17 @@
 							<div class="limit">
 								<el-radio-group v-model="radio">
 							    <el-tooltip class="item" effect="dark" content="所有人均可看" placement="bottom">
-							    	<el-radio  :label="3" >无限制</el-radio>	
+							    	<el-radio  :label="3" >无限制</el-radio>
 							    </el-tooltip>
 							    <el-tooltip class="item" disabled effect="dark" content="验证手机号可看" placement="bottom">
 							    	<el-radio disabled :label="6">手机验证</el-radio>
 							    </el-tooltip>
 							    <el-tooltip class="item" disabled effect="dark" content="支付费用可看" placement="bottom">
-							    	<el-radio disabled :label="9">付费观看</el-radio>	
+							    	<el-radio disabled :label="9">付费观看</el-radio>
 							    </el-tooltip>
 							  </el-radio-group>
 							</div>
-  
+
 						</div>
 
 					</div>
@@ -238,6 +238,7 @@
 	import pictureBox from "plugin/common/pictureBox.vue"
 	import Qrcode from 'plugin/common/Qrcode.vue'
 	import store from 'store'
+  import Clipboard from 'clipboard'
 	import {
 		swiper,
 		swiperSlide,
@@ -282,7 +283,7 @@
 			pictureBox
 		},
 		computed: {
-			
+
 			//放心大胆的用计算属性，默认无set属性。但是可以人为添加，一旦添加后依赖的属性也会相应改变
 			//也就是说初始化的时候用本地和线上的组件信息来综合出用于渲染的最终数据，但是维护更新各个组件状态的时候却要去维护源数据（即线上和本地写死的,因为一旦修改计算属性依赖的属性，计算属性会自动更新)
 			pluginList: function() {
@@ -454,6 +455,7 @@
 			},
 			openPicture: function(title,callback) {
 				// type用来区分不同的用途，用来设置不同的回调
+				console.log(callback);
 				var obj = {};
 				obj.title = title;
 				obj.callback = callback;
@@ -464,7 +466,7 @@
 				var self =this
 
 				function callback(self) {
-					
+
 					// var player =  new TcPlayer('id_video_container', {
 					// 	"m3u8": self.studio.hls_downstream_address||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
 					// 	// "flv": self.studio.flv_downstream_address, //增加了一个flv的播放地址，用于PC平台的播放
@@ -479,7 +481,7 @@
 						width: 359,
 						height: 201,
 						stretching: "uniform",
-						file: 'http://3510.liveplay.myqcloud.com/live/3510_96ea4c9cd64f11e691eae435c87f075e.flv',
+						file: self.studio.flv_downstream_address,
 						autostart: true,
 						repeat: false,
 						volume: 90,
@@ -487,18 +489,18 @@
 						ak: '2f3e3d305f7d4e308d56f8d61577d723' // 公有云平台注册即可获得accessKey
 					});
 				}
-				var head= document.getElementsByTagName('head')[0]; 
-				var script= document.createElement('script'); 
-				script.type= 'text/javascript'; 
-				script.onreadystatechange= function () { 
-				if (this.readyState == 'complete') 
-					callback(self); 
-				} 
-				script.onload= function(){ 
-					callback(self); 
-				} 
-				script.src= '/static/cyberplayer/cyberplayer.js'; 
-				head.appendChild(script); 
+				var head= document.getElementsByTagName('head')[0];
+				var script= document.createElement('script');
+				script.type= 'text/javascript';
+				script.onreadystatechange= function () {
+				if (this.readyState == 'complete')
+					callback(self);
+				}
+				script.onload= function(){
+					callback(self);
+				}
+				script.src= '/static/cyberplayer/cyberplayer.js';
+				head.appendChild(script);
 			},
 			init: function() {
 				var self = this;
@@ -522,34 +524,50 @@
 				//从vuex中读取组件的默认信息
 				self.show = true;
 				self.loadPlayer()
-				self.$nextTick(function(){
-					// var player =  new TcPlayer('id_video_container', {
-					// 	"m3u8": self.studio.hls_downstream_address||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
-					// 	// "flv": self.studio.flv_downstream_address, //增加了一个flv的播放地址，用于PC平台的播放
-					// 	"autoplay" : false,      //iOS下safari浏览器是不开放这个能力的
-					// 	// "coverpic" : "http://www.test.com/myimage.jpg",
-					// 	"width" :  '359',//视频的显示宽度，请尽量使用视频分辨率宽度
-					// 	"height" : '201'//视频的显示高度，请尽量使用视频分辨率高度
-					// });
+				// self.$nextTick(function(){
+				// 	// var player =  new TcPlayer('id_video_container', {
+				// 	// 	"m3u8": self.studio.hls_downstream_address||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
+				// 	// 	// "flv": self.studio.flv_downstream_address, //增加了一个flv的播放地址，用于PC平台的播放
+				// 	// 	"autoplay" : false,      //iOS下safari浏览器是不开放这个能力的
+				// 	// 	// "coverpic" : "http://www.test.com/myimage.jpg",
+				// 	// 	"width" :  '359',//视频的显示宽度，请尽量使用视频分辨率宽度
+				// 	// 	"height" : '201'//视频的显示高度，请尽量使用视频分辨率高度
+				// 	// });
 
-					// var hls = parent.hls||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"
-					// 	var option = {
-					// 	"live_url" : hls,
-					// 	"width" :359,
-					// 	"height" :201,
-						
-					// 	};
+				// 	// var hls = parent.hls||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"
+				// 	// 	var option = {
+				// 	// 	"live_url" : hls,
+				// 	// 	"width" :359,
+				// 	// 	"height" :201,
 
-					// var player = new qcVideo.Player("id_video_container", option)
-					// player.play()
-				})	
+				// 	// 	};
 
+				// 	// var player = new qcVideo.Player("id_video_container", option)
+				// 	// player.play()
+				// })
+
+			},
+			// 推流地址复制按钮
+			copy:function(event){
+				var clipboard = new Clipboard('.copy');
+				this.$notify({
+					title:'成功',
+					message:'复制成功',
+					type:'success'
+				})
+			},
+			// 预览地址复制
+			copy2:function(event){
+				var clipboard = new Clipboard('.copy2');
+				this.$notify({
+					title:'成功',
+					message:'复制成功',
+					type:'success'
+				})
 			}
 		},
 		mounted() {
 			this.init();
-			
-
 		}
 	}
 </script>
@@ -564,7 +582,7 @@
 		width: 100%;
 		height: 100px
 	}
-	
+
 	.swiper-slide {
 		font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 		text-align: center;

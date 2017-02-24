@@ -1,7 +1,7 @@
 <template>
      <el-row class="panel-top">
         <el-col :span="24" >
-            <img src="~assets/img/logo.png" class="logo"> 
+            <img src="~assets/img/logo.png" class="logo">
             <el-tooltip class="item tip-logout" @click="logout" effect="dark" content="退出" placement="bottom" style="padding:0px;">
                 <i class="logout" aria-hidden="true" v-on:click="logout"></i>
             </el-tooltip>
@@ -10,11 +10,11 @@
                 <div></div>
                 <span>0</span>
             </div>
-             
+
         </el-col>
 
-       
-    </el-row>   
+
+    </el-row>
 
 
 </template>
@@ -44,9 +44,12 @@
 
                 })
 
-             
+
             }
-		}
+		},
+    mounted(){
+    //   console.log(localStorage.getItem('userName'));
+    }
 	}
 </script>
 <style lang="less">

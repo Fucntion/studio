@@ -93,6 +93,7 @@
                   message: '登陆成功',
                   type: 'success'
                 });
+                console.log(result);
                 //向jq致敬,监测一个对象是否为空对象
                 function isEmptyObject(e) {
                   var t;
@@ -135,7 +136,7 @@
 
     },
     mounted(){
-      
+
     }
 
   }
@@ -165,13 +166,13 @@
     width: 400px;
     border: 2px solid #8492A6;
   }
-  
+
   .title {
     margin: 0px auto 40px auto;
     text-align: center;
     color: #505458;
   }
-  
+
   .loginform {
     width: 350px;
     padding: 35px 35px 15px 35px;

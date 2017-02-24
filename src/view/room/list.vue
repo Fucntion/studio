@@ -1,6 +1,6 @@
 <template>
 	<div class="roomList"  v-loading="loading"
-    element-loading-text="拼命加载中"> 
+    element-loading-text="拼命加载中">
 
 		<el-row class="room_box">
 			<!--传入add然后让业务逻辑知道是创建新的直播间-->
@@ -26,8 +26,8 @@
 						</el-row>
 						<div class="mask"></div>
 						<div class="room_control">
-							<img src="~assets/img/room/stop_icon.png" title="正在直播，点击停止" class="icon live_stop" />
-							<img src="~assets/img/room/start_icon.png"  title="直播停止，点击开启" class="icon live_start" />
+							<img @click='stop(room.id)' src="~assets/img/room/stop_icon.png" title="正在直播，点击停止" class="icon live_stop" />
+							<img @click='start(room.id)' src="~assets/img/room/start_icon.png"  title="直播停止，点击开启" class="icon live_start" />
 							<img @click="del(room.id,index)" src="~assets/img/room/delete_icon.png"  title="删除直播间" class="icon live_delete" />
 						</div>
 					</div>
@@ -56,7 +56,7 @@
 				loading:true,
 				roomTotal:0,
 				ctime:0
-				
+
 
 			}
 		},
@@ -79,11 +79,11 @@
 
 					},
 					url = "/rooms";
-				
+
 				this.$http.post(url, data).then((response) => {
 					loadingInstance.close()
-					this.$router.push('studio/' + response.body.id);
-
+					this.$router.push('studio/' + response.body.data.id);
+					console.log(r);
 				}, (response) => {
 
 				});
@@ -91,6 +91,42 @@
 				//回调中拿到直播间基础信息
 				//跳转到对应的页面。
 
+			},
+			// 停止直播
+			stop:function(id){
+				this.$confirm('是否关闭直播?','提示',{
+					confirmButtonText: '确定',
+          cancelButtonText: '取消',
+					type:'warning'
+				}).then(()=>{
+					this.$message({
+						type:'success',
+						message:'已关闭'
+					})
+				}).catch(()=>{
+					this.$message({
+						type:'info',
+						message:'已取消'
+					})
+				})
+			},
+			// 开启直播
+			start:function(id){
+				this.$confirm('是否开启直播?','提示',{
+					confirmButtonText: '确定',
+          cancelButtonText: '取消',
+					type:'warning'
+				}).then(()=>{
+					this.$message({
+						type:'success',
+						message:'已开启'
+					})
+				}).catch(()=>{
+					this.$message({
+						type:'info',
+						message:'已取消'
+					})
+				})
 			},
 			del: function(id,index) {
 				//创建好直播间
@@ -119,7 +155,7 @@
 								message: '删除失败'
 							});
 						}
-						
+
 
 					}, (response) => {
 						this.$notify.info({
@@ -127,9 +163,7 @@
 							message: '删除失败'
 						});
 					});
-
 				})
-
 			},
 			intoRoom: function(id) {
 				//创建好直播间
@@ -145,12 +179,9 @@
 			}
 		},
 		mounted() {
-		
-
 
 			var url = "/rooms--token--&page=1&per-page=5";
 			this.$http.get(url).then((response) => {
-				
 				this.roomList = response.body.data.list;
 				this.roomTotal = parseInt(response.body.data.pageInfo.totalCount)
 				this.loading =false;

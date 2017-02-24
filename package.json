@@ -8,6 +8,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --color --hide-modules"
   },
   "dependencies": {
+    "clipboard": "^1.6.0",
     "echarts": "^3.3.2",
     "element-ui": "^1.0.9",
     "lodash": "^4.17.2",

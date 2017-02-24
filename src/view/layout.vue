@@ -18,7 +18,7 @@
 				</el-col>
 			</el-row>
 		</div>
-		
+
 	</div>
 
 </template>
@@ -40,8 +40,8 @@
 		methods: {
 		},
 		components: {
-			Top,
-			Left,
+			'top':Top,
+			'left':Left,
 
 		},
 		watch: {
@@ -54,7 +54,7 @@
 		mounted() {
 			this.currentPathName =this.$route.name;
 
-			
+
 
 		}
 	}

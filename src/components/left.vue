@@ -31,7 +31,7 @@
 
 		},
 		mounted() {
-
+			console.log(this.$router)
 		},
 		methods: {
 			handleopen() {
@@ -41,7 +41,7 @@
 				//console.log('handleclose');
 			},
 			handleselect: function(index, path) {
-				// console.log(index,path)       
+				// console.log(index,path)
 			}
 		},
 		components: {
@@ -52,14 +52,15 @@
 
 				// this.defaultLink=to.path;
 			}
-		}
+		},
+
 	}
 </script>
 <style lang="less">
 	.nav_item {
 		position: relative;
 	}
-	
+
 	.nav_icon {
 		position: absolute;
 		top: 20px;
@@ -68,43 +69,43 @@
 		height: 20px;
 		width: 20px;
 	}
-	
+
 	.nav_name {
 		margin-left: 30px;
 	}
-	
+
 	.nav_home {
 		background-image: url('~assets/img/nav/home_icon.png');
 	}
-	
+
 	.nav_room {
 		background-image: url('~assets/img/nav/room_icon.png');
 	}
-	
+
 	.nav_goods {
 		background-image: url('~assets/img/nav/goods_icon.png');
 	}
-	
+
 	.nav_source {
 		background-image: url('~assets/img/nav/source_icon.png');
 	}
-	
+
 	.nav_dz {
 		background-image: url('~assets/img/nav/dz_icon.png');
 	}
-	
+
 	.nav_user {
 		background-image: url('~assets/img/nav/user_icon.png');
 	}
-	
+
 	.nav_money {
 		background-image: url('~assets/img/nav/money_icon.png');
 	}
-	
+
 	.nav_seting {
 		background-image: url('~assets/img/nav/seting_icon.png');
 	}
-	
+
 	.el-submenu__title:hover {
 		.nav_home {
 			background-image: url('~assets/img/nav/home_icon_white.png');
@@ -131,7 +132,7 @@
 			background-image: url('~assets/img/nav/seting_icon_white.png');
 		}
 	}
-	
+
 	.is-active {
 		.nav_home {
 			background-image: url('~assets/img/nav/home_icon_white.png');

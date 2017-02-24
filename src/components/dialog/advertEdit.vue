@@ -1,40 +1,40 @@
 <template>
-<div>
-	<el-table v-if="show" @cell-click="changepic"  class="advert_table" :data="AdvertData" style="width: 100%">
-		<el-table-column property="index" label="排序" width="100">
-		</el-table-column>
+	<div>
+		<el-table v-if="show" @cell-click="changepic" class="advert_table" :data="AdvertData" style="width: 100%">
+			<el-table-column property="index" label="排序" width="100">
+			</el-table-column>
 
-		<el-table-column inline-template label="缩略图" width="150">
-			<div>
-				<template v-if="row.pic">
-					<img width="100px" :src="row.pic" style="cursor: pointer;" title="点我更换图片" alt="点我更换图片" />
+			<el-table-column inline-template label="缩略图" width="150">
+				<div>
+					<template v-if="row.pic">
+						<img width="100px" :src="row.pic" style="cursor: pointer;" title="点我更换图片" alt="点我更换图片" />
+					</template>
+					<template v-else>
+						<el-button size="small">添加图片</el-button>
+					</template>
+				</div>
+			</el-table-column>
+			<el-table-column inline-template label="链接地址" width="300">
+				<template>
+					<el-input placeholder="请输入连接" v-model="row.link"></el-input>
 				</template>
-				<template v-else>
-					<el-button size="small">添加图片</el-button>
-				</template>
-			</div>
-		</el-table-column>
-		<el-table-column inline-template label="链接地址" width="300">
-			<template>
-				<el-input placeholder="请输入连接" v-model="row.link"></el-input>
-			</template>
-		</el-table-column>
+			</el-table-column>
 
-		<el-table-column inline-template label="操作">
-			<template>
-				<!--index属性从小到大排列,并且每次列表有变动时会自动重排，如果需要改变排序只要改变对应两个index即可-->
-				<i @click="handleUp(row,$index)" class="advert_icon el-icon-arrow-up"></i>
-				<i @click="handleDown(row,$index)" class="advert_icon el-icon-arrow-down"></i>
-				<i @click="handleDel(AdvertData,$index)" class="advert_icon el-icon-delete"></i>
-			</template>
-		</el-table-column>
-	</el-table>
-	<div class="hr"></div>
-	<div class="advert_add">
-		<el-button @click="subConfig()" type="primary">保存配置</el-button>
-		<el-button :disabled="AdvertData.length>3" @click="addAdvert()" type="primary">添加</el-button>
+			<el-table-column inline-template label="操作">
+				<template>
+					<!--index属性从小到大排列,并且每次列表有变动时会自动重排，如果需要改变排序只要改变对应两个index即可-->
+					<i @click="handleUp(row,$index)" class="advert_icon el-icon-arrow-up"></i>
+					<i @click="handleDown(row,$index)" class="advert_icon el-icon-arrow-down"></i>
+					<i @click="handleDel(AdvertData,$index)" class="advert_icon el-icon-delete"></i>
+				</template>
+			</el-table-column>
+		</el-table>
+		<div class="hr"></div>
+		<div class="advert_add">
+			<el-button @click="subConfig()" type="primary">保存配置</el-button>
+			<el-button :disabled="AdvertData.length>3" @click="addAdvert()" type="primary">添加</el-button>
+		</div>
 	</div>
-</div>
 </template>
 
 <script>
@@ -59,20 +59,8 @@
 		components: {
 			pictureBox
 		},
-		// watch:{
-		// 	AdvertData:{
-		// 		handler:function(n,o){
-		// 			if(o.length==0){return}
-		// 			console.log(n)
-		// 			var temp = 
-		// 			console.log(temp)
-		// 			this.AdvertData =temp
-		// 		},
-		// 		deep: true
-		// 	}
-		// },
 		methods: {
-			openPicture: function(title,callback) {
+			openPicture: function (title, callback) {
 				// type用来区分不同的用途，用来设置不同的回调
 				var obj = {};
 				obj.title = title;
@@ -82,14 +70,15 @@
 			changepic(row, column, cell, event) {
 				var self = this;
 				self.isUploadItem = row;
-				if(column.label!='缩略图'){
+				if (column.label != '缩略图') {
 					return
 				}
 				self.setAdvertImg = function (imgUrl, obj = self.isUploadItem) {
 					obj.pic = imgUrl
 				}
-				self.openPicture('幻灯片图片',self.setAdvertImg)
+				self.openPicture('幻灯片图片', self.setAdvertImg)
 			},
+			//保存配置点击事件
 			subConfig() {
 				var self = this;
 				self.studio.pluginObj.advert = self.AdvertData;
@@ -133,30 +122,30 @@
 				})
 
 			},
-			handleUp(val,$index) {
-						
+			handleUp(val, $index) {
+
 				var self = this,
 					index = val.index;
 				var fromArr = _.find(self.AdvertData, {
 					index: index
 				})
 				//获取要向前排序的元素在数组中的index，如果为0则不动了
-				var INDEX =_.findIndex(self.AdvertData,function(item){
-					return item.index ==index
+				var INDEX = _.findIndex(self.AdvertData, function (item) {
+					return item.index == index
 				})
-				if(INDEX==0){
+				if (INDEX == 0) {
 					console.log('已经是第一了')
 					return
 				}
 
-				var toArr = self.AdvertData[INDEX-1]
-				var temp2 =fromArr.index
-				fromArr.index=toArr.index;
-				toArr.index=temp2;
-				var toArr = self.AdvertData[INDEX-1]
-				var temp = _.assign({},fromArr);
-				self.AdvertData[INDEX] =_.assign({},self.AdvertData[INDEX-1]);
-				self.AdvertData[INDEX-1] =temp;
+				var toArr = self.AdvertData[INDEX - 1]
+				var temp2 = fromArr.index
+				fromArr.index = toArr.index;
+				toArr.index = temp2;
+				var toArr = self.AdvertData[INDEX - 1]
+				var temp = _.assign({}, fromArr);
+				self.AdvertData[INDEX] = _.assign({}, self.AdvertData[INDEX - 1]);
+				self.AdvertData[INDEX - 1] = temp;
 
 				self.subConfig();
 
@@ -168,22 +157,22 @@
 					index: index
 				})
 				//获取要向前排序的元素在数组中的index，如果为0则不动了
-				var INDEX =_.findIndex(self.AdvertData,function(item){
-					return item.index ==index
+				var INDEX = _.findIndex(self.AdvertData, function (item) {
+					return item.index == index
 				})
-				if(INDEX==self.AdvertData.length-1){
+				if (INDEX == self.AdvertData.length - 1) {
 					console.log('已经在最下面了')
 					return
 				}
 
-				var toArr = self.AdvertData[INDEX+1]
-				var temp2 =fromArr.index
-				fromArr.index=toArr.index;
-				toArr.index=temp2;
-				var toArr = self.AdvertData[INDEX+1]
-				var temp = _.assign({},fromArr);
-				self.AdvertData[INDEX] =_.assign({},self.AdvertData[INDEX+1]);
-				self.AdvertData[INDEX+1] =temp;
+				var toArr = self.AdvertData[INDEX + 1]
+				var temp2 = fromArr.index
+				fromArr.index = toArr.index;
+				toArr.index = temp2;
+				var toArr = self.AdvertData[INDEX + 1]
+				var temp = _.assign({}, fromArr);
+				self.AdvertData[INDEX] = _.assign({}, self.AdvertData[INDEX + 1]);
+				self.AdvertData[INDEX + 1] = temp;
 				self.subConfig();
 
 			},
@@ -197,7 +186,7 @@
 				var self = this;
 
 				self.studio = store.getters.getStudio;
-				self.AdvertData = _.sortBy(self.studio.pluginObj.advert,'index')
+				self.AdvertData = _.sortBy(self.studio.pluginObj.advert, 'index')
 
 
 				var url = "/aliyuns/oss";
@@ -233,6 +222,7 @@
 			this.init();
 		}
 	}
+
 </script>
 
 <style lang="less">
@@ -249,9 +239,10 @@
 	.advert_add {
 		text-align: right;
 	}
-	.advert_pic{
-            .el-upload__files{
-                display:none;
-            }
-        }
+	
+	.advert_pic {
+		.el-upload__files {
+			display: none;
+		}
+	}
 </style>

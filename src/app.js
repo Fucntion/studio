@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
 			var d = new Date(),
 				newTime = d.getTime(),
 				oldTime = parseInt(localStorage.getItem('loginTime'))
-				
+
 				//超过一小时炸了
 				if(newTime-oldTime<1000*3600){
 					// console.log('token有效')
@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
 							redirect: to.fullPath
 						}
 					})
-				}	
+				}
 		}else{
 			next({
 				path: '/login',
@@ -54,8 +54,8 @@ router.beforeEach((to, from, next) => {
 				}
 			})
 		}
-		
-	} 
+
+	}
 
 })
 
@@ -92,12 +92,12 @@ Vue.http.interceptors.push((request, next) => {
 			}else{
 				request.url = request.url.substr(5) + token + '&system_id=10'
 			}
-			
-			
+
+
 		} else if(request.url.indexOf('--token--')!=-1){
 			//针对分页要get传参的hack
 			request.url = url + request.url.replace(/--token--/,token);
-			
+
 		}else{
 			request.url = url + request.url + token;
 		}
@@ -112,7 +112,6 @@ Vue.http.interceptors.push((request, next) => {
 
 import ElementUI from 'element-ui'
 Vue.use(ElementUI)
-
 
 import App from './App.vue'
 

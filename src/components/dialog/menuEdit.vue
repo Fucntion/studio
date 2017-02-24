@@ -20,13 +20,13 @@
 							</el-select>
 						</el-form-item>
 						<el-form-item label="菜单内容" v-if="item.type&&item.type=='show'">
-							<quill-editor :ref="'myTextEditor'+key"  :value="escape2Html(item.show)" :config="editorOption"  @change="onEditorChange($event,item,key)" >
+							<quill-editor :ref="'myTextEditor'+key" :value="escape2Html(item.show)" :config="editorOption" @change="onEditorChange($event,item,key)">
 							</quill-editor>
 							<!--<textarea id="editor_content" v-html="item.show" name="content" style="height:300px;">
 							</textarea>-->
 						</el-form-item>
 						<el-form-item label="菜单内容" v-if="item.type&&item.type=='goods'">
-							<div>
+							<div style="height: 300px;overflow-y: scroll">
 								<el-table v-if="goodsData" :key="index" :data="goodsData">
 									<el-table-column prop="goodsName" width="180px" label="商品"></el-table-column>
 									<el-table-column inline-template label="缩略图">
@@ -71,18 +71,18 @@
 	} from 'vue-quill-editor'
 	export default {
 		name: 'menuEdit',
-		data: function() {
+		data: function () {
 			var validateTitle = (rule, value, callback) => {
-				if(value === '') {
+				if (value === '') {
 					callback(new Error('请输入菜单名称'));
-				} else if(value.length > 4) {
+				} else if (value.length > 4) {
 					callback(new Error('菜单长度不能超过三个字符'));
 				} else {
 					callback();
 				}
 			};
 			var validateType = (rule, value, callback) => {
-				if(value === '') {
+				if (value === '') {
 					callback(new Error('请选择菜单类型'));
 				} else {
 					callback();
@@ -98,7 +98,7 @@
 				editorOption: {
 					// something config
 				},
-				Tempcontent:'',//暂存文章素材的变量
+				Tempcontent: '',//暂存文章素材的变量
 				rules: {
 					title: [{
 						validator: validateTitle
@@ -131,41 +131,38 @@
 				editor,
 				html,
 				text
-			},item,key) {
+			}, item, key) {
 				var self = this,
-					tempRefsEditor={};
-				for(var k in self.$refs) {
+					tempRefsEditor = {};
+				for (var k in self.$refs) {
 
 					//替换富文本编辑器中内容
-					if(k=='myTextEditor'+key){
-						tempRefsEditor = self.$refs[k][0] 
+					if (k == 'myTextEditor' + key) {
+						tempRefsEditor = self.$refs[k][0]
 					}
 				}
 				tempRefsEditor.tempStr = html;
 				// console.log(tempRefsEditor)
 
 			},
-			html2Escape:function(sHtml) {
-			return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
+			html2Escape: function (sHtml) {
+				return sHtml.replace(/[<>&"]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]; });
 			},
-			removeMenuTab: function(tabItem) {
+			removeMenuTab: function (tabItem) {
+
+
 				var self = this;
-				self.studio.pluginObj.menu = _.filter(self.studio.pluginObj.menu, function(item) {
+				self.menuList = _.filter(self.menuList, function (item) {
 					return item.title !== tabItem.label
 				});
 
-				//更新sutdio和服务器配置
-				var data = {
-					id: self.$router.currentRoute.params.id,
-					studio: this.studio,
-				}
-
-				store.commit('changeStudio', data);
+				self.subConfig();
 
 			},
 			subConfig(obj) {
 
 				var self = this;
+				self.studio.pluginObj.menu = (_.assign([], self.menuList));
 
 				var data = {
 					id: self.$router.currentRoute.params.id,
@@ -175,36 +172,36 @@
 				store.commit('changeStudio', data);
 			},
 			//只要修改对应的item数据即可，至于格式化之类的操作全部写在store里面
-			onSubmitEdit: function(item, key) {
+			onSubmitEdit: function (item, key) {
 
 				var self = this,
-					tempRefsObj = {},tempRefsEditor={};
+					tempRefsObj = {}, tempRefsEditor = {};
 
-				for(var k in self.$refs) {
+				for (var k in self.$refs) {
 
 					// 用ref来定位是哪个表单
-					if(k == 'formedit' + key) {
-						
+					if (k == 'formedit' + key) {
+
 						tempRefsObj = self.$refs[k][0]; //0有点坑
 					}
 
 					//替换富文本编辑器中内容
-					if(k=='myTextEditor'+key){
-						tempRefsEditor = self.$refs[k][0] 
+					if (k == 'myTextEditor' + key) {
+						tempRefsEditor = self.$refs[k][0]
 					}
 				}
-				if(item.type =='show'){
-					item.show = tempRefsEditor.tempStr||''
+				if (item.type == 'show') {
+					item.show = tempRefsEditor.tempStr || ''
 				}
-				
+
 				// console.log(item)
 				// return;
 
 				//表单验证
 				tempRefsObj.validate((valid) => {
-					if(valid) {
+					if (valid) {
 
-						if(item.show == '' && item.type == 'show') {
+						if (item.show == '' && item.type == 'show') {
 							this.$notify({
 								title: '提示',
 								message: '图文内容不能为空',
@@ -213,7 +210,7 @@
 							return;
 						}
 
-						if(item.type == 'goods' && item.goods.length < 1) {
+						if (item.type == 'goods' && item.goods.length < 1) {
 							this.$notify({
 								title: '提示',
 								message: '商品信息不能为空',
@@ -222,7 +219,7 @@
 							return;
 						}
 
-						if(item.type==''){
+						if (item.type == '') {
 							console.log('类别未选')
 							return
 						}
@@ -240,10 +237,10 @@
 				});
 
 			},
-			add: function() {
+			add: function () {
 
 				var self = this;
-				if(self.studio.pluginObj.menu.length > 2) {
+				if (self.studio.pluginObj.menu.length > 2) {
 					this.$notify({
 						title: '提示',
 						message: '最多可以添加三个菜单',
@@ -260,9 +257,9 @@
 				};
 
 				function name(title) {
-					for(var k in self.studio.pluginObj.menu) {
+					for (var k in self.studio.pluginObj.menu) {
 
-						if(self.studio.pluginObj.menu[k].title == 'tab' + title) {
+						if (self.studio.pluginObj.menu[k].title == 'tab' + title) {
 							title++;
 						}
 					}
@@ -270,14 +267,14 @@
 				}
 
 				addObj.title = 'tab' + name(addObj.title);
-				self.studio.pluginObj.menu.push(_.assign({}, addObj));
+
 				self.menuList.push(_.assign({}, addObj)); //这里是对象
 
-				self.subConfig();
+				// self.subConfig();
 
 			},
 			handleSelectionChange(row, item) {
-				if(!row.goodsId) {
+				if (!row.goodsId) {
 					this.$notify.info({
 						title: '提示信息',
 						message: '商品信息错误',
@@ -287,16 +284,16 @@
 				}
 				var self = this,
 					index = item.goods.indexOf(row.goodsId);
-				if(index == -1) {
+				if (index == -1) {
 					item.goods.push(row.goodsId);
 				} else {
 					item.goods.splice(index, 1);
 				}
 
 			},
-			escape2Html:function(str) {
-				var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
-				return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+			escape2Html: function (str) {
+				var arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' };
+				return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) { return arrEntities[t]; });
 			},
 			init() {
 				var self = this;
@@ -312,7 +309,7 @@
 				this.$http.get(url).then((response) => {
 
 					var tempObj = response.body.data.root;
-					for(var key in tempObj) {
+					for (var key in tempObj) {
 						tempObj[key].isSelect = false;
 					}
 					self.goodsData = tempObj;
@@ -330,6 +327,7 @@
 			this.init();
 		}
 	}
+
 </script>
 
 <style lang="less">

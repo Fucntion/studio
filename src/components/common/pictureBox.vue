@@ -44,9 +44,20 @@
       }
     },
     methods: {
+    	//确定按钮的点击事件
+    	//通过绑定不同的callback区分是修改封面还是修改logo
+    	//然后更改studio.cover_img_url和logo_url
       save:function(selectUrl=this.selectUrl){
           var callback = this.picture.callback
+          console.log(selectUrl)
+      		console.log(callback);
+          this.$notify({
+                  title: '成功',
+                  message: '操作成功',
+                  type: 'success'
+                });
           callback(selectUrl)
+          //向服务器更新数据并关闭弹框
           store.commit('closePicture')
       },
       call: function (response, file, fileList) {
