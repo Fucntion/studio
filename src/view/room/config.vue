@@ -238,7 +238,7 @@
 	import pictureBox from "plugin/common/pictureBox.vue"
 	import Qrcode from 'plugin/common/Qrcode.vue'
 	import store from 'store'
-  import Clipboard from 'clipboard'
+  	import Clipboard from 'clipboard'
 	import {
 		swiper,
 		swiperSlide,
