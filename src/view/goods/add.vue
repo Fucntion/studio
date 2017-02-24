@@ -161,7 +161,6 @@
 					// console.log(response);
 				});
 
-				var ue = UE.getEditor('container');
 
 			}
 	}
