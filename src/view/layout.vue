@@ -1,16 +1,17 @@
 <template>
 	<div id="studio">
 		<top></top>
-		<left></left>
+		<div class='total_container'>
+			<left></left>
 		<div class="right">
 			<el-row>
-				<el-col :span="24" class="crumb-box" v-if="currentPathName!=''&&$route.path!='/home'">
+				<!-- <el-col :span="24" class="crumb-box" v-if="currentPathName!=''&&$route.path!='/home'">
 					<el-breadcrumb separator="/">
 						<el-breadcrumb-item v-if="currentPathNameParent!=''">{{currentPathNameParent}}</el-breadcrumb-item>
 						<el-breadcrumb-item v-if="currentPathName!=''">{{currentPathName}}</el-breadcrumb-item>
 					</el-breadcrumb>
 					<div class="hr"></div>
-				</el-col>
+				</el-col> -->
 				<el-col :span="24"  class="container">
 					<transition name="fade">
 						<router-view ></router-view>
@@ -18,47 +19,52 @@
 				</el-col>
 			</el-row>
 		</div>
-
+		</div>
 	</div>
 
 </template>
 
-<script>
-	//公共布局组件
-	import Top from 'plugin/header.vue'
-	import Left from 'plugin/left.vue'
+<script>//公共布局组件
+import Top from 'plugin/header.vue'
+import Left from 'plugin/left.vue'
 
-	export default {
-		name:'wrap',
-		data: function() {
+export default {
+	name: 'wrap',
+	data: function() {
 
-			return {
-				currentPathName: '',
-				currentPathNameParent: '',
-			}
-		},
-		methods: {
-		},
-		components: {
-			'top':Top,
-			'left':Left,
-
-		},
-		watch: {
-			'$route' (to, from) { //监听路由改变
-
-				this.currentPathName = to.name;
-				this.currentPathNameParent = to.matched[0].name;
-			}
-		},
-		mounted() {
-			this.currentPathName =this.$route.name;
-
-
-
+		return {
+			currentPathName: '',
+			currentPathNameParent: '',
 		}
-	}
-</script>
-<style lang="less">
+	},
+	methods: {},
+	components: {
+		'top': Top,
+		'left': Left,
 
+	},
+	watch: {
+		'$route' (to, from) { //监听路由改变
+
+			this.currentPathName = to.name;
+			this.currentPathNameParent = to.matched[0].name;
+		}
+	},
+	mounted() {
+		this.currentPathName = this.$route.name;
+
+	}
+}</script>
+<style lang="less">
+	.total_container{
+		margin-top: 1rem;
+		border: 1px solid #dadcdf;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: flex;
+    background: white;
+    box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+	}
 </style>

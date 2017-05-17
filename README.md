@@ -1,33 +1,20 @@
-# 云商
-
-放着方便
-
-## 目录结构
-
-``` 
-1.组件通过bower管理
-2.入口文件main.js,路由配置文件router-config.js
-3.公共组件放在components,静态资源放在assets
-```
-
-1.组件通过bower管理
-2.入口文件main.js,路由配置文件router-config.js
-3.公共组件放在components,静态资源放在assets,
-
-## diy element组件
-packages 下添加目录
-
-components.json添加
-
-
-
-如果需要定制element ui组件。
-在packages下新建目录写index.js即可。eg packages/modal/index.js+modal.vue
-然后添加css
-packages/theme-default/src/index.csss引入css
-
-先build file生成src.index自动把packages下所有的组件动态引入，然后dist
-
-2017-05-17
-皓天离职，接回来前备份 20170227
-
+1.上传需要进行修改的地方
+  1)后台 微信分享 改为小镇演义appid
+  2)上传视频 插件 地址改为线上
+2.项目重构
+  1)打包后 app.js 和vender.js 拆分打包 --太大了(完成)
+  2)config页面拆分 每个小于300-400(完成)
+  3)换编辑器 清理根目录 vue2-editor ueditor ！！！！！
+  4)清理src/assets中不参与打包的文件(完成)
+  5)组件化 文件上传
+  6)分页！！！！！！！！！！！！！
+  7)首页改版
+  8)组件化微信支付宝!!!!!!!!!!!
+  9)订单管理优化(后续)
+  10)vuex 拆分(去掉该需求)
+  11)定制404页面！！！！！！！！！！！！！！！
+  12)直播间列表 暂停播放！！！！！！！！！！！！
+  13)config top分路由管理(完成)
+  14)前端构建 图片不转base64 css放在assets/css里(完成)
+  15)改变量名称 小驼峰 页面缩进 tab=4
+  learn webpack

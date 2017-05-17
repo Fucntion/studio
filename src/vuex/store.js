@@ -9,6 +9,28 @@ Vue.use(VueResource);
 
 const state = {
     studio: {},
+    showaddress1:'',
+    showaddress2:'',
+    value_object:{
+        yugao_value:'',
+        video_value:'',
+        repeat_value:''
+    },
+    liveSetting_data:{
+        intro:'',
+        radio:'',
+        ruleForm: {
+			money: '',
+		},
+        ruleForm2: {
+			password: ''
+		},
+    },
+    liveSetting_show:{
+        show1:'',
+        show2:''
+    },
+    show_name:'',
     //用来临时储存需要修改商品的信息
     tempGoods: {},
     dialog: {
@@ -109,13 +131,32 @@ const state = {
             checked: false //是否选中
         }
 
-    }
-
+    },
+    // 观看总人数
+    // watch_num:'',
+    // 观看总人数的列表
+    // watch_list:[],
+    // UV
+    // audience_num:'',
+    // PV
+    // watch_times:'',
+    // 直播时长
+    // live_duration:'',
+    // 单次观看时长
+    // watch_duration:'',
+    // 总的观看时长
+    // watch_Tduration:''
 };
 
 const getters = {
     getCrumb: function(state) {
         return state.crumb
+    },
+    getAddress1:function(state){
+        return state.showaddress1
+    },
+    getAddress2:function(state){
+      return state.showaddress2
     },
     getStudio: function(state) {
         return state.studio
@@ -123,16 +164,49 @@ const getters = {
     getMenuData: function(state) {
         return state.MenuData;
     },
+    getValueObject:function(state){
+        return state.value_object
+    },
     getDialog: function(state) {
         return state.dialog;
     },
     getPicture: function(state) {
         return state.picture;
     },
+    getLiveSettingData:function(state){
+    	return state.liveSetting_data
+    },
+    getShowName:function(state){
+        return state.show_name
+    },
+    getLiveSettingShow:function(state){
+    	return state.liveSetting_show
+    },
     getPluginList: function(state, type) {
 
         return state.pluginList;
-    }
+    },
+    // getWatchNum:function(state){
+    //     return state.watch_num;
+    // },
+    // getWatchList:function(state){
+    //     return state.watch_list
+    // },
+    // getAudienceNum:function(state){
+    //     return state.audience_num
+    // },
+    // getWatchTimes:function(state){
+    //     return state.watch_times
+    // },
+    // getLiveDuration:function(state){
+    //     return state.live_duration
+    // },
+    // getWatchDuration:function(state){
+    //     return state.watch_duration
+    // },
+    // getWatchTduration:function(state){
+    //     return state.watch_Tduration
+    // }
 }
 
 function isEmptyObject(e) {
@@ -197,14 +271,15 @@ const mutations = {
     },
     closePicture: function(state) {
         var url = '/rooms/' + state.studio.id;
+        console.log(state.studio.cover_img_url)
         Vue.http.put(url, state.studio).then((response) => {
             console.log(response.data);
-           
+
             console.log('更新配置成功');
         }, (response) => {
             console.log(response.data);
             console.log('更新配置失败');
-             
+
         });
 
         state.picture.visible = false;
@@ -217,6 +292,30 @@ const mutations = {
     //用于创建直播间的时候给studio赋值。
     setStudio: function(state, obj) {
         state.studio = obj;
+    },
+    setAddress1:function(state,obj){
+      state.showaddress1=obj
+    },
+    setAddress2:function(state,obj){
+      state.showaddress2=obj
+    },
+    setValueObject:function(state,obj){
+        state.value_object=obj
+    },
+    setLiveSettingData:function(state,obj){
+    	state.liveSetting_data=obj
+    },
+    setStudioCoverImg:function(state,obj){
+        state.studio.cover_img_url=obj
+    },
+    setStudioLogoUrl:function(state,obj){
+    	state.studio.logo_url=obj
+    },
+    setLiveSettingShow:function(state,obj){
+    	state.liveSetting_show=obj
+    },
+    setShowName:function(state,obj){
+        state.show_name=obj
     },
     changeStudio: function(state, data) {
 
@@ -250,11 +349,11 @@ const mutations = {
                   message: '操作成功',
                   type: 'success'
                 });
-            
+
         }, (response) => {
             // error callback
             // console.log(response);
-            
+
             Notification({
                   title: '提示',
                   message: '操作失败',
@@ -263,7 +362,28 @@ const mutations = {
                 console.log('更新配置失败');
         });
 
-    }
+    },
+    // setWatchNum:function(state,obj){
+    //     state.watch_num=obj
+    // },
+    // setWatchList:function(state,obj){
+    //     state.watch_list=obj
+    // },
+    // setAudienceNum:function(state,obj){
+    //     state.audience_num=obj
+    // },
+    // setWatchTimes:function(state,obj){
+    //     state.watch_times=obj
+    // },
+    // setLiveDuration:function(state,obj){
+    //     state.live_duration=obj
+    // },
+    // setWatchDuration:function(state,obj){
+    //     state.watch_duration=obj
+    // },
+    // setWatchTduration:function(state,obj){
+    //     state.watch_Tduration=obj
+    // }
 }
 
 export default new Vuex.Store({

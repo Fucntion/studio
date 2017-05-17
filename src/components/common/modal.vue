@@ -1,5 +1,5 @@
 <template>
-	<el-dialog :title="dialog.title" v-model="dialog.visible" >
+	<el-dialog :title="dialog.title" v-model="dialog.visible">
 		<div   :dialog="dialog" :is="dialog.current" :key="new Date()"></div>
 	</el-dialog>
 </template>
@@ -19,7 +19,13 @@
 		},
 		store,
 		methods: {
- 
+// 			close_dialog:function(){
+// 				console.log(window.editor)
+// 				if(window.editor!==undefined){
+// 					window.editor.destroy()
+// 					console.log('here')
+// 				}
+// 			}
 		},
 		components: {
 			goodsBox,

@@ -10,17 +10,17 @@
       </div>
       <div class="img_box">
         <div class="img_item" v-if="imgList.length>0" v-for="(item,index) in imgList" @click="select(item)" :class="{active: item.isActive}">
-          <div class="img" :style="{backgroundImage:'url(' + item.img_url + ')'}"></div>
+          <!--<div class="img" :style="{backgroundImage:'url(' + item.img_url + ')'}"></div>-->
+          <img class='img' :src="item.img_url" alt="" />
         </div>
       </div>
 
       <div class="control">
+        <el-button :disabled="isCheck" @click="save()" class="export" type="primary">确定</el-button>
         <el-pagination small layout="prev, pager, next" :page-size="24" @current-change="handleCurrentChange" :total="pagination.total">
         </el-pagination>
-        <el-button :disabled="isCheck" @click="save()" class="export" type="primary">确定</el-button>
-
       </div>
-
+		</div>
   </el-dialog>
 
 </template>
@@ -48,6 +48,7 @@
     	//通过绑定不同的callback区分是修改封面还是修改logo
     	//然后更改studio.cover_img_url和logo_url
       save:function(selectUrl=this.selectUrl){
+          var self=this
           var callback = this.picture.callback
           console.log(selectUrl)
       		console.log(callback);
@@ -57,23 +58,22 @@
                   type: 'success'
                 });
           callback(selectUrl)
+          console.log(selectUrl)
+          console.log(store.getters.getStudio.cover_img_url)
           //向服务器更新数据并关闭弹框
           store.commit('closePicture')
       },
       call: function (response, file, fileList) {
-
+        console.log(response);
         var fileUlr = response.data.img_url
         //给他加上未选中的状态
         response.data.isActive = false
-
         if (this.imgList.length == 24) {
           //去掉最后一个咯
           this.imgList.length = 23
-
         }
-
         this.imgList = [response.data].concat(this.imgList)
-
+				console.log(this.imgList)
         // store.commit("closeModal");
         // var data = {
         //   id: this.$router.currentRoute.params.id,
@@ -115,6 +115,7 @@
           _.forEach(response.body.data.list, function (item, key) {
             item.isActive = false
           })
+          console.log(response)
           this.imgList = response.body.data.list
           this.pagination.total = parseInt(response.body.data.pageInfo.totalCount)
 
@@ -193,13 +194,13 @@
 	.control{
 		overflow:hidden;
 		padding-top:10px;
-		margin:15px 0 0px; 
+		margin:15px 0 0px;
 
 	}
 
 }
 
-.img_box{	
+.img_box{
 	overflow:hidden;
    min-height: 448px;
 	.img_item{
@@ -222,11 +223,11 @@
 			width:100px;
 		}
 	}
-    .active{  
+    .active{
       box-sizing: border-box;
     border:1px solid red;
   }
-  
+
 
 }
 </style>

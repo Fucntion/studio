@@ -2,21 +2,24 @@
 	<div id="studio" v-if="show">
 	<div class="top_bar">
 		<div class="item_box">
-			<div @click="setcurrentView('config')" v-bind:class="{isActive:currentView=='config'}" class="item">直播间设置</div>
-			<div @click="setcurrentView('audience')" v-bind:class="{isActive:currentView=='audience'}" class="item">用户管理</div>
-			<div @click="setcurrentView('analysis')"  v-bind:class="{isActive:currentView=='analysis'}" class="item">数据分析</div>
+			<div @click="redirect_url('config')" v-bind:class="{isActive:currentView=='config'}" class="item">直播间设置</div>
+			<div @click="redirect_url('audience')" v-bind:class="{isActive:currentView=='audience'}" class="item">用户管理</div>
+			<div @click="redirect_url('analysis')"  v-bind:class="{isActive:currentView=='analysis'}" class="item">数据分析</div>
 		</div>
 	</div>
-	<config v-if="currentView=='config'"></config>
+	<!--<left></left>-->
+	<router-view></router-view>
+	<!--<config v-if="currentView=='config'"></config>
 	<audience v-if="currentView=='audience'"></audience>
-	<analysis v-if="currentView=='analysis'"></analysis>
+	<analysis v-if="currentView=='analysis'"></analysis>-->
 	</div>
 </template>
 
 <script>
-	import StudioConfig from './config.vue'
-	import StudioAudience from './audience.vue'
-	import StudioAnalysis from './analysis.vue'
+//	import Left from 'plugin/left.vue'
+//	import StudioConfig from './config.vue'
+//	import StudioAudience from './audience.vue'
+//	import StudioAnalysis from './analysis.vue'
 	import { Loading } from 'element-ui'
 	import store from 'store'
 
@@ -32,16 +35,21 @@
 		},
 		store,
 		components: {
-			'config': StudioConfig,
-			'analysis': StudioAnalysis,
-			'audience': StudioAudience,
+//			'config': StudioConfig,
+//			'analysis': StudioAnalysis,
+//			'audience': StudioAudience,
+//			'left':Left
 		},
 		methods: {
-			setcurrentView:function(type){
-
-				this.currentView = type;
-				console.log(type,this.currentView);
+			redirect_url:function(key){
+				this.currentView=key
+				this.$router.push('/studio/'+this.$route.params.id+'/'+key)
 			},
+//			setcurrentView:function(type){
+//
+//				this.currentView = type;
+//				console.log(type,this.currentView);
+//			},
 			init:function(){
 
 				let loadingInstance = Loading.service({text:'拼命加载中'});
@@ -71,9 +79,11 @@
 		mounted() {
 
 			this.init();
-
-
-
+			// 如果是从数据按钮过来 直接进去数据分析
+			if(localStorage.getItem('toanalysis')=='true'){
+				this.setcurrentView('analysis')
+				localStorage.setItem('toanalysis',false)
+			}
 		}
 	}
 </script>

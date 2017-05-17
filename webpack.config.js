@@ -5,7 +5,8 @@ var path = require('path'),
 module.exports = {
 	entry: {
 		app: './src/app.js',
-		vender:['vue','vuex','vue-resource','vue-router','element-ui']
+		vender:['vue','vuex','vue-resource','vue-router'],
+		vender2:'element-ui'
 	},
 	output: {
 		path: path.resolve(__dirname, './dist'),
@@ -14,9 +15,12 @@ module.exports = {
 		chunkFilename: "chunks/[name].chunk.js?[hash:8]"
 	},
 	plugins: [
+	//使用该插件 由于app.js import了这些依赖 webpack会加载到app.js中
+	//使用该插件 将公共依赖放入vender.js中 使单个文件变小
 		new webpack.optimize.CommonsChunkPlugin({
-			name:'vender',
-			filenam:'vender.js'
+			name:['vender2','vender'],
+			minChunks:Infinity,
+			filename:'[name].js'
 		}),
 		new ExtractTextPlugin({
 			filename: 'css/[name].css',
@@ -54,7 +58,7 @@ module.exports = {
 				loader: 'url-loader',
 				query: {
 					name: 'img/[name].[ext]?[hash:8]',
-					limit: 8192 // inline base64 URLs for <=8k images, direct URLs for the rest
+//					limit: 8192 // inline base64 URLs for <=8k images, direct URLs for the rest
 				}
 			}, {
 				test: /\.(svg|eot|woff|woff2|ttf)$/,
@@ -71,7 +75,8 @@ module.exports = {
 			assets: path.join(__dirname, './src/assets'),
 			plugin: path.join(__dirname, './src/components'),
 			store: path.join(__dirname, './src/vuex/store.js'),
-			static: path.join(__dirname, './static')
+//			static: path.join(__dirname, './static'),
+			jquery:'jquery',
 		},
 		extensions: ['.js', '.vue']
 	},
@@ -99,6 +104,10 @@ if(process.env.NODE_ENV === 'production') {
 		}),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true
-		})
+		}),
+		// new webpack.ProvidePlugin({
+    //       $: "jquery",
+    //       jQuery: "jquery"
+    //   	})
 	])
 }

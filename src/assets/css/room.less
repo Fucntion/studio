@@ -16,7 +16,7 @@
             text-align: center;
             display:inline-block;
             cursor:pointer;
-            
+
         }
         .isActive{
             color:@el-blue;
@@ -30,11 +30,11 @@
     width:1200px;
     margin:30px auto;
     // 300+60+359+60+360
-    .plugin_box,.mobile_box,.common_box{    
+    .plugin_box,.mobile_box,.common_box{
         float:left;
         min-height:736px;
-       
-        
+
+
     }
     .plugin_box{
         background:white;
@@ -130,18 +130,18 @@
     }
     .wrap{
         width:357px;
-        margin-left:1px;
+        margin-left:5px;
        height:630px;
        .tooltip{
- 
+
         }
         .mobile_content{
             cursor: pointer;
-            
-            
-            
+
+
+
         }
-        .mobile_content:hover{
+        .mobile_content .menu_item:hover{
             opacity: 0.5;
         }
        .mobile_menu{
@@ -191,26 +191,26 @@
             font-weight:bold;
             font-size:14px;
             margin:15px 0 15px;
+            display: flex;
         }
         .submit_studio{
             // float:right;
         }
-        
+
     }
-    
+
     .header{
-        padding:5px 0 10px;
         border-bottom:1px solid #c0c0c0;
         .header_tab{
 
             display:inline-block;
-            padding: 0 10px;
             height:30px;
             line-height:30px;
-            border-radius: 4px;
             font-size:14px;
-            margin-right:10px;
-
+            text-align: center;
+            background: #efefef;
+            padding-top: 0.3rem;
+padding-bottom: 0.3rem;
         }
         :hover{
             cursor: pointer;
@@ -228,21 +228,21 @@
 
         }
         .origin_show{
-            margin-top:50px;
+            margin-top:5px;
 
             p{
-                word-wrap:break-word;
-                line-height:1.5;
-                border-radius:4px;
-                border:1px solid #c0c0c0;
-                padding:10px;
-                font-size:14px;
-
+              height: 1rem;
+  word-wrap: break-word;
+  line-height: 1.5rem;
+  border: 1px solid #c0c0c0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  overflow: hidden;
+    text-indent: 0.5rem;
             }
             .copy{
-                float:right;
             }
-        } 
+        }
     }
     .feature{
         .container{

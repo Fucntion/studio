@@ -1,14 +1,11 @@
 <template>
 	<div v-if="show">
-
 		<div style="margin-bottom: 20px;">
 			<el-button size="small" type="primary" @click="add()">添加菜单</el-button>
 		</div>
-
 		<template v-if="menuList.length>0">
-			<el-tabs class="menuEditBox" closable ref="Menutab" type="border-card" @tab-remove="removeMenuTab">
-				<el-tab-pane v-for="(item, key, index)  in menuList" :name="key+''" :label="item.title">
-
+			<el-tabs v-model='menu_active' class="menuEditBox" :closable='close_status' ref="Menutab" type="border-card" @tab-remove="removeMenuTab">
+				<el-tab-pane style='margin-top:1rem;' v-for="(item, key, index)  in menuList" :name="key+''" :label="item.title">
 					<el-form :ref="'formedit'+key" :rules="rules" :model="item" label-width="80px" :key="index">
 						<el-form-item label="菜单名称" prop="title">
 							<el-input v-model="item.title" placeholder="菜单名称不超过三个中文字"></el-input>
@@ -20,10 +17,12 @@
 							</el-select>
 						</el-form-item>
 						<el-form-item label="菜单内容" v-if="item.type&&item.type=='show'">
-							<quill-editor :ref="'myTextEditor'+key" :value="escape2Html(item.show)" :config="editorOption" @change="onEditorChange($event,item,key)">
-							</quill-editor>
-							<!--<textarea id="editor_content" v-html="item.show" name="content" style="height:300px;">
-							</textarea>-->
+							<quill-editor :ref="'myTextEditor'+key" :value="escape2Html(item.show)" :config="editorOption" @change="onEditorChange($event,item,key)"></quill-editor>
+							<!--<div class='grid-content' :offset='3'>-->
+							    <!--<VueUEditor :key='index' @ready="editorReady">
+							    	
+							    </VueUEditor>-->
+							<!--</div>-->
 						</el-form-item>
 						<el-form-item label="菜单内容" v-if="item.type&&item.type=='goods'">
 							<div style="height: 300px;overflow-y: scroll">
@@ -69,20 +68,21 @@
 	import {
 		quillEditor
 	} from 'vue-quill-editor'
+	import VueUEditor from './UEditor.vue'
 	export default {
 		name: 'menuEdit',
-		data: function () {
+		data: function() {
 			var validateTitle = (rule, value, callback) => {
-				if (value === '') {
+				if(value === '') {
 					callback(new Error('请输入菜单名称'));
-				} else if (value.length > 4) {
+				} else if(value.length > 4) {
 					callback(new Error('菜单长度不能超过三个字符'));
 				} else {
 					callback();
 				}
 			};
 			var validateType = (rule, value, callback) => {
-				if (value === '') {
+				if(value === '') {
 					callback(new Error('请选择菜单类型'));
 				} else {
 					callback();
@@ -90,6 +90,9 @@
 			};
 
 			return {
+				value:'',
+				//				editor: null,
+				menu_active: '0',
 				show: false,
 				tabs: [],
 				studio: null,
@@ -98,7 +101,7 @@
 				editorOption: {
 					// something config
 				},
-				Tempcontent: '',//暂存文章素材的变量
+				Tempcontent: '', //暂存文章素材的变量
 				rules: {
 					title: [{
 						validator: validateTitle
@@ -113,11 +116,31 @@
 		store,
 		props: ['dialog'],
 		computed: {
-			editor() {
-				// return this.$refs.myTextEditor.quillEditor
-			}
+			close_status: function() {
+				return true
+			},
+		},
+		watch:{
+//			menu_active(newvalue,oldvalue){
+//				console.log(newvalue)
+//				console.log(oldvalue)
+//				console.log(window.editor)
+//				window.editor.reset()
+//				window.editor.setContent(this.menuList[this.menu_active].show)
+//			}
 		},
 		methods: {
+//			editorReady(editorInstance){
+//				var self = this
+//				console.log(this.menu_active)
+//				console.log(this.menuList)
+////				window.editor=editorInstance
+//				editorInstance.setContent('123')
+//				editorInstance.addListener('contentChange',()=>{
+//					console.log('发生了变化:',editorInstance.getContent())
+//					self.menuList[self.menu_active].show = editorInstance.getContent()
+//				})
+//			},
 			onEditorBlur(editor) {
 				// console.log('editor blur!', editor)
 			},
@@ -134,10 +157,10 @@
 			}, item, key) {
 				var self = this,
 					tempRefsEditor = {};
-				for (var k in self.$refs) {
+				for(var k in self.$refs) {
 
 					//替换富文本编辑器中内容
-					if (k == 'myTextEditor' + key) {
+					if(k == 'myTextEditor' + key) {
 						tempRefsEditor = self.$refs[k][0]
 					}
 				}
@@ -145,18 +168,28 @@
 				// console.log(tempRefsEditor)
 
 			},
-			html2Escape: function (sHtml) {
-				return sHtml.replace(/[<>&"]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]; });
-			},
-			removeMenuTab: function (tabItem) {
-
-
-				var self = this;
-				self.menuList = _.filter(self.menuList, function (item) {
-					return item.title !== tabItem.label
+			html2Escape: function(sHtml) {
+				return sHtml.replace(/[<>&"]/g, function(c) {
+					return {
+						'<': '&lt;',
+						'>': '&gt;',
+						'&': '&amp;',
+						'"': '&quot;'
+					}[c];
 				});
-
-				self.subConfig();
+			},
+			removeMenuTab: function(tabItem) {
+				console.log(tabItem);
+				console.log(this.menuList);
+				this.menuList.splice(tabItem, 1)
+				console.log(this.menuList);
+				// console.log(this.menuList);
+				// var self = this;
+				// self.menuList = _.filter(self.menuList, function (item) {
+				// 	return item.title !== tabItem.label
+				// });
+				// console.log(this.menuList);
+				this.subConfig();
 
 			},
 			subConfig(obj) {
@@ -172,25 +205,26 @@
 				store.commit('changeStudio', data);
 			},
 			//只要修改对应的item数据即可，至于格式化之类的操作全部写在store里面
-			onSubmitEdit: function (item, key) {
+			onSubmitEdit: function(item, key) {
 
 				var self = this,
-					tempRefsObj = {}, tempRefsEditor = {};
+					tempRefsObj = {},
+					tempRefsEditor = {};
 
-				for (var k in self.$refs) {
+				for(var k in self.$refs) {
 
 					// 用ref来定位是哪个表单
-					if (k == 'formedit' + key) {
+					if(k == 'formedit' + key) {
 
 						tempRefsObj = self.$refs[k][0]; //0有点坑
 					}
 
 					//替换富文本编辑器中内容
-					if (k == 'myTextEditor' + key) {
+					if(k == 'myTextEditor' + key) {
 						tempRefsEditor = self.$refs[k][0]
 					}
 				}
-				if (item.type == 'show') {
+				if(item.type == 'show') {
 					item.show = tempRefsEditor.tempStr || ''
 				}
 
@@ -199,9 +233,9 @@
 
 				//表单验证
 				tempRefsObj.validate((valid) => {
-					if (valid) {
+					if(valid) {
 
-						if (item.show == '' && item.type == 'show') {
+						if(item.show == '' && item.type == 'show') {
 							this.$notify({
 								title: '提示',
 								message: '图文内容不能为空',
@@ -210,7 +244,7 @@
 							return;
 						}
 
-						if (item.type == 'goods' && item.goods.length < 1) {
+						if(item.type == 'goods' && item.goods.length < 1) {
 							this.$notify({
 								title: '提示',
 								message: '商品信息不能为空',
@@ -219,7 +253,7 @@
 							return;
 						}
 
-						if (item.type == '') {
+						if(item.type == '') {
 							console.log('类别未选')
 							return
 						}
@@ -237,10 +271,10 @@
 				});
 
 			},
-			add: function () {
+			add: function() {
 
 				var self = this;
-				if (self.studio.pluginObj.menu.length > 2) {
+				if(self.studio.pluginObj.menu.length > 2) {
 					this.$notify({
 						title: '提示',
 						message: '最多可以添加三个菜单',
@@ -257,9 +291,9 @@
 				};
 
 				function name(title) {
-					for (var k in self.studio.pluginObj.menu) {
+					for(var k in self.studio.pluginObj.menu) {
 
-						if (self.studio.pluginObj.menu[k].title == 'tab' + title) {
+						if(self.studio.pluginObj.menu[k].title == 'tab' + title) {
 							title++;
 						}
 					}
@@ -274,7 +308,7 @@
 
 			},
 			handleSelectionChange(row, item) {
-				if (!row.goodsId) {
+				if(!row.goodsId) {
 					this.$notify.info({
 						title: '提示信息',
 						message: '商品信息错误',
@@ -284,23 +318,29 @@
 				}
 				var self = this,
 					index = item.goods.indexOf(row.goodsId);
-				if (index == -1) {
+				if(index == -1) {
 					item.goods.push(row.goodsId);
 				} else {
 					item.goods.splice(index, 1);
 				}
 
 			},
-			escape2Html: function (str) {
-				var arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' };
-				return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) { return arrEntities[t]; });
+			escape2Html: function(str) {
+				var arrEntities = {
+					'lt': '<',
+					'gt': '>',
+					'nbsp': ' ',
+					'amp': '&',
+					'quot': '"'
+				};
+				return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, function(all, t) {
+					return arrEntities[t];
+				});
 			},
 			init() {
 				var self = this;
 				self.studio = store.getters.getStudio;
 				self.show = true;
-
-
 
 				self.menuList = _.assign([], self.studio.pluginObj.menu);
 
@@ -309,7 +349,7 @@
 				this.$http.get(url).then((response) => {
 
 					var tempObj = response.body.data.root;
-					for (var key in tempObj) {
+					for(var key in tempObj) {
 						tempObj[key].isSelect = false;
 					}
 					self.goodsData = tempObj;
@@ -318,16 +358,25 @@
 
 				});
 
-			}
+			},
+			//			geteditor() {
+			//				console.log(this.editor.getContent());
+			//			},
 		},
 		components: {
-			quillEditor
+			quillEditor,
+			VueUEditor
 		},
 		created() {
 			this.init();
+		},
+		mounted() {
+			
+		},
+		destroyed() {
+			//			this.editor.destroy()
 		}
 	}
-
 </script>
 
 <style lang="less">

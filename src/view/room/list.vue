@@ -4,24 +4,30 @@
 
 		<el-row class="room_box">
 			<!--传入add然后让业务逻辑知道是创建新的直播间-->
-			<div class="roomAdd">
-				<div  @click="addRoom()">创建房间</div>
-			</div>
-			<template v-if="roomList.length>0" v-for="(room,index) in roomList">
+				<div class="roomAdd roomlist2">
+					<img style='width:4rem;' src="~assets/img/add.png" alt="">
+					<div style='flex-basis: 100%;text-align: center;margin-top: 1rem;'  @click="addRoom()">创建直播间</div>
+				</div>
 
-					<div class="roomItem" :id="room.id">
-						<img :src="room.logo_url" class="thumb" alt="room.title" />
+			<template v-if="roomList.length>0" v-for="(room,index) in roomList">
+					<div class="roomItem roomlist2" :id="room.id">
+						<img :src="room.logo_url" class="thumb"/>
 						<h3 class="room_title">{{room.title}}</h3>
 						<el-row class="btn">
-							<el-col class="btn_item" :span="8">
-								<div @click="intoRoom(room.id)">编辑房间</div>
+							<el-col class="btn_item" :span="6">
+								<div @click="intoRoom(room.id)">编辑</div>
 							</el-col>
-							<el-col class="btn_item" :span="8">
-								<div @click="show(room.id)">预览房间</div>
+							<el-col class="btn_item" :span="6">
+								<div @click="show(room.id)">数据</div>
 							</el-col>
-							<!--数据分析-->
-							<el-col class="btn_item" :span="8">
-								<div @click="analysis(room.id)">数据分析</div>
+							<el-col class="btn_item" :span="6">
+								<div @click="analysis(room.id)">视频库</div>
+							</el-col>
+							<el-col class="btn_item" :span="6">
+								<el-tooltip placement='top' effect='light'>
+									<qrcode slot='content' :size='150' :val="'http://tv.icloudinn.com/'+room.id"></qrcode>
+									<div @click="share(room.id)">分享</div>
+								</el-tooltip>
 							</el-col>
 						</el-row>
 						<div class="mask"></div>
@@ -31,8 +37,6 @@
 							<img @click="del(room.id,index)" src="~assets/img/room/delete_icon.png"  title="删除直播间" class="icon live_delete" />
 						</div>
 					</div>
-
-
 			</template>
 			<!-- <el-col :span="1" >&nbsp;</el-col> -->
 		</el-row>
@@ -46,6 +50,7 @@
 
 <script>
 	import store from 'store'
+	import Qrcode from 'plugin/common/Qrcode.vue'
 	import { Loading } from 'element-ui'
 
 	export default {
@@ -59,6 +64,9 @@
 
 
 			}
+		},
+		components:{
+			Qrcode
 		},
 		methods: {
 			addRoom: function() {
@@ -175,13 +183,19 @@
 
 			},
 			show: function(id) {
-				window.open("http://tv.icloudinn.com/" + id);
+				// window.open("http://tv.icloudinn.com/" + id);
+				this.$router.push('studio/'+id)
+				localStorage.setItem('toanalysis', true)
+			},
+			analysis:function(id){
+				this.$router.push('video/'+id)
 			}
 		},
 		mounted() {
 
-			var url = "/rooms--token--&page=1&per-page=5";
+			var url = "/rooms--token--&page=1&per-page=20";
 			this.$http.get(url).then((response) => {
+				console.log(response.body)
 				this.roomList = response.body.data.list;
 				this.roomTotal = parseInt(response.body.data.pageInfo.totalCount)
 				this.loading =false;
@@ -193,5 +207,26 @@
 	}
 </script>
 <style lang="less">
-
+	.room_box{
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.roomAdd{
+		flex-wrap: wrap;
+    align-content: center;
+	}
+	.roomList{
+		background: white;
+		padding:3rem;
+	}
+	.control{
+		text-align: right;
+	}
+	.listcontent{
+		display: flex;
+		justify-content: center;
+	}
+	.roomlist2{
+		flex-basis: 25%;
+	}
 </style>

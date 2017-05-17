@@ -77,7 +77,7 @@ Vue.http.interceptors.push((request, next) => {
 	}
 	var url = 'http://saas.icloudinn.com/api/v1';
 
-	if(request.url == '/users' || request.url == '/users/register') {
+	if(request.url.indexOf('/income')!==-1 && request.url.indexOf('/my-income') ==-1 ||request.url.indexOf('/videos?access-token')!==-1 || request.url == '/users/register' || request.url.indexOf('/analyzes/audience/room')!==-1) {
 		request.url = url + request.url;
 	} else {
 		//万洲的token有毒

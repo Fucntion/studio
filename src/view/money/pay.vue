@@ -1,13 +1,14 @@
 <template>
-<div>
+<div style='background:white;'>
 	<el-form ref="payform" :model="payData" label-width="100px">
 		<el-form-item label="当前余额">
-			￥3000.00 元
+			￥<span style='color:#21a0ff;'>3000.00</span> 元
 		</el-form-item>
 		<el-form-item label="充值金额">
-			<el-input type="number" placeholder="单次充值最少五百元起" style="width:300px;" v-model="payData.number"></el-input>
+			<el-input type="number" style="width:300px;" v-model="payData.number"></el-input>
 		</el-form-item>
 		<el-form-item label="支付方式">
+			<br>
 			<div class="payStyle">
 				<template v-if="payStyle=='ali'">
 					<img src="~assets/img/ali_active.png">
@@ -187,11 +188,12 @@
 
 					let loadingInstance = Loading.service(options);
 					this.$http.post(url, data).then((response) => {
-
-						loadingInstance.close();
+						console.log(response.body);
 						if (response.body.code == 100) {
+							loadingInstance.close();
 							this.tradeId = response.body.data.tradeId
-							window.open(response.body.data.payurl)
+							// window.open(response.body.data.payurl)
+							window.location.href=response.body.data.payurl
 
 						} else {
 							this.$notify({
@@ -280,7 +282,7 @@
 					//分页的问题
 					this.payInfoList = response.body.data.list
 				},(response)=>{
-					
+
 				})
 			}
 
@@ -302,7 +304,7 @@
 			margin-right: 35px;
 		}
 	}
-	
+
 	.payDialog {
 		.el-dialog {
 			font-size: 16px;

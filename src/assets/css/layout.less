@@ -47,17 +47,18 @@
 // left
 
 .left {
-    width:200px;
-    border-right: 1px solid white;
+    background: #e4e7ec;
+    flex-basis: 15%;
+    border-right: 1px solid #dadcdf;
     float: left;
     .nav {
-        background: #f2f2f2;
+        background: #e4e7ec;
         .el-submenu__title,
         .el-menu-item {
             height: 60px;
             line-height: 60px;
             margin-bottom: 4px;
-            background: white;
+            background: #e4e7ec;
             color: @font-color;
         }
         .el-submenu_title:hover,
@@ -79,7 +80,7 @@
             width:25px;
             text-align: right;
         }
-        
+
         .el-menu-item [class^=fa] {
             vertical-align: baseline;
             margin-right: 10px;
@@ -91,10 +92,10 @@
             color:white;
         }
     }
-    
+
     .kefu {
         min-width:200px;
-        background: @bg-content;
+        background: #e4e7ec;
         text-align: center;
         display: table-cell;
         vertical-align: middle;
@@ -106,12 +107,13 @@
 
 // right
 .right {
+    flex-basis: 85%;
     background:white;
-    position: absolute;
-    min-width:800px;
-    left:220px;
-    top:80px;
-    right:10px;
+//  position: absolute;
+//  min-width:800px;
+//  left:220px;
+//  top:80px;
+//  right:10px;
     // overflow-y: scroll;
     // bottom:10px;
     min-height:800px;
@@ -136,9 +138,9 @@
 @screen-md-min:1200px;
 @screen-lg-min:1440px;
 /* 中等屏幕（桌面显示器，大于等于 992px） */
-@media (min-width: @screen-md-min) { 
+@media (min-width: @screen-md-min) {
     .left{
-        width: 200px;
+//      width: 200px;
         .el-submenu__title,
         .el-menu-item {
             padding:0 25px;
@@ -159,14 +161,14 @@
     }
     .right{
         left:220px;
-        
+
     }
 }
 
 /* 大屏幕（大桌面显示器，大于等于 1200px） */
-@media (min-width: @screen-lg-min) { 
+@media (min-width: @screen-lg-min) {
     .left{
-        width: 250px;
+//      width: 250px;
         .el-submenu__title,
         .el-menu-item {
             padding-left:50px
@@ -176,7 +178,7 @@
         }
         .leaf {
 
-            padding-left: 50px; 
+            padding-left: 50px;
         }
         .kefu {
             width: 300px;
@@ -184,6 +186,6 @@
         }
     }
     .right{
-      left:270px;  
+//    left:270px;
     }
 }

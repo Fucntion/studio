@@ -1,30 +1,25 @@
 <template>
 	<div>
 		<el-table v-if="show" @cell-click="changepic" class="advert_table" :data="AdvertData" style="width: 100%">
-			<el-table-column property="index" label="排序" width="100">
-			</el-table-column>
-
-			<el-table-column inline-template label="缩略图" width="150">
-				<div>
+			<el-table-column align='center' inline-template label="缩略图" width="300">
 					<template v-if="row.pic">
-						<img width="100px" :src="row.pic" style="cursor: pointer;" title="点我更换图片" alt="点我更换图片" />
+						<img width="100%" :src="row.pic" style="cursor: pointer;" title="点我更换图片" alt="点我更换图片" />
 					</template>
 					<template v-else>
 						<el-button size="small">添加图片</el-button>
 					</template>
-				</div>
 			</el-table-column>
-			<el-table-column inline-template label="链接地址" width="300">
+			<el-table-column align='center' inline-template label="链接地址" width="300">
 				<template>
 					<el-input placeholder="请输入连接" v-model="row.link"></el-input>
 				</template>
 			</el-table-column>
 
-			<el-table-column inline-template label="操作">
+			<el-table-column align='center' inline-template label="操作">
 				<template>
 					<!--index属性从小到大排列,并且每次列表有变动时会自动重排，如果需要改变排序只要改变对应两个index即可-->
-					<i @click="handleUp(row,$index)" class="advert_icon el-icon-arrow-up"></i>
-					<i @click="handleDown(row,$index)" class="advert_icon el-icon-arrow-down"></i>
+					<!--<i @click="handleUp(row,$index)" class="advert_icon el-icon-arrow-up"></i>-->
+					<!--<i @click="handleDown(row,$index)" class="advert_icon el-icon-arrow-down"></i>-->
 					<i @click="handleDel(AdvertData,$index)" class="advert_icon el-icon-delete"></i>
 				</template>
 			</el-table-column>
@@ -40,6 +35,7 @@
 <script>
 	import store from 'store';
 	import pictureBox from "plugin/common/pictureBox.vue"
+	import Bus from '../../view/room/config_items/bus.js'
 	export default {
 		store,
 		data() {
@@ -76,7 +72,8 @@
 				self.setAdvertImg = function (imgUrl, obj = self.isUploadItem) {
 					obj.pic = imgUrl
 				}
-				self.openPicture('幻灯片图片', self.setAdvertImg)
+//				self.openPicture('幻灯片图片', self.setAdvertImg)
+				Bus.$emit('openDialog',1)
 			},
 			//保存配置点击事件
 			subConfig() {
@@ -187,7 +184,7 @@
 
 				self.studio = store.getters.getStudio;
 				self.AdvertData = _.sortBy(self.studio.pluginObj.advert, 'index')
-
+				console.log(self.AdvertData)
 
 				var url = "/aliyuns/oss";
 				self.$http.get(url).then((response) => {
@@ -217,7 +214,12 @@
 
 			}
 		},
-
+		created(){
+			var self=this
+			Bus.$on('pushAdver',function(src){
+				self.AdvertData[self.AdvertData.length-1].pic=src
+			})
+		},
 		mounted() {
 			this.init();
 		}

@@ -58,7 +58,7 @@
 			init: function () {
 				var url = "shop=http://shop.icloudinn.com/index.php/Api/Orders/queryShopOrders--token--&currPage=1&pageSize=20"
 				this.$http.get(url).then((response) => {
-
+					console.log(response)
 					this.orderDataList = response.body.data.root
 					this.total = parseInt(response.body.data.total)
 

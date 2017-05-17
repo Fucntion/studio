@@ -1,6 +1,6 @@
 <template>
      <el-row class="panel-top">
-        <el-col :span="24" >
+        <el-col style='padding-left: 10%;padding-right: 10%;' :span="24" >
             <img src="~assets/img/logo.png" class="logo">
             <el-tooltip class="item tip-logout" @click="logout" effect="dark" content="退出" placement="bottom" style="padding:0px;">
                 <i class="logout" aria-hidden="true" v-on:click="logout"></i>

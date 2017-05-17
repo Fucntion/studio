@@ -47,7 +47,7 @@
 		quillEditor
 	} from 'vue-quill-editor'
 	// import ueditor from 'plugin/common/ueditor.vue';
-	
+
 	export default {
 		name:'addgoods',
 		data() {
@@ -65,10 +65,10 @@
 					content: '<h2>商品信息</h2>',
 					editorOption: {
 						// something config
-						
+
 					},
 					new_multipart_params: null,
-					defaultMsg: '初始文本',  
+					defaultMsg: '初始文本',
         config: {
           initialFrameWidth: null,
           initialFrameHeight: 320,
@@ -132,7 +132,7 @@
 
 			},
 			mounted() {
-			
+
 
 				var url = "/aliyuns/oss";
 
@@ -199,7 +199,7 @@
 			}
 		}
 	}
-	
+
 	.ql-container .ql-editor {
 		min-height: 20em;
 		padding-bottom: 1em;
