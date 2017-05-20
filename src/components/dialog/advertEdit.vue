@@ -1,15 +1,17 @@
 <template>
 	<div>
 		<el-table v-if="show" @cell-click="changepic" class="advert_table" :data="AdvertData" style="width: 100%">
-			<el-table-column align='center' inline-template label="缩略图" width="300">
+			<el-table-column align='center' inline-template label="缩略图" >
+				<div>
 					<template v-if="row.pic">
-						<img width="100%" :src="row.pic" style="cursor: pointer;" title="点我更换图片" alt="点我更换图片" />
+						<img width="200px" :src="row.pic" style="cursor: pointer;" title="点我更换图片" alt="点我更换图片" />
 					</template>
 					<template v-else>
 						<el-button size="small">添加图片</el-button>
 					</template>
+				</div>
 			</el-table-column>
-			<el-table-column align='center' inline-template label="链接地址" width="300">
+			<el-table-column align='center' inline-template label="链接地址">
 				<template>
 					<el-input placeholder="请输入连接" v-model="row.link"></el-input>
 				</template>

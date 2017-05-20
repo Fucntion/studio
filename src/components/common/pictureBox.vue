@@ -50,21 +50,21 @@
       save:function(selectUrl=this.selectUrl){
           var self=this
           var callback = this.picture.callback
-          console.log(selectUrl)
-      		console.log(callback);
+          // console.log(selectUrl)
+      		// console.log(callback);
           this.$notify({
                   title: '成功',
                   message: '操作成功',
                   type: 'success'
                 });
           callback(selectUrl)
-          console.log(selectUrl)
-          console.log(store.getters.getStudio.cover_img_url)
+          // console.log(selectUrl)
+          // console.log(store.getters.getStudio.cover_img_url)
           //向服务器更新数据并关闭弹框
           store.commit('closePicture')
       },
       call: function (response, file, fileList) {
-        console.log(response);
+        // console.log(response);
         var fileUlr = response.data.img_url
         //给他加上未选中的状态
         response.data.isActive = false
@@ -73,7 +73,7 @@
           this.imgList.length = 23
         }
         this.imgList = [response.data].concat(this.imgList)
-				console.log(this.imgList)
+				// console.log(this.imgList)
         // store.commit("closeModal");
         // var data = {
         //   id: this.$router.currentRoute.params.id,
@@ -86,7 +86,7 @@
         this.getPage(val)
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+        // console.log(file, fileList);
       },
       set_key(file) {
         this.new_multipart_params.name = file.name;
@@ -115,7 +115,7 @@
           _.forEach(response.body.data.list, function (item, key) {
             item.isActive = false
           })
-          console.log(response)
+          // console.log(response)
           this.imgList = response.body.data.list
           this.pagination.total = parseInt(response.body.data.pageInfo.totalCount)
 

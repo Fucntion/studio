@@ -8,7 +8,7 @@
 				<el-tab-pane style='margin-top:1rem;' v-for="(item, key, index)  in menuList" :name="key+''" :label="item.title">
 					<el-form :ref="'formedit'+key" :rules="rules" :model="item" label-width="80px" :key="index">
 						<el-form-item label="菜单名称" prop="title">
-							<el-input v-model="item.title" placeholder="菜单名称不超过三个中文字"></el-input>
+							<el-input style="width:400px;" v-model="item.title" placeholder="菜单名称不超过三个中文字"></el-input>
 						</el-form-item>
 						<el-form-item label="菜单类型" prop="type">
 							<el-select v-model="item.type" placeholder="请选择菜单的类型">
@@ -16,15 +16,15 @@
 								<el-option label="商品列表" value="goods"></el-option>
 							</el-select>
 						</el-form-item>
-						<el-form-item label="菜单内容" v-if="item.type&&item.type=='show'">
+						<div  v-if="item.type&&item.type=='show'">
 							<quill-editor :ref="'myTextEditor'+key" :value="escape2Html(item.show)" :config="editorOption" @change="onEditorChange($event,item,key)"></quill-editor>
 							<!--<div class='grid-content' :offset='3'>-->
 							    <!--<VueUEditor :key='index' @ready="editorReady">
 							    	
 							    </VueUEditor>-->
 							<!--</div>-->
-						</el-form-item>
-						<el-form-item label="菜单内容" v-if="item.type&&item.type=='goods'">
+						</div>
+						<div v-if="item.type&&item.type=='goods'">
 							<div style="height: 300px;overflow-y: scroll">
 								<el-table v-if="goodsData" :key="index" :data="goodsData">
 									<el-table-column prop="goodsName" width="180px" label="商品"></el-table-column>
@@ -46,7 +46,7 @@
 									</el-table-column>
 								</el-table>
 							</div>
-						</el-form-item>
+						</div>
 						<el-form-item>
 							<el-button @click="onSubmitEdit(item,key)" type="primary">保存</el-button>
 						</el-form-item>

@@ -144,7 +144,7 @@
 						});
 						this.now_image = this.imglist2
 						Bus.$emit('change', this.now_image)
-						//						this.shareimg = this.imglist
+						
 					}, (response) => {
 						console.log('error');
 						console.log(response.body);
@@ -235,7 +235,7 @@
 					// 这里是第一次创建jcropapi
 					var a = setInterval(function() {
 						if($('#element_id').src == this.imglist) {
-							console.log($.Jcrop)
+							// console.log($.Jcrop)
 							$('#element_id').Jcrop({
 								//选框宽高比
 								aspectRatio: bili,
@@ -246,8 +246,8 @@
 									self.xl = parseInt(jcropApi.tellSelect().x * parseFloat(bei))
 									self.yl = parseInt(jcropApi.tellSelect().y * parseFloat(bei))
 									self.imglist2 = self.imglist + '?x-oss-process=image/crop,x_' + self.xl + ',y_' + self.yl + ',w_' + self.wid + ',h_' + self.hei
-									console.log(self.imglist2);
-									console.log(jcropApi.tellSelect())
+									// console.log(self.imglist2);
+									// console.log(jcropApi.tellSelect())
 								},
 								onRelease: function() {
 									var jcropApi = this
@@ -261,10 +261,10 @@
 								var zuobiao = jcropApi.getBounds()
 								jcropApi.setSelect([zuobiao[0] * 1 / 3, zuobiao[1] * 1 / 3, zuobiao[0] * 2 / 3, zuobiao[1] * 2 / 3])
 							});
-							console.log('ok')
+							// console.log('ok')
 							clearInterval(a)
 						} else {
-							console.log('not')
+							// console.log('not')
 						}
 					}, 100)
 				}
@@ -283,12 +283,12 @@
 				var status = ''
 				// 判断是否有推流
 				this.$http.get('/deals/room/' + this.$route.params.id).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 					status = response.body.data.status
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 				})
 				//把store中的组件信息初始化
 				//store.commit('initPluginList');
@@ -308,8 +308,8 @@
 			},
 			getswitch: function() {
 				this.$http.get('/deals/room/' + this.$route.params.id).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 					//分享简介
 					var intro = ''
 					var radio = ''
@@ -397,14 +397,14 @@
 						this.getvideoactive(response.body.data.video_id)
 					}
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 				})
 			},
 			getvideoactive: function(id) {
 				this.$http.get('/videos/' + id).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 					var show1 = ''
 					var show2 = ''
 					var showname = ''
@@ -437,8 +437,8 @@
 					}
 					this.init()
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 				})
 			},
 		},

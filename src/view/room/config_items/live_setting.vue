@@ -91,7 +91,7 @@
 		<el-tab-pane label="个性设置" name="second">
 			<div class="feature">
 				<el-row>
-					<el-form :inline="true" class="origin_form" label-width="70px">
+					<el-form :inline="true" class="origin_form" >
 						<p style='display: flex;align-items:center;margin-top: 0.5rem;'>
 							<img class='word_img' src="~assets/img/share.png" /> 微信分享设置
 						</p>
@@ -281,7 +281,7 @@
 				</div>
 				<el-form class="origin_form" label-width="70px">
 					<p style='display: flex;align-items:center;margin-top: 0.5rem;'>
-						<img class='word_img' src="~assets/img/peoplenum.png" /> 人数限制
+						<img class='word_img' src="~assets/img/peoplenum.png" /> 人数限制<small>-1代表无限制</small>
 					</p>
 					<div class='num_content'>
 						<el-input placeholder="设置直播间同时观看的人数上限" v-model="studio.watch_num_limit"></el-input>
@@ -410,8 +410,8 @@
 					watch_pay_bill: value,
 					room_password: null
 				}).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 					this.ruleForm2.password = ''
 					this.$notify({
 						title: '成功',
@@ -419,8 +419,8 @@
 						type: 'success'
 					});
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 					this.$notify.error({
 						title: '错误',
 						message: '修改金额失败'
@@ -466,8 +466,8 @@
 					room_password: value,
 					watch_pay_bill: null
 				}).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 					this.ruleForm.money = ''
 					this.$notify({
 						title: '成功',
@@ -475,8 +475,8 @@
 						type: 'success'
 					});
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 					this.$notify.error({
 						title: '错误',
 						message: '修改密码失败'
@@ -495,16 +495,16 @@
 				this.$http.put('/rooms/' + this.$route.params.id, {
 					watch_permission: value
 				}).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 				})
 			},
 			openPicture: function(title, callback) {
 				// type用来区分不同的用途，用来设置不同的回调
-				console.log(callback);
+				// console.log(callback);
 				var obj = {};
 				obj.title = title;
 				obj.callback = callback;
@@ -515,16 +515,16 @@
 					share_intro: this.intro,
 					title: this.studio.title
 				}).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 					this.$notify({
 						title: '成功',
 						message: '修改分享配置成功',
 						type: 'success'
 					});
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 					this.$notify.error({
 						title: '错误',
 						message: '修改分享配置失败'
@@ -596,11 +596,11 @@
 				this.$http.put('/rooms/' + this.$route.params.id, {
 					cover_img_url: null
 				}).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 				})
 			},
 //			call: function(response, file, fileList) {
@@ -663,13 +663,13 @@
 				var time = this.studio.play_time_show;
 
 				if(Object.prototype.toString.call(time) == '[object Date]') {
-					console.log('时间是对象，需要转换成时间戳');
+					// console.log('时间是对象，需要转换成时间戳');
 					time = time.getTime();
 				}
 
 				// php和js的时间戳位数不一样
 				if((time + '').length == 13) {
-					console.log('长度是13位，要转换成php时间戳');
+					// console.log('长度是13位，要转换成php时间戳');
 					time = parseInt(time / 1000);
 				}
 
@@ -692,28 +692,28 @@
 					this.$http.put('/rooms/' + this.$route.params.id, {
 						video_is_repeat_play: 1
 					}).then((response) => {
-						console.log('success');
-						console.log(response.body);
+						// console.log('success');
+						// console.log(response.body);
 					}, (response) => {
-						console.log('error');
-						console.log(response.body);
+						// console.log('error');
+						// console.log(response.body);
 					})
 				} else {
 					this.$http.put('/rooms/' + this.$route.params.id, {
 						video_is_repeat_play: 0
 					}).then((response) => {
-						console.log('success');
-						console.log(response.body);
+						// console.log('success');
+						// console.log(response.body);
 					}, (response) => {
-						console.log('error');
-						console.log(response.body);
+						// console.log('error');
+						// console.log(response.body);
 					})
 				}
 			},
 			getswitch: function() {
 				this.$http.get('/deals/room/' + this.$route.params.id).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 					//视频开关
 					if(response.body.data.video_live_way == '0') {
 						this.value3 = false
@@ -738,24 +738,24 @@
 					}
 					store.commit('setValueObject', obj)
 					if(response.body.data.video_id == null) {
-						console.log('null')
+						// console.log('null')
 						this.show1 = false
 						this.show2 = false
 						store.commit('setAddress1', '')
 						store.commit('setAddress2', '')
 					} else {
-						console.log('notnull')
+						// console.log('notnull')
 						this.getvideoactive(response.body.data.video_id)
 					}
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 				})
 			},
 			getvideoactive: function(id) {
 				this.$http.get('/videos/' + id).then((response) => {
-					console.log('success');
-					console.log(response.body);
+					// console.log('success');
+					// console.log(response.body);
 					if(response.body.code == 0) {
 
 					} else {
@@ -767,7 +767,7 @@
 							store.commit('setAddress1', '')
 							store.commit('setAddress2', response.body.play_set[0].url)
 						} else if(response.body.set_live_way == 2) {
-							console.log('2')
+							// console.log('2')
 							this.show2 = false
 							this.show1 = true
 							this.showname = response.body.file_name
@@ -776,8 +776,8 @@
 						}
 					}
 				}, (response) => {
-					console.log('error');
-					console.log(response.body);
+					// console.log('error');
+					// console.log(response.body);
 				})
 			},
 			changevalue5: function(val) {
@@ -786,35 +786,35 @@
 					this.$http.put('/rooms/' + this.$route.params.id, {
 						video_live_way: 2
 					}).then((response) => {
-						console.log('success');
-						console.log(response.body);
+						// console.log('success');
+						// console.log(response.body);
 						this.getswitch()
 					}, (response) => {
-						console.log('error');
-						console.log(response.body);
+						// console.log('error');
+						// console.log(response.body);
 					})
 				} else {
 					if(this.value3 == true) {
 						this.$http.put('/rooms/' + this.$route.params.id, {
 							video_live_way: 1
 						}).then((response) => {
-							console.log('success');
-							console.log(response.body);
+							// console.log('success');
+							// console.log(response.body);
 							this.getswitch()
 						}, (response) => {
-							console.log('error');
-							console.log(response.body);
+							// console.log('error');
+							// console.log(response.body);
 						})
 					} else {
 						this.$http.put('/rooms/' + this.$route.params.id, {
 							video_live_way: 0
 						}).then((response) => {
-							console.log('success');
-							console.log(response.body);
+							// console.log('success');
+							// console.log(response.body);
 							this.getswitch()
 						}, (response) => {
-							console.log('error');
-							console.log(response.body);
+							// console.log('error');
+							// console.log(response.body);
 						})
 					}
 				}
@@ -829,35 +829,35 @@
 					this.$http.put('/rooms/' + this.$route.params.id, {
 						video_live_way: 1
 					}).then((response) => {
-						console.log('success');
-						console.log(response.body);
+						// console.log('success');
+						// console.log(response.body);
 						this.getswitch()
 					}, (response) => {
-						console.log('error');
-						console.log(response.body);
+						// console.log('error');
+						// console.log(response.body);
 					})
 				} else {
 					if(this.value5 == true) {
 						this.$http.put('/rooms/' + this.$route.params.id, {
 							video_live_way: 2
 						}).then((response) => {
-							console.log('success');
-							console.log(response.body);
+							// console.log('success');
+							// console.log(response.body);
 							this.getswitch()
 						}, (response) => {
-							console.log('error');
-							console.log(response.body);
+							// console.log('error');
+							// console.log(response.body);
 						})
 					} else {
 						this.$http.put('/rooms/' + this.$route.params.id, {
 							video_live_way: 0
 						}).then((response) => {
-							console.log('success');
-							console.log(response.body);
+							// console.log('success');
+							// console.log(response.body);
 							this.getswitch()
 						}, (response) => {
-							console.log('error');
-							console.log(response.body);
+							// console.log('error');
+							// console.log(response.body);
 						})
 					}
 				}
@@ -895,7 +895,7 @@
 			getparams: function() {
 				var url = "/aliyuns/oss";
 				this.$http.get(url).then((response) => {
-					console.log(response);
+					// console.log(response);
 					var tempObj = {
 							success_action_status: '200', //让服务端返回200,不然，默认会返回204
 						},
@@ -918,14 +918,14 @@
 			},
 			getshareimg: function() {
 				this.$http.get('/deals/room/' + this.$route.params.id).then((response) => {
-					console.log('success');
+					// console.log('success');
 					if(response.body.data.share_img_url !== null) {
 						this.shareimg = response.body.data.share_img_url
 					} else {
 						this.shareimg = 'http://imgsrc.baidu.com/forum/w%3D580/sign=022b8bac41a98226b8c12b2fba80b97a/746b86ec08fa513dcf7865073f6d55fbb0fbd97a.jpg'
 					}
 				}, (response) => {
-					console.log('error');
+					// console.log('error');
 				})
 			}
 		},

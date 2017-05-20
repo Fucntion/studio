@@ -59,14 +59,14 @@
 				return store.getters.getValueObject
 			},
 			plusif: function() {
-				console.log('here')
-				console.log(this.studio.pluginObj.menu.length)
+				// console.log('here')
+				// console.log(this.studio.pluginObj.menu.length)
 				if(this.studio.pluginObj.menu.length > 3 || this.studio.pluginObj.menu.length == 3) {
-					console.log('here1')
+					// console.log('here1')
 
 					return false
 				} else {
-					console.log('here2')
+					// console.log('here2')
 
 					return true
 				}
@@ -74,15 +74,15 @@
 		},
 		watch:{
 			live_address(newvalue,oldvalue){
-				console.log('watch success')
+				// console.log('watch success')
 				this.loadPlayer()
 			},
 			live_address2(newvalue,oldvalue){
-				console.log('watch success')
+				// console.log('watch success')
 				this.loadPlayer()
 			},
 			value_object(newvalue,oldvalue){
-				console.log('watch success')
+				// console.log('watch success')
 				this.loadPlayer()
 			}
 		},
