@@ -8,6 +8,7 @@
 	import store from 'store';
 	import goodsBox from "./goodsBox.vue"
 	import menuEdit from "../dialog/menuEdit.vue"
+	import titleEdit from "../dialog/titleEdit.vue"
 	import advertEdit from "../dialog/advertEdit.vue"
 
 	export default {
@@ -30,7 +31,8 @@
 		components: {
 			goodsBox,
 			menuEdit,
-			advertEdit
+			advertEdit,
+			titleEdit
 		},
 		mounted() {
 

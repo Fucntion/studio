@@ -14,19 +14,24 @@
 				<el-input v-model="form.shopPrice"  placeholder="人民币"></el-input>
 			</el-form-item>
 			<el-form-item required label="图片上传">
-				<el-upload v-if="new_multipart_params" class="upload" ref="uploads" type="drag" v-model="form.goodsImg" action="http://saaslive.oss-cn-shanghai.aliyuncs.com" :data="new_multipart_params" :on-success="call" :before-upload="set_key" :on-preview="handlePreview" :on-remove="handleRemove" :on-error="handleError" :default-file-list="fileList">
+				<template>
+					<el-upload v-if="new_multipart_params" class="upload" ref="uploads" type="drag" v-model="form.goodsImg" action="http://saaslive.oss-cn-shanghai.aliyuncs.com" :data="new_multipart_params" :on-success="call" :before-upload="set_key" :on-preview="handlePreview" :on-remove="handleRemove" :on-error="handleError" :default-file-list="fileList">
 					<i class="el-icon-upload"></i>
 					<div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
 					<div class="el-upload__tip" slot="tip">150*150或以上尺寸png/jpg格式图片，且不超过500kb</div>
 				</el-upload>
 				<img :src="form.goodsImg" v-if="form.goodsImg" height="160px;" class="thumb">
+				</template>
 			</el-form-item>
 			<el-form-item required label="商品介绍">
 				<!--<textarea id="editor_id" name="content" style="width:700px;height:300px;">
 					在这里添加商品信息
 				</textarea>-->
-				<quill-editor ref="goodsAdd"  :config="editorOption" @change="onEditorChange($event)">
-							</quill-editor>
+				<!--<quill-editor ref="goodsAdd"  :config="editorOption" @change="onEditorChange($event)">
+							</quill-editor>-->
+							<VueUEditor ref="goodsAdd"   @ready="editorReady">
+							    	
+							    </VueUEditor>
 			</el-form-item>
 			<!-- 加载编辑器的容器 -->
     <!--<script id="container" name="content" type="text/plain">
@@ -47,7 +52,7 @@
 		quillEditor
 	} from 'vue-quill-editor'
 	// import ueditor from 'plugin/common/ueditor.vue';
-
+	import VueUEditor from 'plugin/dialog/UEditor.vue'
 	export default {
 		name:'addgoods',
 		data() {
@@ -77,12 +82,25 @@
 			},
 			components: {
 				quillEditor,
+				VueUEditor
 				// ueditor
 			},
 			destroy(){
 
 			},
 			methods: {
+				editorReady(editorInstance){
+				window.ueditor = editorInstance;
+				var self = this
+
+				editorInstance.setContent(self.form.goodsDesc||'请输入内容')
+				editorInstance.addListener('contentChange',()=>{
+					console.log('发生了变化:',editorInstance.getContent())
+					self.form.goodsDesc = editorInstance.getContent()
+					console.log(self.form.goodsDesc)
+					
+				})
+			},
 			onEditorChange({
 				editor,
 				html,
@@ -93,7 +111,7 @@
 				onSubmit: function() {
 
 
-					this.form.goodsDesc = this.$refs.goodsAdd.tempStr||'无介绍'
+					// this.form.goodsDesc = this.$refs.goodsAdd.tempStr||'无介绍'
 					//native= 表示这个是不需要自动添加host信息的
 					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/add';
 					this.$http.post(url, this.form).then((response) => {

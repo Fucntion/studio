@@ -4,7 +4,7 @@
 			<el-button size="small" type="primary" @click="add()">添加菜单</el-button>
 		</div>
 		<template v-if="menuList.length>0">
-			<el-tabs v-model='menu_active' class="menuEditBox" :closable='close_status' ref="Menutab" type="border-card" @tab-remove="removeMenuTab">
+			<el-tabs v-model='menu_active' @tab-click="handleClick" class="menuEditBox" :closable='close_status' ref="Menutab" type="border-card" @tab-remove="removeMenuTab">
 				<el-tab-pane style='margin-top:1rem;' v-for="(item, key, index)  in menuList" :name="key+''" :label="item.title">
 					<el-form :ref="'formedit'+key" :rules="rules" :model="item" label-width="80px" :key="index">
 						<el-form-item label="菜单名称" prop="title">
@@ -17,11 +17,11 @@
 							</el-select>
 						</el-form-item>
 						<div  v-if="item.type&&item.type=='show'">
-							<quill-editor :ref="'myTextEditor'+key" :value="escape2Html(item.show)" :config="editorOption" @change="onEditorChange($event,item,key)"></quill-editor>
+							<!--<quill-editor :ref="'myTextEditor'+key" :value="escape2Html(item.show)" :config="editorOption" @change="onEditorChange($event,item,key)"></quill-editor>-->
 							<!--<div class='grid-content' :offset='3'>-->
-							    <!--<VueUEditor :key='index' @ready="editorReady">
+							    <VueUEditor  :key="'edit'+key" @ready="editorReady">
 							    	
-							    </VueUEditor>-->
+							    </VueUEditor>
 							<!--</div>-->
 						</div>
 						<div v-if="item.type&&item.type=='goods'">
@@ -130,17 +130,24 @@
 //			}
 		},
 		methods: {
-//			editorReady(editorInstance){
-//				var self = this
-//				console.log(this.menu_active)
-//				console.log(this.menuList)
-////				window.editor=editorInstance
-//				editorInstance.setContent('123')
-//				editorInstance.addListener('contentChange',()=>{
-//					console.log('发生了变化:',editorInstance.getContent())
-//					self.menuList[self.menu_active].show = editorInstance.getContent()
-//				})
-//			},
+			 handleClick(tab, event) {
+        console.log(tab, event)
+		var self = this
+		window.ueditor.setContent(self.menuList[self.menu_active].show||'请输入内容')
+      },
+			editorReady(editorInstance){
+				window.ueditor = editorInstance;
+				var self = this
+				console.log(this.menu_active)
+				console.log(this.menuList)
+				editorInstance.setContent(self.menuList[self.menu_active].show||'请输入内容')
+				editorInstance.addListener('contentChange',()=>{
+					console.log('发生了变化:',editorInstance.getContent())
+					self.menuList[self.menu_active].show = editorInstance.getContent()
+					console.log(self.menuList[self.menu_active].show)
+					
+				})
+			},
 			onEditorBlur(editor) {
 				// console.log('editor blur!', editor)
 			},
@@ -183,6 +190,7 @@
 				console.log(this.menuList);
 				this.menuList.splice(tabItem, 1)
 				console.log(this.menuList);
+
 				// console.log(this.menuList);
 				// var self = this;
 				// self.menuList = _.filter(self.menuList, function (item) {
@@ -206,6 +214,72 @@
 			},
 			//只要修改对应的item数据即可，至于格式化之类的操作全部写在store里面
 			onSubmitEdit: function(item, key) {
+
+				var self = this,
+					tempRefsObj = {},
+					tempRefsEditor = {};
+
+				for(var k in self.$refs) {
+
+					// 用ref来定位是哪个表单
+					if(k == 'formedit' + key) {
+
+						tempRefsObj = self.$refs[k][0]; //0有点坑
+					}
+
+					//替换富文本编辑器中内容
+					// if(k == 'myTextEditor' + key) {
+					// 	tempRefsEditor = self.$refs[k][0]
+					// }
+				}
+				// if(item.type == 'show') {
+				// 	item.show = tempRefsEditor.tempStr || ''
+				// }
+
+				console.log(item)
+				// return;
+
+				//表单验证
+				tempRefsObj.validate((valid) => {
+					if(valid) {
+
+						if(item.show == '' && item.type == 'show') {
+							this.$notify({
+								title: '提示',
+								message: '图文内容不能为空',
+								type: 'warning'
+							});
+							return;
+						}
+
+						if(item.type == 'goods' && item.goods.length < 1) {
+							this.$notify({
+								title: '提示',
+								message: '商品信息不能为空',
+								type: 'warning'
+							});
+							return;
+						}
+
+						if(item.type == '') {
+							console.log('类别未选')
+							return
+						}
+
+						self.subConfig();
+
+					} else {
+						this.$notify({
+							title: '提示',
+							message: '表单格式有误',
+							type: 'warning'
+						});
+						return false;
+					}
+				});
+
+			},
+			onSubmitEdit_old: function(item, key) {
 
 				var self = this,
 					tempRefsObj = {},

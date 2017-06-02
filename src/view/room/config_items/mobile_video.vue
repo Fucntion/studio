@@ -1,6 +1,6 @@
 <template>
 	<div class="mobile">
-		<div style='justify-content:center;' class="header">直播间名称</div>
+		<div style='justify-content:center;'  class="header" @click="checkDialog('titleEdit','设置标题','menuModal')">{{studio.title}}</div>
 		<div class="wrap">
 			<div id="id_video_container"></div>
 			<template v-if="studio.pluginObj.advert.length>0">

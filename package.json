@@ -10,7 +10,7 @@
   "dependencies": {
     "clipboard": "^1.6.0",
     "echarts": "^3.3.2",
-    "element-ui": "^1.0.9",
+    "element-ui": "^1.2.1",
     "lodash": "^4.17.2",
     "nprogress": "^0.2.0",
     "qr.js": "0.0.0",

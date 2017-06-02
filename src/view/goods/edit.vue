@@ -22,15 +22,17 @@
 				<img :src="form.goodsImg" v-if="form.goodsImg" height="160px;" class="thumb">
 			</el-form-item>
 			<el-form-item required label="商品介绍">
-				<quill-editor ref="goodsEdit"  
+				<!--<quill-editor ref="goodsEdit"  
 				:value="escape2Html(form.goodsDesc)" 
 				:config="editorOption" 
 				@change="onEditorChange($event)" >
-							</quill-editor>
+							</quill-editor>-->
 				<!--<textarea id="editor_goods_edit" v-html="form.goodsDesc" name="content" style="width:900px;height:500px;">
 					
 				</textarea>-->
-
+<VueUEditor ref="goodsAdd"   @ready="editorReady">
+							    	
+							    </VueUEditor>
 			</el-form-item>
 
 			<el-form-item>
@@ -49,7 +51,7 @@
 	import {
 		quillEditor
 	} from 'vue-quill-editor'
-
+import VueUEditor from 'plugin/dialog/UEditor.vue'
 	export default {
 
 		data() {
@@ -67,9 +69,22 @@
 				}
 			},
 			components: {
-				quillEditor
+				quillEditor,
+				VueUEditor
 			},
 			methods: {
+			editorReady(editorInstance){
+				window.ueditor = editorInstance;
+				var self = this
+
+				editorInstance.setContent(self.escape2Html(self.form.goodsDesc)||'请输入内容')
+				editorInstance.addListener('contentChange',()=>{
+					console.log('发生了变化:',editorInstance.getContent())
+					self.form.goodsDesc = self.escape2Html(editorInstance.getContent())
+					console.log(self.form.goodsDesc)
+					
+				})
+			},
 			onEditorChange({
 				editor,
 				html,
@@ -79,7 +94,7 @@
 			},
 				onSubmit: function() {
 
-					this.form.goodsDesc = this.$refs.goodsEdit.tempStr||'无介绍'
+					// this.form.goodsDesc = this.$refs.goodsEdit.tempStr||'无介绍'
 					//native= 表示这个是不需要自动添加host信息的
 					var url = 'shop=' + 'http://shop.icloudinn.com/index.php/Api/Goods/edit';
 					this.$http.post(url, this.form).then((response) => {
